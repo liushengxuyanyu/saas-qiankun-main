@@ -64,13 +64,13 @@ export default {
   border: none;
   position: relative;
   
-  /deep/.el-submenu .el-menu-item{
+  :deep(.el-submenu .el-menu-item){
     padding-right: 0;
   }
-  /deep/.el-menu{
+  :deep(.el-menu){
     position: inherit;
   }
-  /deep/.is-opened .is-opened .el-menu{
+  :deep(.is-opened .is-opened .el-menu){
     position: absolute;
     left: 180px;
     top: 0px;
