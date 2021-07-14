@@ -1,0 +1,22 @@
+{
+  "Print to console": {
+    "scope": "javascript,vue",
+    "prefix": "vue",
+    "body": [
+        "<template>",
+        "</template>",
+        "<script>",
+        "import { ref, reactive } from 'vue'",
+        
+        "export default {",
+        "  setup() {",
+        "     return { }",
+        "   }",
+        "}",
+        "</script>",
+        "<style lang=\"less\">",
+        "</style>",
+    ],
+    "description": "Log output to console"
+  }
+}

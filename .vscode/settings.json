@@ -1,0 +1,64 @@
+{
+    "window.zoomLevel": 1,
+    "workbench.iconTheme": "vscode-icons",
+    "files.autoSaveDelay": 1,
+    "files.associations": {
+      "*.vue": "vue"
+    },
+    "emmet.syntaxProfiles": {
+      "vue-html":"html",
+      "vue":"html"
+    },
+    "terminal.integrated.fontSize": 16,
+    "editor.detectIndentation": false,
+    "editor.fontSize": 12,
+    "editor.tabSize": 2,
+    "editor.fontLigatures": false,
+    "editor.renderWhitespace": "all",
+    "editor.wordWrap": "on",
+    "editor.minimap.renderCharacters":  true,
+    "editor.defaultFormatter": "octref.vetur",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "html",
+      "vue"
+    ],
+    "vetur.format.defaultFormatterOptions": {
+      "prettyhtml": {
+        "printWidth": 80,
+        "singleQuote": false,
+        "wrapAttributes": false,
+        "sortAttributes": false
+      },
+      "prettier": {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "semi": false,
+        "singleQuote": true
+      }
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "octref.vetur"
+    },
+    "git.autofetch": true,
+    "files.exclude": {
+      "**/.hooks": true,
+      ".gitignore": true,
+      ".editorconfig": true,
+      "jsconfig": true,
+      ".git-commit-template.txt": true,
+      "**/vite-plugins": true
+    },
+    "files.autoSave": "afterDelay",
+    "search.exclude": {
+      "**/dist": true,
+      "**/node_modules": true,
+      "**/vite-plugins": true
+    }
+  }

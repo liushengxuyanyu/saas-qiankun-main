@@ -1,0 +1,66 @@
+<template>
+  <div class="saas-layout">
+    <header class="saas-header">
+      <LayoutHeader></LayoutHeader>
+    </header>
+    <div class="saas-content">
+      <div class="aside-main">
+        <Aside></Aside>
+      </div>
+      <div class="content">
+        <div class="content-index">
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, reactive } from 'vue'
+import LayoutHeader from '@/components/Layout/Header.vue'
+import Aside from '@/components/Layout/Aside.vue'
+
+export default {
+  setup() {
+    return {}
+  },
+  components: {
+    LayoutHeader,
+    Aside
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.saas-layout{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  height: 100%;
+  align-content: flex-start;
+  & > .saas-header {
+    height: 50px;
+    box-shadow: 0px 3px 6px 2px #E5E9ED;
+    background: #fff;
+    z-index: 100;
+  }
+  & > .saas-content{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    height: 100%;
+    align-content: flex-start;
+  }
+  .aside-main{
+    background: #fff;
+    box-shadow: -1px 0px 0px 2px #E9EDF1;
+  }
+  .content{
+    flex: 1;
+  }
+}
+</style>
