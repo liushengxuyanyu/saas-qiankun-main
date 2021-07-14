@@ -8,8 +8,9 @@
         <Aside></Aside>
       </div>
       <div class="content">
-        <div class="content-index">
+        <div class="qiankun-container">
           <router-view></router-view>
+          <div id="ms-admin"></div>
         </div>
       </div>
     </div>
@@ -61,6 +62,9 @@ export default {
   }
   .content{
     flex: 1;
+    .qiankun-container{
+      padding: 20px;
+    }
   }
 }
 </style>

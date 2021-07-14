@@ -12,15 +12,19 @@ import {
  */
 export const startQK = start;
 export const register = () => {
+    console.log(document.getElementById('ms-admin'))
     registerMicroApps([
       {
         name: "VueMicroApp",
         entry: "//localhost:3002",
         container: document.getElementById('frame'),
-        activeRule: "#/sub-module",
-        props: {
-          container: '#subModule'
-        }
+        activeRule: "/web-main/#/sub-module"
+      },
+      {
+        name: "console-ic-h5",
+        entry: "//localhost:8088/ms-admin/",
+        container: document.getElementById('ms-admin'),
+        activeRule: ["/web-main/#/MemberBuka"],
       }
     ], {
     // qiankun 生命周期钩子 - 微应用加载前
