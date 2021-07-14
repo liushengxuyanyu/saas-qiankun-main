@@ -5,7 +5,6 @@
   "description": "vue3-webpack template",
   "license": "MIT",
   "scripts": {
-    "preinstall": ".hooks/install",
     "dev": "node build/dev.js",
     "build": "node build/build.js",
     "test": "jest -c build/jest.json"
