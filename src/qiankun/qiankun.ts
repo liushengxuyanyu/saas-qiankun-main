@@ -4,7 +4,7 @@ import {
   start,
 } from "qiankun"
 
-
+import { getApps } from './app'
 /**
  * 注册微应用
  * 第一个参数 - 微应用的注册信息
@@ -13,20 +13,7 @@ import {
 export const startQK = start;
 export const register = () => {
     console.log(document.getElementById('ms-admin'))
-    registerMicroApps([
-      {
-        name: "VueMicroApp",
-        entry: "//localhost:3002",
-        container: document.getElementById('frame'),
-        activeRule: "/web-main/#/sub-module"
-      },
-      {
-        name: "console-ic-h5",
-        entry: "//localhost:8088/ms-admin/",
-        container: document.getElementById('ms-admin'),
-        activeRule: ["/web-main/#/MemberBuka"],
-      }
-    ], {
+    registerMicroApps( getApps(), {
     // qiankun 生命周期钩子 - 微应用加载前
     beforeLoad: (app) => {
       // 加载微应用前，加载进度条

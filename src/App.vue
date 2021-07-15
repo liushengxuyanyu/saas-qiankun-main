@@ -4,7 +4,7 @@
 
 <script>
 
-import { register, startQK } from './qiankun'
+import { register, startQK } from './qiankun/qiankun'
 
 import HelloWorld from './components/HelloWorld.vue'
 import Layout from '@/components/Layout/Layout.vue'
