@@ -9,7 +9,7 @@
         "import { ref, reactive } from 'vue'",
         
         "export default {",
-        "  setup() {",
+        "  setup(props, { emit, attrs, slots }) {",
         "     return { }",
         "   }",
         "}",

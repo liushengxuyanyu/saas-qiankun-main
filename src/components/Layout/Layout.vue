@@ -4,13 +4,14 @@
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
-      <div class="aside-main">
-        <Aside></Aside>
+      <div class="aside-main" :style="{'width': asideWidth }">
+        <Aside @triggerCloseAside="triggerCloseAside"></Aside>
       </div>
       <div class="content">
         <div class="qiankun-container">
           <router-view></router-view>
           <div id="ms-admin"></div>
+          <div id="ms-admin-404"></div>
         </div>
       </div>
     </div>
@@ -24,7 +25,16 @@ import Aside from '@/components/Layout/Aside.vue'
 
 export default {
   setup() {
-    return {}
+    let asideWidth = ref('auto')
+    const triggerCloseAside = (width) => {
+
+      asideWidth.value = width
+      console.log('closeAside', width)
+    }
+    return {
+      asideWidth,
+      triggerCloseAside,
+    }
   },
   components: {
     LayoutHeader,
@@ -59,6 +69,10 @@ export default {
   .aside-main{
     background: #fff;
     box-shadow: -1px 0px 0px 2px #E9EDF1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: width 0.3s;
   }
   .content{
     flex: 1;
