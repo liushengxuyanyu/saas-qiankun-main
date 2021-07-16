@@ -5,10 +5,13 @@
     </header>
     <div class="saas-content">
       <div class="aside-main" :style="{'width': asideWidth }">
-        <Aside @triggerCloseAside="triggerCloseAside"></Aside>
+        <Aside @triggerCloseAside="triggerCloseAside" :menuPages="menuPages"></Aside>
       </div>
       <div class="content">
         <div class="qiankun-container">
+          <div class="menu-pages">
+            <MenuTabPages :menuPages="menuPages" />
+          </div>
           <router-view></router-view>
           <div id="ms-admin"></div>
           <div id="ms-admin-404"></div>
@@ -22,6 +25,7 @@
 import { ref, reactive } from 'vue'
 import LayoutHeader from '@/components/Layout/Header.vue'
 import Aside from '@/components/Layout/Aside.vue'
+import MenuTabPages from '@/components/Layout/MenuTabPages.vue'
 
 export default {
   setup() {
@@ -31,14 +35,19 @@ export default {
       asideWidth.value = width
       console.log('closeAside', width)
     }
+
+    let menuPages = reactive([])
+    
     return {
       asideWidth,
       triggerCloseAside,
+      menuPages,
     }
   },
   components: {
     LayoutHeader,
-    Aside
+    Aside,
+    MenuTabPages,
   }
 }
 </script>

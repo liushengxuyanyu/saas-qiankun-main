@@ -11,7 +11,7 @@
       :collapse="isCollapse"
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
-        <el-menu-item :index="'index-' + index " v-if="!menu.children.length">
+        <el-menu-item :index="'index-' + index " v-if="!menu.children.length" @click="fixedMenu(menu)">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="menu.name"></span>
@@ -38,7 +38,7 @@
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse"
-        default-openeds="submenu"
+        :default-openeds="[ 'submenu' ]"
         v-if="menu.subMenus.children"
         >
         <el-submenu index="submenu">
@@ -47,7 +47,7 @@
             <span v-html="menu.subMenus.name"></span>
           </template>
           <template v-for="(children, index) in menu.subMenus.children" :key="'key-' + index ">
-            <el-menu-item :index="'index-' + index" >
+            <el-menu-item :index="'index-' + index"  @click="fixedMenu(children)">
               <template #title>
                 <i class="el-icon-location"></i>
                 <span v-html="children.name"></span>
@@ -60,7 +60,7 @@
   </div>
 </template>
 <script>
-import { ref, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
+import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
 import { menus as getmenus } from '@/api/menu'
 
 export default {
@@ -73,9 +73,12 @@ export default {
     },
   },
   props:{
-    emits: ['triggerCloseAside']
+    emits: ['triggerCloseAside'],
+    menuPages: Array,
   },
   setup(props, { emit, attrs, slots }) {
+
+    let { menuPages } = toRefs(props)
 
     let menu = reactive({
       mainMenu: [],
@@ -88,19 +91,27 @@ export default {
     getmenus().then(res=>{
       menu.mainMenu = res.result
     })
+
+    const fixedMenu = (children) => {
+      // 如果导航为新增加的则添加否则不处理
+      if( !children.children.length && !menuPages.value.includes(children) ) {
+        menuPages.value.push(children)
+      }
+    }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children) => {
+      fixedMenu(children)
       menu.subMenus = children
     }
-
-
 
     // 收起导航
     const asideRef = ref(null);
     onMounted(()=>{
       nextTick(()=>{
         window.addEventListener("click", (event)=>{
+
           let includesAside = event.path.includes(asideRef.value)
+
           // 如果点击路径不包含 aside-tmpl 则关闭二级导航
           if(!includesAside){
             menu.subMenus = {}
@@ -112,7 +123,6 @@ export default {
     // 监听关闭按钮
     let isCloseAside = ref(0);
     watch(isCloseAside, (val, preVal)=>{
-      console.log( isCloseAside )
       emit('triggerCloseAside', isCloseAside.value ? '0' : '180px')
     })
 
@@ -127,6 +137,9 @@ export default {
 
       // 关闭左侧导航
       isCloseAside,
+
+      // 打开新tab页
+      fixedMenu,
       
     }
    },
