@@ -22,6 +22,6 @@ const routes = [
 
 export const router = createRouter({
   // history: createWebHistory('/web-main/'),
-  history: createWebHashHistory('/'),
+  history: createWebHistory('/web-main/'),
   routes: routes
 })

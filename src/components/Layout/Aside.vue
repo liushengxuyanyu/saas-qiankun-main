@@ -214,9 +214,8 @@ export default {
         border-right: none;
         border-top-color: transparent;
         border-bottom-color:transparent;
+      }
     }
-    }
-    
   }
 }
 </style>

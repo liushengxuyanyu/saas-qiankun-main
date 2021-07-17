@@ -1,5 +1,3 @@
-
-
 <template>
   <el-row v-if="menuPages.length">
     <el-button v-for="(menu, index) of menuPages" :key="index" size="small" >

@@ -1,6 +1,6 @@
 
 export const getApps = () => {
-
+  console.log('============')
   const apps = [
     // {
     //   name: "VueMicroApp",

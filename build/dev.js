@@ -10,11 +10,16 @@ async function start() {
   } catch (e) {
     throw 'not found .port';
   }
+
   const config = require('./webpack.config')('development');
   const options = {
     contentBase: path.resolve('dist'),
+    contentBasePublicPath: "/web-main",
     hot: true,
-    host: 'localhost'
+    host: '127.0.0.1',
+    historyApiFallback: {
+      index: 'index.html',
+    },
   };
   webpackDevServer.addDevServerEntrypoints(config, options);
   const compiler = webpack(config);
@@ -22,7 +27,7 @@ async function start() {
   server.listen(port, 'localhost', () => {
   });
   server.invalidate(() => {
-    console.log(`Project is running at http://localhost:${port}`);
+    console.log(`Project is running at http://${options.host}:${port}`);
   });
 }
 

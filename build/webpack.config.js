@@ -16,7 +16,7 @@ module.exports = (env) => {
       filename: '[name].bundle.js',
       chunkFilename: '[id].bundle.js',
       path: path.resolve('dist'),
-      publicPath: env === 'production' ? '/web-main/' : ''
+      publicPath: env === 'production' ? '/web-main/' : '/'
     },
     module: {
       rules: [
