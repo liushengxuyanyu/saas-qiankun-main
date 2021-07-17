@@ -20,6 +20,33 @@ async function start() {
     historyApiFallback: {
       index: 'index.html',
     },
+    proxy: {
+
+      '/helios/api': {
+        // target: 'http://mryx-helios-web.b5.missfresh.net',   //测试环境b2
+        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
+      '/ccs/api': {
+        // target: 'http://mryx-helios-web.b5.missfresh.net',   //测试环境b2
+        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
+      '/heimdall/api': {
+        // target: 'http://mryx-helios-web.b5.missfresh.net',   //测试环境b2
+        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
+      '/sobot': {
+        // target: 'http://mryx-helios-web.b5.missfresh.net',   //测试环境b2
+        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
+    }
   };
   webpackDevServer.addDevServerEntrypoints(config, options);
   const compiler = webpack(config);

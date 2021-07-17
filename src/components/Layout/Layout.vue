@@ -13,6 +13,7 @@
             <MenuTabPages :menuPages="menuPages" />
           </div>
           <router-view></router-view>
+          <div id="helios-heimdall"></div>
           <div id="ms-admin"></div>
           <div id="ms-admin-404"></div>
         </div>
@@ -87,6 +88,13 @@ export default {
     flex: 1;
     .qiankun-container{
       padding: 20px;
+      box-sizing: border-box;
+      width: 95%;
+      height: 100%;
+      #helios-heimdall{
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
