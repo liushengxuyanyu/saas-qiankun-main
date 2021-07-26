@@ -10,7 +10,7 @@ export const getApps = () => {
     // },
     {
       name: "heliosHeimdall",
-      entry: "http://127.0.0.1:9001/helios/index.html",
+      entry: "/helios/index.html",
       container: document.getElementById('helios-heimdall'),
       activeRule: ["/web-main/helios/"],
     },
