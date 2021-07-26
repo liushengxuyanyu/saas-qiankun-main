@@ -155,7 +155,7 @@ export default {
   transition: left 0.3s;
   &>.el-menu{
     height: 100%;
-    z-index: 2;
+    z-index: 3;
   }
   &.aside-close{
     // width: 10px;
@@ -177,7 +177,7 @@ export default {
     height: 100%;
     border-right: solid 1px #e6e6e6;
     background: #fff;
-    z-index: 1;
+    z-index: 2;
     transition: left 0.3s;
     &.isShowSubMenus{
       left: 180px;

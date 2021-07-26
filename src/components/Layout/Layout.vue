@@ -89,11 +89,12 @@ export default {
     .qiankun-container{
       padding: 20px;
       box-sizing: border-box;
-      width: 95%;
+      width: 100%;
       height: 100%;
       #helios-heimdall{
         width: 100%;
         height: 100%;
+        background: #fff;
       }
     }
   }

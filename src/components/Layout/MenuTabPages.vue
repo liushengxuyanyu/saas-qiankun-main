@@ -1,5 +1,5 @@
 <template>
-  <el-row v-if="menuPages.length">
+  <el-row class="menuTapItems" v-if="menuPages.length">
     <el-button v-for="(menu, index) of menuPages" :key="index" size="small" >
       {{menu.name}}
       <i @click="closeTab(index)" class="el-icon-close el-icon--right"></i>
@@ -27,4 +27,7 @@ export default {
 }
 </script>
 <style lang="less">
+.menuTapItems{
+  margin-bottom: 5px;
+}
 </style>
