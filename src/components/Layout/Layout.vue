@@ -36,9 +36,9 @@ export default {
       asideWidth.value = width
       console.log('closeAside', width)
     }
+    let localMenuPages = localStorage.getItem("menuPages")
+    let menuPages = reactive(localMenuPages && JSON.parse(localMenuPages) || [])
 
-    let menuPages = reactive([])
-    
     return {
       asideWidth,
       triggerCloseAside,

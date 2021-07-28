@@ -80,7 +80,6 @@ export default {
   setup(props, { emit, attrs, slots }) {
 
     let { menuPages } = toRefs(props)
-
     let menu = reactive({
       mainMenu: [],
       subMenus: {
@@ -103,12 +102,13 @@ export default {
           item.type = 'normal'
         }
       })
-      console.log("children", children)
+
       // 如果导航为新增加的则添加否则不处理
-      if( !children.children.length && !menuPages.value.includes(children) ) {
+      if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
         // 为当前按钮添加先跟
         children.type = 'primary'
         menuPages.value.push(children)
+        localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
     }
     // 将子菜单更新到subMenus中
