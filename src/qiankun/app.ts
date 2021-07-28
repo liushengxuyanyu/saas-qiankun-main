@@ -14,6 +14,12 @@ export const getApps = () => {
       container: document.getElementById('helios-heimdall'),
       activeRule: ["/web-main/helios/"],
     },
+    {
+      name: "ms-admin",
+      entry: "/ms-admin/index.html",
+      container: document.getElementById('ms-admin'),
+      activeRule: ["/web-main/ms-admin/"],
+    },
   ]
   return apps;
 };
