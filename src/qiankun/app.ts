@@ -1,6 +1,6 @@
 
 
-let env = 'test' 
+let env = 'prod' 
 export const getApps = () => {
   console.log('============')
   const apps = [
