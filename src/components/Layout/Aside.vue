@@ -96,9 +96,17 @@ export default {
     const fixedMenu = (children) => {
       console.log("children route", router,  children.path)
       router.push(children.path.replace(/^\/web-main/i, ''))
-      // this.$route.push(children.path)
+      
+      // 重置所有按钮状态
+      menuPages.value.forEach(item=>{
+        if(item.type != 'normal'){
+          item.type = 'normal'
+        }
+      })
       // 如果导航为新增加的则添加否则不处理
       if( !children.children.length && !menuPages.value.includes(children) ) {
+        // 为当前按钮添加先跟
+        children.type = 'primary'
         menuPages.value.push(children)
       }
     }
