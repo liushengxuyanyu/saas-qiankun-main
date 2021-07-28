@@ -19,7 +19,7 @@ export const getApps = () => {
     {
       name: "ms-admin",
       entry: "/ms-admin/index.html",
-      container: document.getElementById('ms-admin'),
+      container: document.getElementById('helios-heimdall'),
       activeRule: ["/web-main/ms-admin/"],
     },
   ]
