@@ -32,8 +32,11 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.55",
+    "js-cookie": "^3.0.0",
     "qiankun": "^2.4.3",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "vuex": "^4.0.2"
   }
 }

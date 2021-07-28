@@ -62,6 +62,7 @@
 <script>
 import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
 import { menus as getmenus } from '@/api/menu'
+import { router } from "../../router"
 
 export default {
   methods: {
@@ -93,6 +94,9 @@ export default {
     })
 
     const fixedMenu = (children) => {
+      console.log("children route", router,  children.path)
+      router.push(children.path.replace(/^\/web-main/i, ''))
+      // this.$route.push(children.path)
       // 如果导航为新增加的则添加否则不处理
       if( !children.children.length && !menuPages.value.includes(children) ) {
         menuPages.value.push(children)
@@ -109,9 +113,7 @@ export default {
     onMounted(()=>{
       nextTick(()=>{
         window.addEventListener("click", (event)=>{
-
           let includesAside = event.path.includes(asideRef.value)
-
           // 如果点击路径不包含 aside-tmpl 则关闭二级导航
           if(!includesAside){
             menu.subMenus = {}

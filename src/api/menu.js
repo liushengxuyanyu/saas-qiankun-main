@@ -1,8 +1,31 @@
 
 import menusInfo from '../mock/menus'
+import service from './index'
 
+export const menusRoot = () => {
+  return service.get('/defender/api/admin/menu/root', {
+      params: {
+        "platform": "ROOT",
+        "systemId": "10408",
+      }
+    })
+    .then(res=>{
+      return res.data
+    })
+    .catch(err=>{
+    })
+}
 export const menus = () => {
-  return new Promise((resolve)=>{
-    resolve(menusInfo)
-  })
+  return service.get('/defender/api/admin/menu/nav', {
+      params: {
+        "platform": "ROOT",
+        "systemId": "10408",
+        "website" :"lingshouyun_pc"
+      }
+    })
+    .then(res=>{
+      return res.data
+    })
+    .catch(err=>{
+    })
 }
