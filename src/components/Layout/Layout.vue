@@ -87,7 +87,7 @@ export default {
   .content{
     flex: 1;
     .qiankun-container{
-      padding: 20px;
+      // padding: 20px;
       box-sizing: border-box;
       width: 100%;
       height: 100%;
