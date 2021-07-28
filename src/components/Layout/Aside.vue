@@ -103,7 +103,7 @@ export default {
           item.type = 'normal'
         }
       })
-      console.log(children)
+      console.log("children", children)
       // 如果导航为新增加的则添加否则不处理
       if( !children.children.length && !menuPages.value.includes(children) ) {
         // 为当前按钮添加先跟
