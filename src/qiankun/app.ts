@@ -1,4 +1,6 @@
 
+
+let env = 'test' 
 export const getApps = () => {
   console.log('============')
   const apps = [
@@ -10,7 +12,7 @@ export const getApps = () => {
     // },
     {
       name: "heliosHeimdall",
-      entry: "/helios/index.html",
+      entry: env == 'test' ? "http://localhost:9001/helios/index.html" : "/helios/index.html",
       container: document.getElementById('helios-heimdall'),
       activeRule: ["/web-main/helios/"],
     },
