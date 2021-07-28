@@ -52,7 +52,8 @@ export default {
     background: #fff;
     border-radius: 4px;
     &.el-button--primary{
-      background: linear-gradient( 315deg ,#3130f4,#1378ff);
+      // background: linear-gradient( 315deg ,#3130f4,#1378ff);
+      font-weight: 800;
       span{
         color: #fff;
       }
