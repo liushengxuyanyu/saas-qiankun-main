@@ -55,7 +55,7 @@ export default {
       // background: linear-gradient( 315deg ,#3130f4,#1378ff);
       font-weight: 800;
       span{
-        color: #fff;
+        // color: #fff;
       }
     }
   }
