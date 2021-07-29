@@ -121,9 +121,10 @@ export default {
     })
 
     const fixedMenu = (children, i) => {
-      console.log("children route", router,  children, i)
+      console.log("children route", children.path)
       // router.push(children.path.replace(/^\/web-main/i, ''))
-      window.history.pushState( menu, menu.name || "零售云", menu.path)
+    
+      history.pushState( {}, children.name || "零售云", children.path)
       
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
