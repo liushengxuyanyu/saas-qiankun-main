@@ -30,7 +30,7 @@ export const getApps = () => {
     },
     {
       name: "saastms",
-      entry: "/wuliu/tms/index.html",
+      entry: "/wuliu/tms2/index.html",
       container: document.getElementById('saastms'),
       activeRule: "/web-main/wuliu/tms",
     },
