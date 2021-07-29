@@ -60,7 +60,7 @@
 
 
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(menu)">
+        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="submenu.name"></span>
@@ -72,7 +72,7 @@
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, i)">
+            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild)">
               <template #title>
                 <i class="el-icon-location"></i>
                 <span v-html="submenuChild.name"></span>

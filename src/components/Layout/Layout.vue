@@ -78,6 +78,7 @@ export default {
     flex-wrap: nowrap;
     height: 100%;
     align-content: flex-start;
+    overflow-y: scroll;
   }
   .aside-main {
     background: #fff;
