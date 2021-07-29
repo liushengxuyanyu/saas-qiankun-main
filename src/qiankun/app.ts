@@ -32,7 +32,7 @@ export const getApps = () => {
       name: "saastms",
       entry: "/wuliu/tms2/index.html",
       container: document.getElementById('saastms'),
-      activeRule: "/web-main/wuliu/tms",
+      activeRule: "/web-main/wuliu/tms2",
     },
 
   ]
