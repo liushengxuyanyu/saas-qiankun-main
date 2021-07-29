@@ -45,7 +45,8 @@ export default {
       updateMenu()
     }
     const changRouter = (menu) => {
-      router.push(menu.path.replace(/^\/web-main/i, ''))
+      // router.push(menu.path.replace(/^\/web-main/i, ''))
+      window.history.pushState( menu, menu.name || "零售云", menu.path)
     }
     return {
       menuPages,
