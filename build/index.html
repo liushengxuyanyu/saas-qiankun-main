@@ -14,20 +14,14 @@
       if(!XMLHttpRequest.intercept){
         var interceptOpen = XMLHttpRequest.prototype.open;
         var interceptHeader = XMLHttpRequest.prototype.setRequestHeader;
-        var interceptSend = XMLHttpRequest.prototype.send;
-
+        
+        let headers = null
         XMLHttpRequest.prototype.open = function(method, url, async){
-          let headers = {}
+          headers = {}
           this.setRequestHeader = function (header, value){
               headers[header] = value
           }
-          this.send = function (body){
-            for ( let key in headers ){
-              interceptHeader.call(that, key, headers[key])
-            }
-            header = null;
-            interceptSend.call(that, body)
-          }
+          
           // 整理链接
           if( /https?:\/\//.test(url)){
             // TODO: 同域名处理
@@ -117,6 +111,14 @@
               }
           }
         }
+        var interceptSend = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send = function (body){
+            for ( let key in headers ){
+              interceptHeader.call(this, key, headers[key])
+            }
+            header = null;
+            interceptSend.call(this, body)
+          }
         XMLHttpRequest.intercept = true;
       }
     })();
