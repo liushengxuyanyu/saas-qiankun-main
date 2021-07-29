@@ -20,9 +20,10 @@ export default {
       startQK({
         prefetch: 'all',
         sandbox: {
-          strictStyleIsolation: true
+          strictStyleIsolation: true,
+          // experimentalStyleIsolation: true,
         },
-        singular: true
+        singular: false
       })
     })
     return { }

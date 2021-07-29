@@ -9,6 +9,115 @@
     <meta name="theme-color" content="#333333">
     <meta name="msapplication-navbutton-color" content="#333333">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>
+      (function(){
+      if(!XMLHttpRequest.intercept){
+        var interceptOpen = XMLHttpRequest.prototype.open;
+        var interceptHeader = XMLHttpRequest.prototype.setRequestHeader;
+
+        XMLHttpRequest.prototype.open = function(method, url, async){
+            console.log('method, url, async', method, url, async)
+            let headers = {}
+            this.setRequestHeader = function (header, value){
+                headers[header] = value
+            }
+            // 整理链接
+            if( /https?:\/\//.test(url)){
+              // TODO: 同域名处理
+              if((new RegExp('^' + location.origin)).test(url)){
+                url = url.replace(/^https?:\/\/(?:.*?)(\/.*$)/, '$1')
+              }
+            }else if( /^\/\//.test(url)){
+              // TODO: 同域处理
+              if((new RegExp('^//' + location.host)).test(url)){
+                url = url.replace(/^\/\/(.*?)(\/.*$)/, '$1')
+              }
+            }else if ( /\.\//.test(url)){
+              let path = url.replace(/^\.(\/.*)$/,  '$1')
+              let prePath = window.location.pathname
+              // 如果 / 结束则把/ 删除
+              if( /\/$/.test(prePath) ) {
+                prePath = prePath.replace(/^(.*)\/$/,  '$1')
+              }
+              url = prePath + path;
+            }
+            switch(true){
+              case /^\/console\/ic/ig.test(url) :
+                url = `/console-ic` + url ;
+                break
+              case /^\/oop\/admin/ig.test(url):
+                url = `/oop-admin/api` + url ;
+                break
+              case /^\/ms\/auth/ig.test(url) :
+                url = `/auth-admin/api` + url ;
+              break
+              case /^\/ms\/member/ig.test(url) :
+                url = `/member-admin/api` + url ;
+              break
+              case /^\/as\/crm/ig.test(url) :
+                url = `/as-crm/api` + url ;
+              break
+              case /^\/ms\/pmp/ig.test(url):
+                url = `/pmp-admin/api` + url ;
+              break
+              case /^\/ms\/vmp/ig.test(url):
+                url = `/vmp-admin/api` + url ;
+              break
+              case /^\/ms\/coinadmin/ig.test(url):
+                url = `/coin-admin/api` + url ;
+              break
+              case /^\/ms\/coinadmin/ig.test(url):
+                url = `/coin-admin/api` + url ;
+              break
+              case /^\/ms\/voucherPackage/ig.test(url):
+                url = `/ms-voucher/api` + url ;
+              break
+              
+              case /^\/on\/sale\/cancel/ig.test(url) :
+              case /^\/console\/api\/helios/ig.test(url) :
+                url = `/helios/api` + url ;
+                break
+              case /^\/console\/heimdall/ig.test(url) :
+                url = `/heimdall/api` + url ;
+                break
+              case /^\/comm/ig.test(url) :
+              case /^\/paas/ig.test(url) :
+                url = `/sobot` + url ;
+                break
+              case /^\/console\/ccs/ig.test(url) :
+                url = `/ccs/api` + url ;
+                break
+              case  /^\/organization\/(system|user)/ig.test(url):
+                url = `/defender/api` + url ;
+                break
+
+            }
+            interceptOpen.call(this, method, url, async)
+            let ccsToken = document.cookie.split(/\s*;\s*/).find(function(item){ return /^ccs-token=/.test(item)} )
+            if(ccsToken){
+                let token = ccsToken.replace(/^ccs-token=(.*)$/, '$1')
+                this.setRequestHeader('Authorization', token);
+                this.setRequestHeader('token', token);
+                if(
+                  !/(importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk)/ig.test(url)
+                ){
+                  this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+                }
+
+                if(/(uploadImageUtil)/ig.test(url)) {
+                  console.log('is upload')
+                  //this.setRequestHeader('Content-Type', 'multipart/form-data')
+                }
+            }
+            for ( let key in headers ){
+                interceptHeader.call(this, key, headers[key])
+            }
+            header = null;
+        }
+        XMLHttpRequest.intercept = true;
+      }
+    })();
+    </script>
 </head>
 <body>
 <div id="app"></div>

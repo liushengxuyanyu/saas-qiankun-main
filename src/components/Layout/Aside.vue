@@ -41,7 +41,8 @@
         :default-openeds="[ 'submenu' ]"
         v-if="menu.subMenus.children"
         >
-        <el-submenu index="submenu">
+
+        <!-- <el-submenu index="submenu">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="menu.subMenus.name"></span>
@@ -54,7 +55,34 @@
               </template>
             </el-menu-item>
           </template>
+        </el-submenu> -->
+
+
+      <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
+        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length" @click="fixedMenu(menu)">
+          <template #title>
+            <i class="el-icon-location"></i>
+            <span v-html="submenu.name"></span>
+          </template>
+        </el-menu-item>
+        <el-submenu :index="'index-' + index"  v-if="submenu.children.length">
+          <template #title>
+            <i class="el-icon-location"></i>
+            <span v-html="submenu.name"></span>
+          </template>
+          <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
+            <el-menu-item :index="'index-' + index  + '-' + i"  @click="fixedMenu(submenuChild, i)">
+              <template #title>
+                <i class="el-icon-location"></i>
+                <span v-html="submenuChild.name"></span>
+              </template>
+            </el-menu-item>
+          </template>
         </el-submenu>
+      </template>
+
+
+
       </el-menu>
     </div>
   </div>
@@ -92,8 +120,8 @@ export default {
       menu.mainMenu = res.result
     })
 
-    const fixedMenu = (children) => {
-      console.log("children route", router,  children.path)
+    const fixedMenu = (children, i) => {
+      console.log("children route", router,  children, i)
       router.push(children.path.replace(/^\/web-main/i, ''))
       
       // 重置所有按钮状态

@@ -12,12 +12,17 @@ import { getApps } from './app'
  */
 export const startQK = start;
 export const register = () => {
-    console.log(document.getElementById('ms-admin'))
+    
     registerMicroApps( getApps(), {
     // qiankun 生命周期钩子 - 微应用加载前
     beforeLoad: (app) => {
       // 加载微应用前，加载进度条
       console.log("before load", app.name);
+      return Promise.resolve();
+    },
+    beforeMount: (app) => {
+      // 加载微应用前，加载进度条
+      console.log("before mount", app.name);
       return Promise.resolve();
     },
     // qiankun 生命周期钩子 - 微应用挂载后

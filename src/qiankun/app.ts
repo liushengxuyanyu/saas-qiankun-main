@@ -12,15 +12,15 @@ export const getApps = () => {
     // },
     {
       name: "heliosHeimdall",
-      entry: env == 'test' ? "http://localhost:9001/helios/index.html" : "/helios/index.html",
+      entry: "/helios/index.html",
       container: document.getElementById('helios-heimdall'),
-      activeRule: ["/web-main/helios/"],
+      activeRule: "/web-main/helios",
     },
     {
-      name: "ms-admin",
+      name: "msAdminSaas",
       entry: "/ms-admin/index.html",
       container: document.getElementById('helios-heimdall'),
-      activeRule: ["/web-main/ms-admin/"],
+      activeRule: "/web-main/ms-admin",
     },
   ]
   return apps;
