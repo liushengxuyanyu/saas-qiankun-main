@@ -22,6 +22,12 @@ export const getApps = () => {
       container: document.getElementById('helios-heimdall'),
       activeRule: "/web-main/ms-admin",
     },
+    {
+      name: "saasactivitycenter",
+      entry: "/activity/index.html",
+      container: document.getElementById('saasactivitycenter'),
+      activeRule: "/web-main/activity",
+    },
   ]
   return apps;
 };

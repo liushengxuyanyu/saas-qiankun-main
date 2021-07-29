@@ -16,6 +16,7 @@
           <div id="helios-heimdall"></div>
           <div id="ms-admin"></div>
           <div id="ms-admin-404"></div>
+          <div id="saasactivitycenter"></div>
         </div>
       </div>
     </div>
