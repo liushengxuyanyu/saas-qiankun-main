@@ -1,6 +1,6 @@
 
 
-let env = 'prod' 
+let env = 'prod'
 export const getApps = () => {
   console.log('============')
   const apps = [
@@ -28,6 +28,13 @@ export const getApps = () => {
       container: document.getElementById('saasactivitycenter'),
       activeRule: "/web-main/activity",
     },
+    {
+      name: "saastms",
+      entry: "/wuliu/tms/index.html",
+      container: document.getElementById('saastms'),
+      activeRule: "/web-main/wuliu/tms",
+    },
+
   ]
   return apps;
 };
