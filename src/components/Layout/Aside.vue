@@ -11,13 +11,14 @@
       :collapse="isCollapse"
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
-        <el-menu-item :index="'index-' + index " v-if="!menu.children.length" @click="fixedMenu(menu)">
+        <el-menu-item :index="'index-' + index " 
+          v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="menu.name"></span>
           </template>
         </el-menu-item>
-        <el-submenu :index="'index-' + index"  v-if="menu.children.length">
+        <el-submenu :index="'index-' + index"  v-if="menu.children.length && !menu.hide">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="menu.name"></span>
@@ -59,19 +60,19 @@
 
 
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length" @click="fixedMenu(menu)">
+        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(menu)">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="submenu.name"></span>
           </template>
         </el-menu-item>
-        <el-submenu :index="'index-' + index"  v-if="submenu.children.length">
+        <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
           <template #title>
             <i class="el-icon-location"></i>
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item :index="'index-' + index  + '-' + i"  @click="fixedMenu(submenuChild, i)">
+            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, i)">
               <template #title>
                 <i class="el-icon-location"></i>
                 <span v-html="submenuChild.name"></span>
