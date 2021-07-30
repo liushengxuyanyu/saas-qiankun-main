@@ -179,7 +179,7 @@ export default {
   transition: left 0.3s;
   &>.el-menu{
     height: 100%;
-    z-index: 3;
+    z-index: 100003;
   }
   &.aside-close{
     // width: 10px;
@@ -201,7 +201,7 @@ export default {
     height: 100%;
     border-right: solid 1px #e6e6e6;
     background: #fff;
-    z-index: 2;
+    z-index: 100002;
     transition: left 0.3s;
     &.isShowSubMenus{
       left: 180px;
@@ -225,7 +225,7 @@ export default {
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-    z-index: 3;
+    z-index: 100003;
     .arrow{
       border: 4px solid #818EA9;
       border-left: none;
