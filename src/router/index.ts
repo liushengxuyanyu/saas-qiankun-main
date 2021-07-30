@@ -14,7 +14,6 @@ const routes = [
   // },
 ]
 
-
 export const router = createRouter({
   // history: createWebHistory('/web-main/'),
   history: createWebHistory('/web-main/'),

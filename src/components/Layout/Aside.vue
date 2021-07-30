@@ -117,6 +117,9 @@ export default {
         // 为当前按钮添加先跟
         children.type = 'primary'
         menuPages.value.push(children)
+        if(menuPages.value.length > 10){
+          menuPages.value.shift()
+        }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
     }
