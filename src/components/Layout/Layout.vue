@@ -20,6 +20,7 @@
           <div id="ms-admin-404"></div>
           <div id="saasactivitycenter"></div>
           <div id="saastms"></div>
+          <div id="goodmanage"></div>
         </div>
       </div>
     </div>
