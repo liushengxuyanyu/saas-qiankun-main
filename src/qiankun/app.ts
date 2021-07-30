@@ -4,7 +4,7 @@ let env = 'prod'
 
 export const getApps = () => {
   console.log('============')
-  let container = document.getElementById('helios-heimdall')
+  let container = document.getElementById('qiankun-sub-container')
   const apps = [
     // {
     //   name: "VueMicroApp",
@@ -16,7 +16,7 @@ export const getApps = () => {
     {
       name: "heliosHeimdall",
       entry: "/helios/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/helios",
     },
 
@@ -24,7 +24,7 @@ export const getApps = () => {
     {
       name: "msAdminSaas",
       entry: "/ms-admin/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/ms-admin",
     },
 
@@ -32,7 +32,7 @@ export const getApps = () => {
     {
       name: "saasactivitycenter",
       entry: "/activity/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/activity",
     },
 
@@ -40,14 +40,14 @@ export const getApps = () => {
     {
       name: "saastms",
       entry: "/wuliu/tms2/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/wuliu/tms2",
     },
     // 商品管理
     {
       name: "goods-manage",
       entry: "/goods-manage/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/goods-manage",
     },
 
@@ -55,7 +55,7 @@ export const getApps = () => {
     {
       name: "castorDesigner",
       entry: "/castor/index.html",
-      container: document.getElementById('helios-heimdall'),
+      container,
       activeRule: "/web-main/castor",
     },
   ]

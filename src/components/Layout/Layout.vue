@@ -15,12 +15,7 @@
             <MenuTabPages :menuPages="menuPages" />
           </div>
           <router-view></router-view>
-          <div id="helios-heimdall"></div>
-          <div id="ms-admin"></div>
-          <div id="ms-admin-404"></div>
-          <div id="saasactivitycenter"></div>
-          <div id="saastms"></div>
-          <div id="goods-manage"></div>
+          <div id="qiankun-sub-container"></div>
         </div>
       </div>
     </div>
@@ -97,10 +92,13 @@ export default {
       box-sizing: border-box;
       width: 100%;
       height: 100%;
-      #helios-heimdall {
+      #qiankun-sub-container {
         width: 100%;
-        // height: 100%;
+        height: 100%;
         background: #fff;
+      }
+      :deep(#qiankun-sub-container  > div){
+        height: 100%;
       }
     }
   }
