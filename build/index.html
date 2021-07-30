@@ -17,20 +17,20 @@
         var interceptSend = XMLHttpRequest.prototype.send;
         
         let headers = null
+        XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+          headers[header] = value
+        }
+
+        XMLHttpRequest.prototype.send = function() {
+          for ( let key in headers ){
+              interceptHeader.call(this, key, headers[key])
+          }
+          headers = {};
+          interceptSend.call(this, ...arguments)
+        }
+
         XMLHttpRequest.prototype.open = function(method, url, async){
           headers = {}
-          this.setRequestHeader = function (header, value){
-              headers[header] = value
-          }
-          var that = this;
-          this.send = function (body){
-            for ( let key in headers ){
-              interceptHeader.call(that, key, headers[key])
-            }
-            header = null;
-            interceptSend.call(that, body)
-          }
-          
           // 整理链接
           if( /https?:\/\//.test(url)){
             // TODO: 同域名处理
