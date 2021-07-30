@@ -119,6 +119,7 @@ export default {
         menuPages.value.push(children)
         if(menuPages.value.length > 10){
           menuPages.value.shift()
+          // menuPages.value = menuPages.value.splice(1,10)
         }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
@@ -275,6 +276,10 @@ export default {
     &.customer-service{
       background-image: url("@/assets/icons/116.svg");
     }
+  }
+  :deep(.el-icon-arrow-down:before){content:""}
+  :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
+    transform: rotateZ(90deg);
   }
 }
 </style>
