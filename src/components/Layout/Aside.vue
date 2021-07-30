@@ -14,19 +14,18 @@
         <el-menu-item :index="'index-' + index " 
           v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
           <template #title>
-            <i class="el-icon-location"></i>
+            <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
             <span v-html="menu.name"></span>
           </template>
         </el-menu-item>
         <el-submenu :index="'index-' + index"  v-if="menu.children.length && !menu.hide">
           <template #title>
-            <i class="el-icon-location"></i>
+            <i class="svg-icon" :class="[menu.icon]"></i>
             <span v-html="menu.name"></span>
           </template>
           <template v-for="(children, i) in menu.children" :key="'key-' + index  + '-' + i">
             <el-menu-item :index="'index-' + index  + '-' + i"  @click="changeSubMenus(children)">
               <template #title>
-                <i class="el-icon-location"></i>
                 <span v-html="children.name"></span>
               </template>
             </el-menu-item>
@@ -38,52 +37,31 @@
       <el-menu
         @open="handleOpen"
         @close="handleClose"
-        :collapse="isCollapse"
         :default-openeds="[ 'submenu' ]"
         v-if="menu.subMenus.children"
         >
-
-        <!-- <el-submenu index="submenu">
-          <template #title>
-            <i class="el-icon-location"></i>
-            <span v-html="menu.subMenus.name"></span>
-          </template>
-          <template v-for="(children, index) in menu.subMenus.children" :key="'key-' + index ">
-            <el-menu-item :index="'index-' + index"  @click="fixedMenu(children)">
-              <template #title>
-                <i class="el-icon-location"></i>
-                <span v-html="children.name"></span>
-              </template>
-            </el-menu-item>
-          </template>
-        </el-submenu> -->
-
-
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
         <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
           <template #title>
-            <i class="el-icon-location"></i>
+            <i class="el-icon-location-information"></i>
             <span v-html="submenu.name"></span>
           </template>
         </el-menu-item>
         <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
           <template #title>
-            <i class="el-icon-location"></i>
+            <i class="el-icon-location-information"></i>
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
             <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild)">
               <template #title>
-                <i class="el-icon-location"></i>
+                <i class="el-icon-location-information"></i>
                 <span v-html="submenuChild.name"></span>
               </template>
             </el-menu-item>
           </template>
         </el-submenu>
       </template>
-
-
-
       </el-menu>
     </div>
   </div>
@@ -123,9 +101,9 @@ export default {
 
     const fixedMenu = (children, i) => {
       console.log("children route", children.path)
-      // router.push(children.path.replace(/^\/web-main/i, ''))
+      router.push(children.path.replace(/^\/web-main/i, ''))
     
-      history.pushState( {}, children.name || "零售云", children.path)
+      // history.pushState( {}, children.name || "零售云", children.path)
       
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
@@ -257,6 +235,42 @@ export default {
         border-top-color: transparent;
         border-bottom-color:transparent;
       }
+    }
+  }
+  .svg-icon {
+    font-size: 15px;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+    display: inline-block;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    padding-right: 5px;
+    &.icon-home-index{
+      background-image: url("@/assets/icons/index.svg");
+    }
+    &.portal-manage{
+      background-image: url("@/assets/icons/115.svg");
+    }
+    &.product-info{
+      background-image: url("@/assets/icons/117.svg");
+    }
+    &.marketing-manage{
+      background-image: url("@/assets/icons/112.svg");
+    }
+    &.trade-manage{
+      background-image: url("@/assets/icons/118.svg");
+    }
+    &.station-manage{
+      background-image: url("@/assets/icons/113.svg");
+    }
+    &.setup-station{
+      background-image: url("@/assets/icons/111.svg");
+    }
+    &.customer-service{
+      background-image: url("@/assets/icons/116.svg");
     }
   }
 }

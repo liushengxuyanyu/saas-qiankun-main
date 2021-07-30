@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <defs>
+        <linearGradient x1="100%" y1="100%" x2="0%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#3130F4" offset="0%"></stop>
+            <stop stop-color="#1378FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="组件库" transform="translate(-564.000000, -61.000000)" fill-rule="nonzero">
+            <g id="编组-12" transform="translate(564.000000, 61.000000)">
+                <g id="编组" transform="translate(5.000000, 5.000000)">
+                    <path d="M0,9.5 L9.5,9.5 L9.5,0 L4,0 C1.790861,4.05812251e-16 -2.705415e-16,1.790861 0,4 L0,9.5 L0,9.5 Z M14.25,38 L23.75,38 L23.75,28.5 L14.25,28.5 L14.25,38 Z M4,38 L9.5,38 L9.5,38 L9.5,28.5 L0,28.5 L0,34 C2.705415e-16,36.209139 1.790861,38 4,38 Z M0,23.75 L9.5,23.75 L9.5,14.25 L0,14.25 L0,23.75 Z M28.5,9.5 L38,9.5 L38,4 C38,1.790861 36.209139,-4.05812251e-16 34,0 L28.5,0 L28.5,0 L28.5,9.5 Z M14.25,9.5 L23.75,9.5 L23.75,0 L14.25,0 L14.25,9.5 Z M28.5,23.75 L38,23.75 L38,14.25 L28.5,14.25 L28.5,23.75 Z M28.5,38 L34,38 C36.209139,38 38,36.209139 38,34 L38,28.5 L38,28.5 L28.5,28.5 L28.5,38 Z" id="形状" fill="url(#linearGradient-1)"></path>
+                    <polygon id="路径" fill="#05D9C7" points="14.25 23.75 23.75 23.75 23.75 14.25 14.25 14.25"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -52,6 +52,7 @@
             url = prePath + path;
           }
           switch(true){
+            // 营销活动
             case /^\/console\/ic/ig.test(url) :
               url = `/console-ic` + url ;
               break
@@ -83,6 +84,7 @@
               url = `/ms-voucher/api` + url ;
             break
             
+            // 客服活动
             case /^\/on\/sale\/cancel/ig.test(url) :
             case /^\/console\/api\/helios/ig.test(url) :
               url = `/helios/api` + url ;
@@ -100,6 +102,44 @@
             case  /^\/organization\/(system|user)/ig.test(url):
               url = `/defender/api` + url ;
               break
+            
+            // 物流服务接口
+            case /^\/mds\/front/.test(url) :
+                url = '/mds-front/api' + url;
+                break;
+            case /^\/mds-web\//.test(url) :
+                url = '/mds-web/api' + url;
+                break;
+            case /^\/mds\//.test(url) :
+                url = '/mid/api' + url;
+                break;
+            case /^\/tms\//.test(url) :
+                url = '/tms/api' + url;
+                break;
+            case /^\/client_api\//.test(url) :
+                url = '/skylark/api' + url;
+                break;
+            case /^\/sms\/basic\//.test(url) :
+                url = '/sms-basic/api' + url;
+                break;
+            case /^\/sms\/center\//.test(url) :
+                url = '/sms-center/api' + url;
+                break;
+            case /^\/sms\/inbound\//.test(url) :
+                url = '/sms-inbound/api' + url;
+                break;
+            case /^\/sms-internal\//.test(url) :
+                url = '/sms-internal/api' + url;
+                break;
+            case /^\/sms\/outbound\//.test(url) :
+                url = '/sms-outbound/api' + url;
+                break;
+            case /^\/ostia\/web\//.test(url) :
+                url = '/ostia-web/api' + url;
+                break;
+            case /^\/admin\/(menu|user)\//.test(url) :
+                url = '/defender/api' + url;
+                break;
 
           }
           interceptOpen.call(this, method, url, async)
