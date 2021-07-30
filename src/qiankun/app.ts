@@ -34,6 +34,12 @@ export const getApps = () => {
       container: document.getElementById('saastms'),
       activeRule: "/web-main/wuliu/tms2",
     },
+    {
+      name: "goods-manage",
+      entry: "/goods-manage/index.html",
+      container: document.getElementById('goods-manage'),
+      activeRule: "/web-main/goods-manage",
+    },
 
   ]
   return apps;
