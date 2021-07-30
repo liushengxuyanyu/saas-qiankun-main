@@ -64,7 +64,7 @@ export default {
     height: 50px;
     box-shadow: 0px 3px 6px 2px #e5e9ed;
     background: #fff;
-    z-index: 100100;
+    z-index: 1100;
   }
   & > .saas-content {
     flex: 1;
