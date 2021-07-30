@@ -37,12 +37,12 @@ export const getApps = () => {
     },
 
     // 物流门店管理
-    // {
-    //   name: "saastms",
-    //   entry: "/wuliu/tms2/index.html",
-    //   container: document.getElementById('helios-heimdall'),
-    //   activeRule: "/web-main/wuliu/tms2",
-    // },
+    {
+      name: "saastms",
+      entry: "/wuliu/tms2/index.html",
+      container: document.getElementById('helios-heimdall'),
+      activeRule: "/web-main/wuliu/tms2",
+    },
     // 商品管理
     {
       name: "goods-manage",
