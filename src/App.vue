@@ -23,7 +23,7 @@ export default {
           strictStyleIsolation: true,
           // experimentalStyleIsolation: true,
         },
-        singular: false
+        singular: true
       })
     })
     return { }

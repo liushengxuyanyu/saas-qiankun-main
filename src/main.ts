@@ -6,6 +6,7 @@ import store from './store'
 
 import App from './App.vue'
 import './index.css'
+// import './assets/element.css'
 
 let app = createApp(App)
 // 注入路由
