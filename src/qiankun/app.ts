@@ -6,12 +6,6 @@ export const getApps = () => {
   console.log('============')
   let container = document.getElementById('qiankun-sub-container')
   const apps = [
-    // {
-    //   name: "VueMicroApp",
-    //   entry: "//localhost:3002",
-    //   container: document.getElementById('frame'),
-    //   activeRule: "/web-main/sub-module"
-    // },
     // 客服系统
     {
       name: "heliosHeimdall",

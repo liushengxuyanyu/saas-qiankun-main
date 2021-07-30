@@ -140,6 +140,13 @@
             case /^\/admin\/(menu|user)\//.test(url) :
                 url = '/defender/api' + url;
                 break;
+            // mis 系统
+            case /^\/tangram/.test(url) :
+              url = '/tangram/api' + url
+              break;
+            case /^\/mis\/admin/.test(url) :
+              url = '/mis-admin/api' + url
+              break;
 
           }
           interceptOpen.call(this, method, url, async)
@@ -149,14 +156,9 @@
               this.setRequestHeader('Authorization', token);
               this.setRequestHeader('token', token);
               if(
-                !/(importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk)/ig.test(url)
+                !/(uploadImg|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk)/ig.test(url)
               ){
                 this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-              }
-
-              if(/(uploadImageUtil)/ig.test(url)) {
-                console.log('is upload')
-                //this.setRequestHeader('Content-Type', 'multipart/form-data')
               }
           }
         }
