@@ -35,10 +35,10 @@ export const getApps = () => {
       activeRule: "/web-main/wuliu/tms2",
     },
     {
-      name: "goodmanage",
+      name: "goods-manage",
       entry: "/goods-manage/index.html",
-      container: document.getElementById('goodmanage'),
-      activeRule: "/web-main/goodmanage",
+      container: document.getElementById('goods-manage'),
+      activeRule: "/web-main/goods-manage",
     },
 
   ]
