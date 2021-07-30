@@ -92,10 +92,10 @@ export default {
       box-sizing: border-box;
       width: 100%;
       height: 100%;
+      background: #F2F3F6;
       #qiankun-sub-container {
         width: 100%;
         height: 100%;
-        background: #fff;
       }
       :deep(#qiankun-sub-container  > div){
         height: 100%;
