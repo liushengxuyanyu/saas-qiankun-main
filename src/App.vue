@@ -37,3 +37,10 @@ export default {
   }
 };
 </script>
+<style lang="less">
+#qiankun-sub-container > div[data-name='heliosHeimdall']{
+  .main-content .i-router-view{
+    padding: 0;
+  }
+}
+</style>
