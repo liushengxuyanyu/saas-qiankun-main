@@ -62,7 +62,6 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  overflow-x: scroll;
   .el-button {
     background: #fff;
     border-radius: 4px;
