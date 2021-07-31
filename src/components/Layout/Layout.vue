@@ -120,6 +120,7 @@ export default {
     align-items: flex-start;
     transition: width 0.3s;
     z-index: 1000;
+    width: 290px;
   }
 
   .qiankun-container {
