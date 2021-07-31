@@ -38,12 +38,12 @@ export const getApps = () => {
       activeRule: "/web-main/wuliu/tms2",
     },
     // 物流-门店管理
-    {
-      name: "saascss",
-      entry: "/wuliu/css-qiankun/index.html",
-      container,
-      activeRule: "/web-main/wuliu/css-qiankun",
-    },
+    // {
+    //   name: "saascss",
+    //   entry: "/wuliu/css-qiankun/index.html",
+    //   container,
+    //   activeRule: "/web-main/wuliu/css-qiankun",
+    // },
     // 商品管理
     {
       name: "goods-manage",
