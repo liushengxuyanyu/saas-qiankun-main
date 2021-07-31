@@ -52,6 +52,14 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/castor",
     },
+
+    // MIS系统
+    {
+      name: "misAdminSaas",
+      entry: "/mis-admin/index.html",
+      container,
+      activeRule: "/web-main/mis-admin",
+    },
   ]
   return apps;
 };
