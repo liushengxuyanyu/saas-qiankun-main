@@ -220,6 +220,7 @@ export default {
       font-size: 16px;
       font-weight: bold;
       text-indent: 2em;
+      padding-top: 24px;
     }
   }
   .arrow-ctrol{

@@ -141,7 +141,6 @@ export default {
       flex: 1;
       margin: 20px;
       background: #fff;
-      padding: 20px;
       border-radius: 6px;
     }
     #qiankun-sub-container {
