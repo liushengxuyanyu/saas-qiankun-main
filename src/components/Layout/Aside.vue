@@ -1,44 +1,48 @@
 <template>
   <div class="aside-tmpl" ref="asideRef" :class="{'aside-close': isCloseAside }" >
-    <div class="arrow-ctrol"
+    <!-- <div class="arrow-ctrol"
       @click=" isCloseAside = !isCloseAside ">
       <div class="arrow"  :class="{'arrow-close': isCloseAside }" ></div>
-    </div>
+    </div> -->
     <el-menu
       default-active="1-1"
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
+      menu-trigger="hover"
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
         <el-menu-item :index="'index-' + index " 
+          @mouseover="changeSubMenus(menu)"
           v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
-            <span v-html="menu.name"></span>
+            <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
         </el-menu-item>
-        <el-submenu :index="'index-' + index"  v-if="menu.children.length && !menu.hide">
+        <template>
+        </template>
+        <el-submenu :index="'index-' + index"  v-if="menu.children.length && !menu.hide" 
+          @mouseover="changeSubMenus(menu)">
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
-            <span v-html="menu.name"></span>
-          </template>
-          <template v-for="(children, i) in menu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item :index="'index-' + index  + '-' + i"  @click="changeSubMenus(children)">
-              <template #title>
-                <span v-html="children.name"></span>
-              </template>
-            </el-menu-item>
+            <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
         </el-submenu>
       </template>
     </el-menu>
-    <div class="aside-sub-tmpl" :class="{'isShowSubMenus': menu.subMenus.children && menu.subMenus.children.length}">
+    <div class="aside-sub-tmpl" 
+      v-if="menu.subMenus.children && menu.subMenus.children.length" 
+      :class="{'isShowSubMenus': menu.subMenus.children && menu.subMenus.children.length}">
+      <div>
+        <p class="sub-title">{{menu.subMenus.name}}</p>
+      </div>
       <el-menu
         @open="handleOpen"
         @close="handleClose"
-        :default-openeds="[ 'submenu' ]"
-        v-if="menu.subMenus.children"
+        collapse-transition="true"
+        :default-openeds="[ 'submenu', 1,2,3,4 ]"
+        menu-trigger="hover"
         >
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
         <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
@@ -53,7 +57,7 @@
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild)">
+            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
               <template #title>
                 <i class="el-icon-location-information"></i>
                 <span v-html="submenuChild.name"></span>
@@ -67,7 +71,7 @@
   </div>
 </template>
 <script>
-import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
+import { ref, toRefs, reactive, watchEffect, watch, onMounted } from 'vue'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 
@@ -99,7 +103,7 @@ export default {
       menu.mainMenu = res.result
     })
 
-    const fixedMenu = (children, i) => {
+    const fixedMenu = (children, level) => {
       console.log("children route", children.path)
       router.push(children.path.replace(/^\/web-main/i, ''))
     
@@ -107,10 +111,15 @@ export default {
       
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
-        if(item.type != 'normal'){
-          item.type = 'normal'
+        if(item.type != 'primary'){
+          item.type = 'primary'
         }
       })
+      // emit('updateTabPanes', level == 4 ? children.children : []) 
+      if(level == 4){
+        emit('updateTabPanes', children.children ) 
+      }
+      
 
       // 如果导航为新增加的则添加否则不处理
       if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
@@ -133,15 +142,15 @@ export default {
     // 收起导航
     const asideRef = ref(null);
     onMounted(()=>{
-      nextTick(()=>{
-        window.addEventListener("click", (event)=>{
-          let includesAside = event.path.includes(asideRef.value)
-          // 如果点击路径不包含 aside-tmpl 则关闭二级导航
-          if(!includesAside){
-            menu.subMenus = {}
-          }
-        });
-      })
+      // nextTick(()=>{
+      //   window.addEventListener("click", (event)=>{
+      //     let includesAside = event.path.includes(asideRef.value)
+      //     // 如果点击路径不包含 aside-tmpl 则关闭二级导航
+      //     if(!includesAside){
+      //       menu.subMenus = {}
+      //     }
+      //   });
+      // })
     })
 
     // 监听关闭按钮
@@ -171,15 +180,18 @@ export default {
 </script>
 <style lang="less" scoped>
 .aside-tmpl{
-  width: 180px;
   border: none;
-  position: relative;
   flex: 1;
   left: 0;
-  transition: left 0.3s;
+  display: flex;
   &>.el-menu{
     height: 100%;
     z-index: 1003;
+    width: 110px;
+    flex: 1;
+    .is-opened{
+      background-color: var(--el-menu-item-hover-fill);
+    }
   }
   &.aside-close{
     // width: 10px;
@@ -194,21 +206,20 @@ export default {
   }
 
   .aside-sub-tmpl{
-    position: absolute;
-    left: -10px;
-    top: 0;
     width: 180px;
     height: 100%;
-    border-right: solid 1px #e6e6e6;
     background: #fff;
-    z-index: 1002;
-    transition: left 0.3s;
     &.isShowSubMenus{
       left: 180px;
     }
     &>.el-menu{
       border-right: none;
       width: 180px;
+    }
+    .sub-title{
+      font-size: 16px;
+      font-weight: bold;
+      text-indent: 2em;
     }
   }
   .arrow-ctrol{
@@ -279,7 +290,7 @@ export default {
   }
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
-    transform: rotateZ(90deg);
+    transform: rotateZ(0deg);
   }
 }
 </style>

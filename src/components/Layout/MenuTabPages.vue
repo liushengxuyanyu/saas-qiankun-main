@@ -27,11 +27,11 @@ export default {
       let currentPath = currentRoute.value.href
       menuPages.value.forEach(item => {
         if(item.path == currentPath){
-          item.type = 'primary'
+          item.type = 'success'
           return
         }
-        if(item.type != 'normal'){
-          item.type = 'normal'
+        if(item.type != 'primary'){
+          item.type = 'primary'
         }
       });
       updateMenu()

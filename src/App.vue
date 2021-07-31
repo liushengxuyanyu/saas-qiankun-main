@@ -18,10 +18,11 @@ export default {
       register();
       startQK({
         prefetch: 'all',
-        sandbox: {
-          strictStyleIsolation: true
-          // experimentalStyleIsolation: true,
-        },
+        sandbox: false,
+        // sandbox: {
+        //   strictStyleIsolation: true
+        //   // experimentalStyleIsolation: true,
+        // },
         singular: true,
         excludeAssetFilter: (assetUrl) => {
           return /(?=map.qq.com)/.test(assetUrl);

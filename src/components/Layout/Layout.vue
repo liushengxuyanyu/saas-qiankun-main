@@ -7,13 +7,28 @@
       <div class="aside-main"
            :style="{'width': asideWidth }">
         <Aside @triggerCloseAside="triggerCloseAside"
-               :menuPages="menuPages"></Aside>
+               :menuPages="menuPages"
+               @updateTabPanes="updateTabPanes"
+               ></Aside>
       </div>
-      <div class="content">
-        <div class="qiankun-container">
-          <div class="menu-pages">
-            <MenuTabPages :menuPages="menuPages" />
-          </div>
+      <div class="qiankun-container">
+        <div class="menu-pages">
+          <MenuTabPages :menuPages="menuPages" />
+        </div>
+        <div class="qiankun-container-body">
+          <el-tabs 
+            v-if="tabPanes.value && tabPanes.value.length" 
+            @tab-click="pane=>clickTabPanes(tabPanes, pane)"
+            v-model="activePane">
+            <template v-for="tagpane in tabPanes.value" :key="tagpane.id">
+              <el-tab-pane
+                @click="clickTabPanes"
+                :label="tagpane.name"
+                :name="tagpane.name">
+                </el-tab-pane>
+            </template>
+            
+          </el-tabs>
           <router-view></router-view>
           <div id="qiankun-sub-container"></div>
         </div>
@@ -23,10 +38,11 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch , nextTick} from 'vue';
 import LayoutHeader from '@/components/Layout/Header.vue';
 import Aside from '@/components/Layout/Aside.vue';
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
+import { router } from "../../router"
 
 export default {
   setup() {
@@ -38,10 +54,32 @@ export default {
     let localMenuPages = localStorage.getItem('menuPages');
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
+    let tabPanes = reactive([]);
+    let activePane = {}
+
+    const updateTabPanes = (tabs) =>{
+      tabPanes.value = tabs
+      nextTick(()=>{
+        let item = tabPanes.value[0]
+        console.log(item)
+        activePane = item.name;
+        router.push(item.path.replace(/^\/web-main/i, ''))
+      })
+    }
+
+    const clickTabPanes = (tabPanes, pane) => {
+      let item = tabPanes.value[pane.index]
+      router.push(item.path.replace(/^\/web-main/i, ''))
+    }
+
     return {
       asideWidth,
       triggerCloseAside,
-      menuPages
+      menuPages,
+      tabPanes,
+      updateTabPanes,
+      clickTabPanes,
+      activePane
     };
   },
   components: {
@@ -83,24 +121,37 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     transition: width 0.3s;
+    z-index: 1000;
   }
-  .content {
+    
+  .qiankun-container {
     flex: 1;
-    overflow-x:hidden;
-    .qiankun-container {
-      // padding: 20px;
-      box-sizing: border-box;
+    // padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background: #F2F3F6;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    .menu-pages{
+      height: 52px;
+    }
+    .qiankun-container-body{
+      flex: 1;
+      margin: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+    }
+    #qiankun-sub-container {
       width: 100%;
       height: 100%;
-      background: #F2F3F6;
-      #qiankun-sub-container {
-        width: 100%;
-        height: 100%;
-      }
-      :deep(#qiankun-sub-container  > div){
-        height: 100%;
-      }
+    }
+    :deep(#qiankun-sub-container  > div){
+      height: 100%;
     }
   }
+
 }
 </style>
