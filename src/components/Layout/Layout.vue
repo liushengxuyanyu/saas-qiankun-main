@@ -59,9 +59,8 @@ export default {
 
     const updateTabPanes = (tabs) =>{
       tabPanes.value = tabs
-      nextTick(()=>{
+      tabs.length && nextTick(()=>{
         let item = tabPanes.value[0]
-        console.log(item)
         activePane = item.name;
         router.push(item.path.replace(/^\/web-main/i, ''))
       })
