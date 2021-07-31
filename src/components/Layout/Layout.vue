@@ -8,26 +8,24 @@
            :style="{'width': asideWidth }">
         <Aside @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
-               @updateTabPanes="updateTabPanes"
-               ></Aside>
+               @updateTabPanes="updateTabPanes"></Aside>
       </div>
       <div class="qiankun-container">
         <div class="menu-pages">
           <MenuTabPages :menuPages="menuPages" />
         </div>
         <div class="qiankun-container-body">
-          <el-tabs 
-            v-if="tabPanes.value && tabPanes.value.length" 
-            @tab-click="pane=>clickTabPanes(tabPanes, pane)"
-            v-model="activePane">
-            <template v-for="tagpane in tabPanes.value" :key="tagpane.id">
-              <el-tab-pane
-                @click="clickTabPanes"
-                :label="tagpane.name"
-                :name="tagpane.name">
-                </el-tab-pane>
+          <el-tabs v-if="tabPanes.value && tabPanes.value.length"
+                   @tab-click="pane=>clickTabPanes(tabPanes, pane)"
+                   v-model="activePane">
+            <template v-for="tagpane in tabPanes.value"
+                      :key="tagpane.id">
+              <el-tab-pane @click="clickTabPanes"
+                           :label="tagpane.name"
+                           :name="tagpane.name">
+              </el-tab-pane>
             </template>
-            
+
           </el-tabs>
           <router-view></router-view>
           <div id="qiankun-sub-container"></div>
@@ -38,11 +36,11 @@
 </template>
 
 <script>
-import { ref, reactive, watch , nextTick} from 'vue';
+import { ref, reactive, watch, nextTick } from 'vue';
 import LayoutHeader from '@/components/Layout/Header.vue';
 import Aside from '@/components/Layout/Aside.vue';
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
-import { router } from "../../router"
+import { router } from '../../router';
 
 export default {
   setup() {
@@ -55,21 +53,22 @@ export default {
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
     let tabPanes = reactive([]);
-    let activePane = {}
+    let activePane = {};
 
-    const updateTabPanes = (tabs) =>{
-      tabPanes.value = tabs
-      tabs.length && nextTick(()=>{
-        let item = tabPanes.value[0]
-        activePane = item.name;
-        router.push(item.path.replace(/^\/web-main/i, ''))
-      })
-    }
+    const updateTabPanes = (tabs) => {
+      tabPanes.value = tabs;
+      tabs.length &&
+        nextTick(() => {
+          let item = tabPanes.value[0];
+          activePane = item.name;
+          router.push(item.path.replace(/^\/web-main/i, ''));
+        });
+    };
 
     const clickTabPanes = (tabPanes, pane) => {
-      let item = tabPanes.value[pane.index]
-      router.push(item.path.replace(/^\/web-main/i, ''))
-    }
+      let item = tabPanes.value[pane.index];
+      router.push(item.path.replace(/^\/web-main/i, ''));
+    };
 
     return {
       asideWidth,
@@ -122,21 +121,21 @@ export default {
     transition: width 0.3s;
     z-index: 1000;
   }
-    
+
   .qiankun-container {
     flex: 1;
     // padding: 20px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    background: #F2F3F6;
+    background: #f2f3f6;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    .menu-pages{
+    .menu-pages {
       height: 52px;
     }
-    .qiankun-container-body{
+    .qiankun-container-body {
       flex: 1;
       margin: 20px;
       background: #fff;
@@ -145,18 +144,17 @@ export default {
     #qiankun-sub-container {
       width: 100%;
       height: 100%;
-      max-width: 1240px;
-      :deep(.el-form-item){
+      // max-width: 1240px;
+      :deep(.el-form-item) {
         display: block;
       }
-      :deep(.el-form--inline .el-form-item){
+      :deep(.el-form--inline .el-form-item) {
         display: inline-block;
       }
     }
-    :deep(#qiankun-sub-container  > div){
+    :deep(#qiankun-sub-container > div) {
       height: 100%;
     }
   }
-
 }
 </style>

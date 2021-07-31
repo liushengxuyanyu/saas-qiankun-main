@@ -30,12 +30,19 @@ export const getApps = () => {
       activeRule: "/web-main/activity",
     },
 
-    // 物流门店管理
+    // 物流-开店管理
     {
       name: "saastms",
       entry: "/wuliu/tms2/index.html",
       container,
       activeRule: "/web-main/wuliu/tms2",
+    },
+    // 物流-门店管理
+    {
+      name: "saascss",
+      entry: "/wuliu/css-qiankun/index.html",
+      container,
+      activeRule: "/web-main/wuliu/css-qiankun",
     },
     // 商品管理
     {
