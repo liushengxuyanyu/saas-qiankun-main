@@ -65,12 +65,14 @@ export default {
   .el-button {
     background: #fff;
     border-radius: 4px;
+    
     span{
       color: #606266;
     }
-    &.el-button--primary{
+    &.el-button--primary, &.el-button--success{
       // background: linear-gradient( 315deg ,#3130f4,#1378ff);
       font-weight: 800;
+      color: #606266;
       span{
         // color: #fff;
       }
