@@ -55,7 +55,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .menuTapItems{
   padding: 20px 20px 0;
   margin-bottom: 5px;
