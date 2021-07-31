@@ -145,6 +145,9 @@ export default {
     #qiankun-sub-container {
       width: 100%;
       height: 100%;
+      :deep(.el-form-item){
+        display: block;
+      }
     }
     :deep(#qiankun-sub-container  > div){
       height: 100%;
