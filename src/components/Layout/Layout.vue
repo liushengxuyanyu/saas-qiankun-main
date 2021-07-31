@@ -110,7 +110,7 @@ export default {
     flex-wrap: nowrap;
     height: 100%;
     align-content: flex-start;
-    overflow-y: scroll;
+    overflow: hidden;
   }
   .aside-main {
     background: #fff;
@@ -141,6 +141,7 @@ export default {
       margin: 20px;
       background: #fff;
       border-radius: 6px;
+      overflow-y: scroll;
     }
     #qiankun-sub-container {
       width: 100%;
