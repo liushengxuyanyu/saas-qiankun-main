@@ -6,3 +6,13 @@ html, body, div{
   padding: 0;
   margin: 0;
 }
+
+html[data-wicket],
+body[data-wicket],
+#app[data-wicket]{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left:0;
+  top: 0;
+}
