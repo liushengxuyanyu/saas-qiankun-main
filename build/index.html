@@ -15,7 +15,7 @@
         var interceptOpen = XMLHttpRequest.prototype.open;
         var interceptHeader = XMLHttpRequest.prototype.setRequestHeader;
         var interceptSend = XMLHttpRequest.prototype.send;
-        
+
         let headers = null
         XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
           headers[header] = value
@@ -83,7 +83,7 @@
             case /^\/ms\/voucherPackage/ig.test(url):
               url = `/ms-voucher/api` + url ;
             break
-            
+
             // 客服活动
             case /^\/on\/sale\/cancel/ig.test(url) :
             case /^\/console\/api\/helios/ig.test(url) :
@@ -102,7 +102,7 @@
             case  /^\/organization\/(system|user)/ig.test(url):
               url = `/defender/api` + url ;
               break
-            
+
             // 物流服务接口
             case /^\/mds\/front/.test(url) :
                 url = '/mds-front/api' + url;
@@ -156,7 +156,7 @@
               this.setRequestHeader('Authorization', token);
               this.setRequestHeader('token', token);
               if(
-                !/(uploadImg|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk)/ig.test(url)
+                !/(uploadImg|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|downloadImportTemplate|import)/ig.test(url)
               ){
                 this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
               }
