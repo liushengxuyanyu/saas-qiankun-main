@@ -60,6 +60,10 @@ export default {
 .menuTapItems{
   padding: 20px 20px 0;
   margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
   .el-button {
     background: #fff;
     border-radius: 4px;
