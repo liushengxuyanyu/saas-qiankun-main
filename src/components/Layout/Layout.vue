@@ -11,7 +11,7 @@
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
       <div class="qiankun-container">
-        <div class="menu-pages">
+        <div class="menu-pages"  v-if="menuPages.length">
           <MenuTabPages :menuPages="menuPages" />
         </div>
         <div class="qiankun-container-body">
