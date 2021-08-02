@@ -12,8 +12,9 @@
       menu-trigger="hover"
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
+        <!-- @mouseover="changeSubMenus(menu)" -->
         <el-menu-item :index="'index-' + index " 
-          @mouseover="changeSubMenus(menu)"
+          
           v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
@@ -41,7 +42,7 @@
         @open="handleOpen"
         @close="handleClose"
         collapse-transition="true"
-        :default-openeds="[ 'submenu', 1,2,3,4 ]"
+        :default-openeds="['index-0', 'index-1', 'index-2', 'index-3', 'index-4']"
         menu-trigger="hover"
         >
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
@@ -93,7 +94,7 @@ export default {
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
-      subMenus: {
+      subMenus: JSON.parse(localStorage.getItem('subMenus')) || {
         children: []
       }
     })
@@ -119,7 +120,6 @@ export default {
       if(level == 4){
         emit('updateTabPanes', children.children ) 
       }
-      
 
       // 如果导航为新增加的则添加否则不处理
       if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
@@ -136,6 +136,7 @@ export default {
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children) => {
       fixedMenu(children)
+      localStorage.setItem("subMenus", JSON.stringify(children));
       menu.subMenus = children
     }
 
@@ -184,6 +185,7 @@ export default {
   flex: 1;
   left: 0;
   display: flex;
+  height: 100%;
   &>.el-menu{
     height: 100%;
     z-index: 1003;
@@ -209,8 +211,10 @@ export default {
     width: 180px;
     height: 100%;
     background: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
     &.isShowSubMenus{
-      left: 180px;
+      
     }
     &>.el-menu{
       border-right: none;
@@ -292,6 +296,28 @@ export default {
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
     transform: rotateZ(0deg);
+  }
+  ::-webkit-scrollbar
+  {
+    width: 2px;
+    height: 2px;
+    background-color: #fff;
+  }
+  
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    background-color: #fff;
+  }
+  
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius: 2px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+    background-color: #555;
   }
 }
 </style>

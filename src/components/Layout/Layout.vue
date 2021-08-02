@@ -4,8 +4,11 @@
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
-      <div class="aside-main"
-           :style="{'width': asideWidth }">
+      <div
+        class="aside-main"
+        :class="{'index-page': activeIndexPage }"
+          >
+           <!-- :style="{'width': asideWidth }" -->
         <Aside @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
                @updateTabPanes="updateTabPanes"></Aside>
@@ -44,7 +47,8 @@ import { router } from '../../router';
 
 export default {
   setup() {
-    let asideWidth = ref('290');
+
+    let asideWidth = ref('auto');
     const triggerCloseAside = (width) => {
       asideWidth.value = width;
       console.log('closeAside', width);
@@ -69,6 +73,13 @@ export default {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
     };
+    let activeIndexPage = ref(true)
+    watch(()=> router.currentRoute, (currentRoutePath, oval)=>{
+      activeIndexPage.value = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
+    },{
+      immediate: true,
+      deep: true
+    })
 
     return {
       asideWidth,
@@ -77,7 +88,8 @@ export default {
       tabPanes,
       updateTabPanes,
       clickTabPanes,
-      activePane
+      activePane,
+      activeIndexPage,
     };
   },
   components: {
@@ -121,11 +133,21 @@ export default {
     transition: width 0.3s;
     z-index: 1000;
     width: 290px;
+    &.index-page{
+      width: 111px;
+      :deep(.aside-tmpl){
+        width: 111px;
+        position: relative;
+        .aside-sub-tmpl{
+          left: 111px;
+          position: absolute;
+        }
+      }
+    }
   }
   .leve4Menus{
-    padding: 20px 0 0 30px;
+    margin: 20px 30px 0 30px;
   }
-
   .qiankun-container {
     flex: 1;
     // padding: 20px;
