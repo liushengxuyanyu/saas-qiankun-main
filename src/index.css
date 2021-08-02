@@ -17,5 +17,6 @@ body[data-wicket],
   top: 0;
 }
 
-
-
+body, html {
+  font-family: PingFangSC-Regular,PingFang SC;
+}
