@@ -130,7 +130,7 @@ export default {
     flex: 1;
     // padding: 20px;
     box-sizing: border-box;
-    width: 100%;
+    width: calc(100% - 290px);
     height: 100%;
     background: #f2f3f6;
     display: flex;
