@@ -13,7 +13,7 @@
                :menuPages="menuPages"
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
-      <div class="qiankun-container">
+      <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
         <div class="menu-pages"  v-if="menuPages.length">
           <MenuTabPages :menuPages="menuPages" />
         </div>
@@ -152,7 +152,7 @@ export default {
     flex: 1;
     // padding: 20px;
     box-sizing: border-box;
-    width: 100%;
+    width: calc(100% - 290px);
     height: 100%;
     background: #f2f3f6;
     display: flex;
