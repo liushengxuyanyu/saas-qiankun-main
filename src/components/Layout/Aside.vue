@@ -15,7 +15,7 @@
         <!-- @mouseover="changeSubMenus(menu)" -->
         <el-menu-item :index="'main-menu-' + index " 
           style="padding-left:5px"
-          v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
+          v-if="!menu.children.length  && !menu.hide" @click="changeSubMenus(menu, 'index-page')">
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0,2)"></span>
@@ -114,9 +114,11 @@ export default {
     })
 
     const fixedMenu = (children, level) => {
-      console.log("children route", children.path, level)
-      router.push(children.path.replace(/^\/web-main/i, ''))
-    
+      console.log("children", children, level)
+      console.log('children.path != router.currentRoute.path', children.path != router.currentRoute.value.path )
+      if(children.path && children.path != router.currentRoute.value.path ){
+        router.push(children.path.replace(/^\/web-main/i, ''))
+      }
       // history.pushState( {}, children.name || "零售云", children.path)
       
       // 重置所有按钮状态
@@ -128,7 +130,6 @@ export default {
       // emit('updateTabPanes', level == 4 ? children.children : []) 
       if(level == 4){
         emit('updateTabPanes', children.children ) 
-
         if(!children.children.length){
           localStorage.setItem("activePane", '')
           localStorage.setItem("tabPanes", JSON.stringify([]))
@@ -149,6 +150,7 @@ export default {
     }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
+      emit("mainMenusClick", index)
       localStorage.setItem("mainMenuActive", index) 
       fixedMenu(children)
       localStorage.setItem("subMenus", JSON.stringify(children))

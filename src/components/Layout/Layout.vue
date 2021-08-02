@@ -6,11 +6,12 @@
     <div class="saas-content">
       <div
         class="aside-main"
-        :class="{'index-page': activeIndexPage }"
+        :class="{'index-page': isIndexPage.active }"
           >
            <!-- :style="{'width': asideWidth }" -->
         <Aside @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
+               @mainMenusClick="mainMenusClick"
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
@@ -22,16 +23,13 @@
           <el-tabs class="leve4Menus" 
                    @tab-click="pane=>clickTabPanes(tabPanes, pane)"
                    v-model="activePane">
-            
-              <el-tab-pane
-                v-for="tagpane in tabPanes.value"
-                :key="tagpane.id" 
-                @click="clickTabPanes"
-                :label="tagpane.name"
-                :name="'tab-' + tagpane.defId">
-              </el-tab-pane>
-            
-
+            <el-tab-pane
+              v-for="tagpane in tabPanes.value"
+              :key="tagpane.id" 
+              @click="clickTabPanes"
+              :label="tagpane.name"
+              :name="'tab-' + tagpane.defId">
+            </el-tab-pane>
           </el-tabs>
           </template>
           <router-view></router-view>
@@ -72,14 +70,13 @@ export default {
 
     const updateTabPanes = (tabs) => {
       tabPanes.value = tabs;
-      console.log(tabs)
       tabs.length &&
         nextTick(() => {
           let item = tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
           localStorage.setItem("activePane", activePane.value)
           localStorage.setItem("tabPanes", JSON.stringify(tabs))
-          router.push(item.path.replace(/^\/web-main/i, ''));
+          tabs.length >0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
         });
       
     };
@@ -89,23 +86,30 @@ export default {
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
     };
-    let activeIndexPage = ref(true)
+    let isIndexPage = reactive({active: false})
+
     watch(()=> router.currentRoute, (currentRoutePath, oval)=>{
-      activeIndexPage.value = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
-    },{
+      console.log('router.currentRouterouter.currentRouterouter.currentRoute', router.currentRoute)
+      isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
+    }, {
       immediate: true,
       deep: true
     })
 
+    const mainMenusClick = (index) => {
+      isIndexPage.active = index == 'index-page'
+    }
+
     return {
       asideWidth,
       triggerCloseAside,
+      mainMenusClick,
       menuPages,
       tabPanes,
       updateTabPanes,
       clickTabPanes,
       activePane,
-      activeIndexPage,
+      isIndexPage,
     };
   },
   components: {
