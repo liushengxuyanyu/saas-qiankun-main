@@ -5,31 +5,32 @@
       <div class="arrow"  :class="{'arrow-close': isCloseAside }" ></div>
     </div> -->
     <el-menu
-      default-active="1-1"
+      :default-active="mainMenuActive"
       @open="handleOpen"
       @close="handleClose"
+      @select="handleSelect"
       :collapse="isCollapse"
-      menu-trigger="hover"
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
         <!-- @mouseover="changeSubMenus(menu)" -->
-        <el-menu-item :index="'index-' + index " 
-          
+        <el-menu-item :index="'main-menu-' + index " 
+          style="padding-left:5px"
           v-if="!menu.children.length  && !menu.hide" @click="fixedMenu(menu)">
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
         </el-menu-item>
-        <template>
-        </template>
-        <el-submenu :index="'index-' + index"  v-if="menu.children.length && !menu.hide" 
-          @mouseover="changeSubMenus(menu)">
+        <el-menu-item 
+          :index="'main-menu-' + index"  
+          v-if="menu.children.length && !menu.hide" 
+          style="padding-left:5px"
+          @click="changeSubMenus(menu, 'main-menu-' + index)">
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
-        </el-submenu>
+        </el-menu-item>
       </template>
     </el-menu>
     <div class="aside-sub-tmpl" 
@@ -42,25 +43,27 @@
         @open="handleOpen"
         @close="handleClose"
         collapse-transition="true"
-        :default-openeds="['index-0', 'index-1', 'index-2', 'index-3', 'index-4']"
+        :default-openeds="defaultOpeneds"
+        :default-active="activeMenu"
+        @select="handleSelect"
         menu-trigger="hover"
         >
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
         <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
           <template #title>
-            <i class="el-icon-location-information"></i>
+            <i></i>
             <span v-html="submenu.name"></span>
           </template>
         </el-menu-item>
         <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
           <template #title>
-            <i class="el-icon-location-information"></i>
+            <i></i>
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
             <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
               <template #title>
-                <i class="el-icon-location-information"></i>
+                <i>-</i>
                 <span v-html="submenuChild.name"></span>
               </template>
             </el-menu-item>
@@ -84,6 +87,9 @@ export default {
     handleClose(key, keyPath) {
       // console.log('handleClose', key, keyPath);
     },
+    handleSelect(key, keyPath){
+      localStorage.setItem("activeMenu", key);
+    } 
   },
   props:{
     emits: ['triggerCloseAside'],
@@ -91,6 +97,7 @@ export default {
   },
   setup(props, { emit, attrs, slots }) {
 
+    
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
@@ -99,13 +106,15 @@ export default {
       }
     })
 
+    let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
+
     // 获取栏目树
     getmenus().then(res=>{
       menu.mainMenu = res.result
     })
 
     const fixedMenu = (children, level) => {
-      console.log("children route", children.path)
+      console.log("children route", children.path, level)
       router.push(children.path.replace(/^\/web-main/i, ''))
     
       // history.pushState( {}, children.name || "零售云", children.path)
@@ -119,6 +128,11 @@ export default {
       // emit('updateTabPanes', level == 4 ? children.children : []) 
       if(level == 4){
         emit('updateTabPanes', children.children ) 
+
+        if(!children.children.length){
+          localStorage.setItem("activePane", '')
+          localStorage.setItem("tabPanes", JSON.stringify([]))
+        }
       }
 
       // 如果导航为新增加的则添加否则不处理
@@ -134,9 +148,11 @@ export default {
       }
     }
     // 将子菜单更新到subMenus中
-    const changeSubMenus = (children) => {
+    const changeSubMenus = (children, index) => {
+      localStorage.setItem("mainMenuActive", index) 
       fixedMenu(children)
-      localStorage.setItem("subMenus", JSON.stringify(children));
+      localStorage.setItem("subMenus", JSON.stringify(children))
+      activeMenu.value = "";
       menu.subMenus = children
     }
 
@@ -157,8 +173,14 @@ export default {
     // 监听关闭按钮
     let isCloseAside = ref(0);
     watch(isCloseAside, (val, preVal)=>{
-      emit('triggerCloseAside', isCloseAside.value ? '0' : '180px')
+      emit('triggerCloseAside', isCloseAside.value ? '0' : '152px')
     })
+
+    //  子菜单的状态
+    let activeMenu = ref( localStorage.getItem("activeMenu") || '');
+
+    // 主导航的选中状态
+    let mainMenuActive = ref( localStorage.getItem("mainMenuActive") || '');
 
     return {
       isCollapse: false,
@@ -168,12 +190,18 @@ export default {
       asideRef,
       // 子导航
       changeSubMenus,
+      defaultOpeneds,
 
       // 关闭左侧导航
       isCloseAside,
 
       // 打开新tab页
       fixedMenu,
+
+      activeMenu,
+
+      // 主菜单的选中状态
+      mainMenuActive,
       
     }
    },
@@ -189,15 +217,22 @@ export default {
   &>.el-menu{
     height: 100%;
     z-index: 1003;
-    width: 110px;
+    width: 72px;
     flex: 1;
+    :deep(.el-menu-item){
+      height: 50px;
+      line-height: 50px;
+      &.is-active{
+        background-color: var(--el-menu-item-hover-fill);
+      }
+    }
     .is-opened{
       background-color: var(--el-menu-item-hover-fill);
     }
   }
   &.aside-close{
     // width: 10px;
-    left: -180px;
+    left: -152px;
     &>.el-menu{
       // overflow: hidden;
     }
@@ -208,7 +243,7 @@ export default {
   }
 
   .aside-sub-tmpl{
-    width: 180px;
+    width: 152px;
     height: 100%;
     background: #fff;
     overflow-y: auto;
@@ -218,7 +253,14 @@ export default {
     }
     &>.el-menu{
       border-right: none;
-      width: 180px;
+      width: 152px;
+      :deep(.el-submenu__title, .el-menu-item){
+        height: 40px;
+        line-height: 40px;
+        &.is-active{
+          background-color: var(--el-menu-item-hover-fill);
+        }
+      }
     }
     .sub-title{
       font-size: 16px;
@@ -278,12 +320,15 @@ export default {
       background-image: url("@/assets/icons/117.svg");
     }
     &.marketing-manage{
+      vertical-align: -0.25em;
       background-image: url("@/assets/icons/112.svg");
     }
     &.trade-manage{
+      vertical-align: -0.25em;
       background-image: url("@/assets/icons/118.svg");
     }
     &.station-manage{
+      vertical-align: -0.25em;
       background-image: url("@/assets/icons/113.svg");
     }
     &.setup-station{
@@ -295,7 +340,7 @@ export default {
   }
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
-    transform: rotateZ(0deg);
+    transform: rotateZ(90deg);
   }
   ::-webkit-scrollbar
   {

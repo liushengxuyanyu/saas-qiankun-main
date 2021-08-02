@@ -18,18 +18,22 @@
           <MenuTabPages :menuPages="menuPages" />
         </div>
         <div class="qiankun-container-body">
-          <el-tabs class="leve4Menus" v-if="tabPanes.value && tabPanes.value.length"
+          <template v-if="tabPanes.value && tabPanes.value.length">
+          <el-tabs class="leve4Menus" 
                    @tab-click="pane=>clickTabPanes(tabPanes, pane)"
                    v-model="activePane">
-            <template v-for="tagpane in tabPanes.value"
-                      :key="tagpane.id">
-              <el-tab-pane @click="clickTabPanes"
-                           :label="tagpane.name"
-                           :name="tagpane.name">
+            
+              <el-tab-pane
+                v-for="tagpane in tabPanes.value"
+                :key="tagpane.id" 
+                @click="clickTabPanes"
+                :label="tagpane.name"
+                :name="'tab-' + tagpane.defId">
               </el-tab-pane>
-            </template>
+            
 
           </el-tabs>
+          </template>
           <router-view></router-view>
           <div id="qiankun-sub-container"></div>
         </div>
@@ -56,22 +60,34 @@ export default {
     let localMenuPages = localStorage.getItem('menuPages');
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
-    let tabPanes = reactive([]);
-    let activePane = {};
+    let tabPanes = reactive({ value: localStorage.getItem("tabPanes") && JSON.parse(localStorage.getItem("tabPanes")) || [] });
+
+
+
+    tabPanes.value.find(item => { })
+
+    let activePane = ref( localStorage.getItem("activePane") || '');
+
+
 
     const updateTabPanes = (tabs) => {
       tabPanes.value = tabs;
+      console.log(tabs)
       tabs.length &&
         nextTick(() => {
           let item = tabPanes.value[0];
-          activePane = item.name;
+          activePane.value = 'tab-' + item.defId;
+          localStorage.setItem("activePane", activePane.value)
+          localStorage.setItem("tabPanes", JSON.stringify(tabs))
           router.push(item.path.replace(/^\/web-main/i, ''));
         });
+      
     };
 
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
+      localStorage.setItem("activePane", 'tab-' + item.defId)
     };
     let activeIndexPage = ref(true)
     watch(()=> router.currentRoute, (currentRoutePath, oval)=>{
@@ -132,14 +148,14 @@ export default {
     align-items: flex-start;
     transition: width 0.3s;
     z-index: 1000;
-    width: 290px;
+    width: 220px;
     &.index-page{
-      width: 111px;
+      width: 73px;
       :deep(.aside-tmpl){
-        width: 111px;
+        width: 73px;
         position: relative;
         .aside-sub-tmpl{
-          left: 111px;
+          left: 73px;
           position: absolute;
         }
       }
