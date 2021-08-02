@@ -15,7 +15,7 @@
           <MenuTabPages :menuPages="menuPages" />
         </div>
         <div class="qiankun-container-body">
-          <el-tabs v-if="tabPanes.value && tabPanes.value.length"
+          <el-tabs class="leve4Menus" v-if="tabPanes.value && tabPanes.value.length"
                    @tab-click="pane=>clickTabPanes(tabPanes, pane)"
                    v-model="activePane">
             <template v-for="tagpane in tabPanes.value"
@@ -44,7 +44,7 @@ import { router } from '../../router';
 
 export default {
   setup() {
-    let asideWidth = ref('auto');
+    let asideWidth = ref('290');
     const triggerCloseAside = (width) => {
       asideWidth.value = width;
       console.log('closeAside', width);
@@ -121,6 +121,9 @@ export default {
     transition: width 0.3s;
     z-index: 1000;
     width: 290px;
+  }
+  .leve4Menus{
+    padding: 20px 0 0 30px;
   }
 
   .qiankun-container {
