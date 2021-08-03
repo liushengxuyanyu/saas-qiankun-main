@@ -66,13 +66,11 @@ export default {
 
     let activePane = ref( localStorage.getItem("activePane") || '');
 
-
-
-    const updateTabPanes = (tabs) => {
+    const updateTabPanes = (tabs, activePaneVal) => {
       tabPanes.value = tabs;
       tabs.length &&
         nextTick(() => {
-          let item = tabPanes.value[0];
+          let item = tabs.find(item => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
           localStorage.setItem("activePane", activePane.value)
           localStorage.setItem("tabPanes", JSON.stringify(tabs))
@@ -97,7 +95,7 @@ export default {
     })
 
     const mainMenusClick = (index) => {
-      isIndexPage.active = index == 'index-page'
+      isIndexPage.active = index == 'main-menu-0'
     }
 
     return {

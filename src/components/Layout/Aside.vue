@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { ref, toRefs, reactive, watchEffect, watch, onMounted } from 'vue'
+import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 
@@ -108,14 +108,72 @@ export default {
 
     let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
 
+    let setMenusDefult = (
+        mainMenuActive, 
+        subMenus, activeMenu1, 
+        tabPanes, activePane
+      ) => {
+        // 更新默认状态，及存储
+        localStorage.setItem("mainMenuActive", mainMenuActive || '')
+        localStorage.setItem("subMenus", JSON.stringify(subMenus) || {})
+        localStorage.setItem("activeMenu", activeMenu1 || '')
+        menu.subMenus = subMenus || {}
+        activeMenu.value = activeMenu1 || {}
+        localStorage.setItem("activePane", activePane || '')
+        emit("updateTabPanes", tabPanes || [], activePane || "")
+    };
+
+    let foreachMenus = (menu) => {
+      let currentPath = router.currentRoute.value.href
+      try{
+        menu.mainMenu.forEach((leve1, leve1Index)=>{
+          let mainMenu = `main-menu-${leve1Index}`
+          if(leve1.path == currentPath){
+            setMenusDefult(mainMenu, null, null, null, null)
+            throw new Error("stop leve1")
+            return
+          }
+          leve1.children.forEach((leve2, leve2Index)=>{
+            let level2Menu = `index-${leve2Index}`
+            if(leve2.path == currentPath){
+              setMenusDefult(mainMenu, leve1, level2Menu, null, null)
+              throw new Error("stop leve2")
+              return;
+            }
+            leve2.children.forEach((level3, leve3Index)=>{
+              let level3Menu = `${level2Menu}-${leve3Index}`
+              if(level3.path == currentPath){
+                setMenusDefult(mainMenu, leve1, level3Menu, null, null)
+                throw new Error("stop leve3")
+                return;
+              }
+              level3.children.forEach((level4, leve4Index)=>{
+                if(level4.path == currentPath){
+                  let level4Menu = `tab-${level4.defId}`
+                  setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
+                  throw new Error("stop leve4")
+                }
+              })
+            })
+          })
+        })
+      }catch(e){
+        // 用于终止forEach循环
+        console.log(e.message)
+      }
+      
+    }
     // 获取栏目树
     getmenus().then(res=>{
-      menu.mainMenu = res.result
+      foreachMenus({ mainMenu: res.result })
+      nextTick(()=>{
+        menu.mainMenu = res.result
+      })
     })
 
+
+
     const fixedMenu = (children, level) => {
-      console.log("children", children, level)
-      console.log('children.path != router.currentRoute.path', children.path != router.currentRoute.value.path )
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))
       }
