@@ -35,3 +35,10 @@ body, html {
   cursor: pointer;
   display: block;
 }
+
+#qiankun-sub-container > div[data-name='saastms'] #tms .page-container{
+  margin: 0;
+}
+#qiankun-sub-container > div[data-name='saastms'] #tms .page-container .page-container {
+  padding: 0;
+}
