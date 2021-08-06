@@ -77,11 +77,15 @@ export default {
     }
     &.el-button--primary, &.el-button--success{
       // background: linear-gradient( 315deg ,#3130f4,#1378ff);
-      font-weight: 800;
       color: #606266;
+      border: none;
       span{
         // color: #fff;
       }
+    }
+    &.el-button--success{
+      font-weight: 800;
+      color: #1F5AFA;
     }
   }
 }

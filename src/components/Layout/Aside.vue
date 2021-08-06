@@ -307,6 +307,8 @@ export default {
 
   :deep(.el-submenu .el-menu-item) {
     min-width: 179px;
+    height: 50px;
+    line-height: 50px;
   }
 
   .aside-sub-tmpl{
@@ -322,8 +324,8 @@ export default {
       border-right: none;
       width: 152px;
       :deep(.el-submenu__title, .el-menu-item){
-        height: 40px;
-        line-height: 40px;
+        height: 50px;
+        line-height: 50px;
         &.is-active{
           background-color: var(--el-menu-item-hover-fill);
         }
@@ -333,7 +335,8 @@ export default {
       font-size: 16px;
       font-weight: bold;
       text-indent: 2em;
-      padding-top: 24px;
+      padding-top: 26px;
+      padding-bottom: 2px;
     }
   }
   .arrow-ctrol{
@@ -377,6 +380,10 @@ export default {
     background-size: 15px 15px;
     background-repeat: no-repeat;
     padding-right: 5px;
+    box-sizing: content-box;
+    &:after, &:before {
+      box-sizing: content-box;
+    }
     &.icon-home-index{
       background-image: url("@/assets/icons/index.svg");
     }
