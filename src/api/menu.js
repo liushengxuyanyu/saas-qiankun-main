@@ -29,3 +29,12 @@ export const menus = () => {
     .catch(err=>{
     })
 }
+
+export const pageVisit = (data) => {
+  return service.post('/retail-portal/api/page/visit/statistics', data)
+    .then(res=>{
+      return res.data
+    })
+    .catch(err=>{
+    })
+}

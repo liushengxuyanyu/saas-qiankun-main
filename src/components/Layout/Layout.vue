@@ -46,6 +46,7 @@ import LayoutHeader from '@/components/Layout/Header.vue';
 import Aside from '@/components/Layout/Aside.vue';
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
 import { router } from '../../router';
+import { pageVisit } from "../../api/menu"
 
 export default {
   setup() {
@@ -83,6 +84,11 @@ export default {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
+      pageVisit({
+          href: children.path,
+          tabName: children.name,
+          name: children.name,
+        })
     };
     let isIndexPage = reactive({active: false})
 

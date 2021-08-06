@@ -10,6 +10,7 @@
 <script>
 import { toRefs, reactive, watch, nextTick } from 'vue'
 import { router } from "../../router"
+import { pageVisit } from "../../api/menu"
 export default {
   props:{
     menuPages: Array,
@@ -46,6 +47,11 @@ export default {
     }
     const changRouter = (menu) => {
       router.push(menu.path.replace(/^\/web-main/i, ''))
+      pageVisit({
+          href: children.path,
+          tabName: children.name,
+          name: children.name,
+        })
     }
     return {
       menuPages,

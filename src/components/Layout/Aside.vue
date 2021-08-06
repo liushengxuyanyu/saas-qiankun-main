@@ -78,6 +78,7 @@
 import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
+import { pageVisit } from "../../api/menu"
 
 export default {
   methods: {
@@ -176,6 +177,12 @@ export default {
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))
+        
+        pageVisit({
+          href: children.path,
+          tabName: children.name,
+          name: children.name,
+        })
       }
       // history.pushState( {}, children.name || "零售云", children.path)
       
