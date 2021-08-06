@@ -15,9 +15,9 @@
             <el-avatar size="medium" :src="circleUrl"></el-avatar>
           </template>
           <ul class="action-list" id="ActionList">
-            <li>
+            <!-- <li>
               <a @click="resetPassword">修改密码</a>
-            </li>
+            </li> -->
             <li>
               <a @click="userLogout">用户退出</a>
             </li>
