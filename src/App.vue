@@ -17,7 +17,7 @@ export default {
       console.log('register', register);
       register();
       startQK({
-        prefetch: 'all',
+        prefetch: false,
         sandbox: false,
         // sandbox: {
         //   strictStyleIsolation: true

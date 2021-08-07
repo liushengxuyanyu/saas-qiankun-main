@@ -5,6 +5,7 @@
       <div class="arrow"  :class="{'arrow-close': isCloseAside }" ></div>
     </div> -->
     <el-menu
+      class="main-menus"
       :default-active="mainMenuActive"
       @open="handleOpen"
       @close="handleClose"
@@ -367,7 +368,7 @@ export default {
         height: 50px;
         line-height: 50px;
         &.is-active{
-          background-color: var(--el-menu-item-hover-fill);
+          background-color: #F3F6FA;
         }
       }
     }
@@ -478,5 +479,16 @@ export default {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
     background-color: #555;
   }
+  .main-menus{
+    :deep(.el-menu-item) {
+      color: #222C3D;
+      font-size: 13px;
+      font-weight: 800;
+      &.is-active{
+        color: #1F5AFA;
+      }
+    }
+  }
+
 }
 </style>
