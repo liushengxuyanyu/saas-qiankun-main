@@ -66,6 +66,10 @@ body, html {
   border-radius: 50%;
 }
 #qiankun-sub-container > div[data-name='heliosHeimdall'] .el-pagination.is-background li.active {
-  background-color: #1378ff;
+  background-color: #1F5AFA;
   color: #fff;
+}
+
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .cell .el-button--text{
+  color: #1F5AFA;
 }
