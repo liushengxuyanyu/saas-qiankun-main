@@ -60,9 +60,6 @@ export default {
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
     let tabPanes = reactive({ value: localStorage.getItem("tabPanes") && JSON.parse(localStorage.getItem("tabPanes")) || [] });
-
-
-
     // tabPanes.value.find(item => { })
 
     let activePane = ref( localStorage.getItem("activePane") || '');
