@@ -164,55 +164,58 @@ export default {
       }
       
     }
-    // 获取栏目树
-    getmenus().then(res=>{
-      let info = {
-        user: {},
-        menus: {
-          tree: [],
-          hashIndexRole: true
+    const getMenusTree = () => {
+      // 获取栏目树
+      getmenus().then(res=>{
+        let info = {
+          user: {},
+          menus: {
+            tree: [],
+            hashIndexRole: true
+          }
         }
-      }
 
-      let nav = res.result.find((nav)=>{
-        return nav.name == '首页'
-      })
-      
-      if(!nav){
-        res.result.unshift({
-          actionList: null,
-          authority: null,
-          children: [],
-          code: "",
-          component: "",
-          defId: 124475,
-          defParentId: 124474,
-          hide: 0,
-          icon: "home-index",
-          id: 0,
-          label: "首页",
-          localPath: "",
-          method: "",
-          name: "首页",
-          parentId: 124474,
-          path: "/web-main/helios/portal/portalDoor?wellcome",
-          pluginName: "首页",
-          redirect: null,
-          sort: 0,
-          spread: false,
-          type: "0",
-          url: "",
-          webPath: "",
+        let nav = res.result.find((nav)=>{
+          return nav.name == '首页'
         })
-        info.menus.hashIndexRole = false
-      }
-      info.menus.tree = res.result
-      state.setGlobalState(info)
-      foreachMenus({ mainMenu: res.result })
-      nextTick(()=>{
-        menu.mainMenu = res.result
+        
+        if(!nav){
+          res.result.unshift({
+            actionList: null,
+            authority: null,
+            children: [],
+            code: "",
+            component: "",
+            defId: 124475,
+            defParentId: 124474,
+            hide: 0,
+            icon: "home-index",
+            id: 0,
+            label: "首页",
+            localPath: "",
+            method: "",
+            name: "首页",
+            parentId: 124474,
+            path: "/web-main/helios/portal/portalDoor?wellcome",
+            pluginName: "首页",
+            redirect: null,
+            sort: 0,
+            spread: false,
+            type: "0",
+            url: "",
+            webPath: "",
+          })
+          info.menus.hashIndexRole = false
+        }
+        info.menus.tree = res.result
+        state.setGlobalState(info)
+        foreachMenus({ mainMenu: res.result })
+        nextTick(()=>{
+          menu.mainMenu = res.result
+        })
       })
-    })
+    }
+    getMenusTree();
     
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
@@ -289,6 +292,7 @@ export default {
     let mainMenuActive = ref( localStorage.getItem("mainMenuActive") || '');
 
     return {
+      getMenusTree,
       isCollapse: false,
       uniqueOpend: true,
       menu,

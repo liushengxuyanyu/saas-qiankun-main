@@ -9,14 +9,14 @@
         :class="{'index-page': isIndexPage.active }"
           >
            <!-- :style="{'width': asideWidth }" -->
-        <Aside ref="aside" @triggerCloseAside="triggerCloseAside"
+        <Aside ref="asideRef" @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
                @mainMenusClick="mainMenusClick"
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
         <div class="menu-pages"  v-if="menuPages.length">
-          <MenuTabPages :menuPages="menuPages" />
+          <MenuTabPages :menuPages="menuPages" @updateRouter="updateMenuPages" />
         </div>
         <div class="qiankun-container-body">
           <template v-if="tabPanes.value && tabPanes.value.length">
@@ -78,7 +78,6 @@ export default {
     };
 
     const clickTabPanes = (tabPanes, pane) => {
-      console.log(toRefs('aside'))
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
@@ -100,8 +99,14 @@ export default {
     const mainMenusClick = (index) => {
       isIndexPage.active = index == 'main-menu-0'
     }
+    const asideRef = ref(null);
+
+    const updateMenuPages = () => {
+      console.log( asideRef.value.getMenusTree() )
+    }
 
     return {
+      asideRef,
       asideWidth,
       triggerCloseAside,
       mainMenusClick,
@@ -111,6 +116,7 @@ export default {
       clickTabPanes,
       activePane,
       isIndexPage,
+      updateMenuPages,
     };
   },
   components: {
