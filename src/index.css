@@ -42,3 +42,10 @@ body, html {
 #qiankun-sub-container > div[data-name='saastms'] #tms .page-container .page-container {
   padding: 0;
 }
+
+#qiankun-sub-container > div[data-name='heliosHeimdall']  .main-content .i-router-view{
+  padding: 0;
+}
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .el-button--small{
+  font-size: 13px;
+}
