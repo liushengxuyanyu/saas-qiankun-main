@@ -68,7 +68,7 @@ export default {
     let activePane = ref( localStorage.getItem("activePane") || '');
 
     const updateTabPanes = (tabs, activePaneVal) => {
-      tabPanes.value = tabs.filter(item=>{ item.hide == 0 })
+      tabPanes.value = tabs.filter(item=>{ return item.hide == 0 })
       tabs.length &&
         nextTick(() => {
           let item = tabs.find(item => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
