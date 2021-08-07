@@ -52,6 +52,9 @@ export default {
     .main-content .i-router-view{
       padding: 0;
     }
+    .el-button--small{
+      font-size: 13px;
+    }
   }
 }
 </style>
