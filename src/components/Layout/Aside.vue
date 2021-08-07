@@ -167,9 +167,18 @@ export default {
     }
     // 获取栏目树
     getmenus().then(res=>{
+      let info = {
+        user: {},
+        menus: {
+          tree: [],
+          hashIndexRole: true
+        }
+      }
+
       let nav = res.result.find((nav)=>{
         return nav.name == '首页'
       })
+      
       if(!nav){
         res.result.unshift({
           actionList: null,
@@ -196,7 +205,10 @@ export default {
           url: "",
           webPath: "",
         })
+        info.menus.hashIndexRole = false
       }
+      info.menus.tree = res.result
+      state.setGlobalState(info)
       foreachMenus({ mainMenu: res.result })
       nextTick(()=>{
         menu.mainMenu = res.result
@@ -206,7 +218,6 @@ export default {
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))
-        
         pageVisit({
           href: children.path,
           tabName: children.name,

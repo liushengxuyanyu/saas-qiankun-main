@@ -7,7 +7,7 @@ import {
   let stateInit = {
     user: {},
     menus: {
-      tree: {},
+      tree: [],
       hashIndexRole: false
     }, 
   }
