@@ -9,7 +9,7 @@
         :class="{'index-page': isIndexPage.active }"
           >
            <!-- :style="{'width': asideWidth }" -->
-        <Aside @triggerCloseAside="triggerCloseAside"
+        <Aside ref="aside" @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
                @mainMenusClick="mainMenusClick"
                @updateTabPanes="updateTabPanes"></Aside>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { ref, reactive, watch, nextTick } from 'vue';
+import { ref, reactive, watch, nextTick, toRefs } from 'vue';
 import LayoutHeader from '@/components/Layout/Header.vue';
 import Aside from '@/components/Layout/Aside.vue';
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
@@ -78,19 +78,19 @@ export default {
     };
 
     const clickTabPanes = (tabPanes, pane) => {
+      console.log(toRefs('aside'))
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
       pageVisit({
-          href: children.path,
-          tabName: children.name,
-          name: children.name,
+          href: item.path,
+          tabName: item.name,
+          name: item.name,
         })
     };
     let isIndexPage = reactive({active: false})
 
     watch(()=> router.currentRoute, (currentRoutePath, oval)=>{
-      console.log('router.currentRouterouter.currentRouterouter.currentRoute', router.currentRoute)
       isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
     }, {
       immediate: true,

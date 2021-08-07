@@ -48,9 +48,9 @@ export default {
     const changRouter = (menu) => {
       router.push(menu.path.replace(/^\/web-main/i, ''))
       pageVisit({
-          href: children.path,
-          tabName: children.name,
-          name: children.name,
+          href: menu.path,
+          tabName: menu.name,
+          name: menu.name,
         })
     }
     return {
