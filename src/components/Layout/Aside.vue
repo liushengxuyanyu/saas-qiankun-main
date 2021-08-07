@@ -50,21 +50,20 @@
         menu-trigger="hover"
         >
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-        <el-menu-item :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
+        <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
           <template #title>
-            <i></i>
+            <i class="svg-icon-q"></i>
             <span v-html="submenu.name"></span>
           </template>
         </el-menu-item>
         <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
           <template #title>
-            <i></i>
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
+            <el-menu-item class="menu-item-list" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
               <template #title>
-                <i></i>
+                <i class="svg-icon-q"></i>
                 <span v-html="submenuChild.name"></span>
               </template>
             </el-menu-item>
@@ -328,8 +327,8 @@ export default {
     width: 72px;
     flex: 1;
     :deep(.el-menu-item){
-      height: 50px;
-      line-height: 50px;
+      height: 40px;
+      line-height: 40px;
       &.is-active{
         background-color: var(--el-menu-item-hover-fill);
       }
@@ -347,7 +346,7 @@ export default {
   }
 
   :deep(.el-submenu .el-menu-item) {
-    min-width: 179px;
+    min-width: 152px;
     height: 50px;
     line-height: 50px;
   }
@@ -358,26 +357,68 @@ export default {
     background: #fff;
     overflow-y: auto;
     overflow-x: hidden;
-    &.isShowSubMenus{
-      
-    }
     &>.el-menu{
       border-right: none;
       width: 152px;
       :deep(.el-submenu__title, .el-menu-item){
-        height: 50px;
-        line-height: 50px;
+        height: 35px;
+        line-height: 35px;
+        font-weight: 800;
+        span{
+          padding-left: 5px;
+        }
         &.is-active{
           background-color: #F3F6FA;
         }
       }
     }
     .sub-title{
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
-      text-indent: 2em;
-      padding-top: 26px;
-      padding-bottom: 2px;
+      color: #222C3D;
+      text-indent: 1.7em;
+      padding-top: 5px;
+      margin: 7px 0px 12px;
+    }
+    .svg-icon-q{
+      display: inline-block;
+      padding-right: 6px;
+      &:after{
+        content: "";
+        display: block;
+        width: 2px;
+        height: 2px;
+        background-color: #4C5D7C;
+      }
+    }
+    .menu-item-list{
+      padding: 0 0 0 10px !important;
+      font-size: 13px;
+      height: 34px;
+      line-height: 33px;
+      margin-left: 17px;
+      width: 130px;
+      min-width: 130px;
+      &:hover{
+         border-radius: 4px;
+      }
+      &.is-active{
+        background: linear-gradient(315deg, #3130F4 0%, #1378FF 100%);
+        border-radius: 4px;
+        color: #fff;
+        .svg-icon-q{
+          &:after{
+            background-color: #fff;
+          }
+        }
+      }
+      &.menu-item-level1{
+        margin-left: 7px;
+        width: 140px;
+      }
+    }
+    :deep(.el-submenu__icon-arrow){
+      right: 132px;
     }
   }
   .arrow-ctrol{
@@ -457,24 +498,21 @@ export default {
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
     transform: rotateZ(90deg);
   }
-  ::-webkit-scrollbar
-  {
+  ::-webkit-scrollbar {
     width: 2px;
     height: 2px;
     background-color: #fff;
   }
   
   /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track
-  {
+  ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
     border-radius: 2px;
     background-color: #fff;
   }
   
   /*定义滑块 内阴影+圆角*/
-  ::-webkit-scrollbar-thumb
-  {
+  ::-webkit-scrollbar-thumb {
     border-radius: 2px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
     background-color: #555;
@@ -482,13 +520,16 @@ export default {
   .main-menus{
     :deep(.el-menu-item) {
       color: #222C3D;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       &.is-active{
         color: #1F5AFA;
       }
     }
+    .el-menu-item:focus, .el-menu-item:hover {
+      outline: none;
+      background-color: #e9efff;
+    }
   }
-
 }
 </style>
