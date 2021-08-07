@@ -52,7 +52,6 @@
       <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
         <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
           <template #title>
-            <i class="svg-icon-q"></i>
             <span v-html="submenu.name"></span>
           </template>
         </el-menu-item>
@@ -61,7 +60,7 @@
             <span v-html="submenu.name"></span>
           </template>
           <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item class="menu-item-list" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
+            <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
               <template #title>
                 <i class="svg-icon-q"></i>
                 <span v-html="submenuChild.name"></span>
@@ -360,12 +359,13 @@ export default {
     &>.el-menu{
       border-right: none;
       width: 152px;
-      :deep(.el-submenu__title, .el-menu-item){
+      .menu-item-level1,:deep(.el-submenu__title, .el-menu-item){
         height: 35px;
         line-height: 35px;
         font-weight: 800;
+        font-size: 13px;
         span{
-          padding-left: 5px;
+          padding-left: 9px;
         }
         &.is-active{
           background-color: #F3F6FA;
@@ -376,9 +376,8 @@ export default {
       font-size: 14px;
       font-weight: bold;
       color: #222C3D;
-      text-indent: 1.7em;
       padding-top: 5px;
-      margin: 7px 0px 12px;
+      margin: 7px 0px 12px 10px;
     }
     .svg-icon-q{
       display: inline-block;
@@ -396,9 +395,9 @@ export default {
       font-size: 13px;
       height: 34px;
       line-height: 33px;
-      margin-left: 17px;
-      width: 130px;
-      min-width: 130px;
+      margin-left: 16px;
+      width: 120px;
+      min-width: 120px;
       &:hover{
          border-radius: 4px;
       }
@@ -413,8 +412,18 @@ export default {
         }
       }
       &.menu-item-level1{
-        margin-left: 7px;
-        width: 140px;
+        margin-left: 16px;
+        width: 123px;
+        min-width: 123px;
+        span{
+          padding-left: 3px;
+        }
+      }
+      &.menu-item-level2{
+        color: #4C5D7C;
+        &.is-active{
+          color: #fff;
+        }
       }
     }
     :deep(.el-submenu__icon-arrow){
