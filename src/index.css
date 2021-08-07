@@ -46,3 +46,26 @@ body, html {
 #qiankun-sub-container > div[data-name='heliosHeimdall'] .el-button--small{
   font-size: 13px;
 }
+
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .el-pagination{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  padding: 15px 0;
+}
+
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .el-pagination.is-background button, 
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .el-pagination.is-background li {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  color: #707d96;
+  -webkit-box-shadow: 0 2px 6px 0 rgb(0 0 0 / 5%);
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 5%);
+  border-radius: 50%;
+}
+#qiankun-sub-container > div[data-name='heliosHeimdall'] .el-pagination.is-background li.active {
+  background-color: #1378ff;
+  color: #fff;
+}
