@@ -2,9 +2,12 @@ import {
   registerMicroApps,
   addGlobalUncaughtErrorHandler,
   start,
+  initGlobalState,
+  MicroAppStateActions
 } from "qiankun"
 
 import { getApps } from './app'
+
 /**
  * 注册微应用
  * 第一个参数 - 微应用的注册信息
@@ -12,7 +15,6 @@ import { getApps } from './app'
  */
 export const startQK = start;
 export const register = () => {
-    
     registerMicroApps( getApps(), {
     // qiankun 生命周期钩子 - 微应用加载前
     beforeLoad: (app) => {

@@ -79,6 +79,7 @@ import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from '
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
+import { state } from "../../qiankun/state"
 
 export default {
   methods: {
@@ -166,14 +167,42 @@ export default {
     }
     // 获取栏目树
     getmenus().then(res=>{
+      let nav = res.result.find((nav)=>{
+        return nav.name == '首页'
+      })
+      if(!nav){
+        res.result.unshift({
+          actionList: null,
+          authority: null,
+          children: [],
+          code: "",
+          component: "",
+          defId: 124475,
+          defParentId: 124474,
+          hide: 0,
+          icon: "home-index",
+          id: 0,
+          label: "首页",
+          localPath: "",
+          method: "",
+          name: "首页",
+          parentId: 124474,
+          path: "/web-main/helios/portal/portalDoor?wellcome",
+          pluginName: "首页",
+          redirect: null,
+          sort: 0,
+          spread: false,
+          type: "0",
+          url: "",
+          webPath: "",
+        })
+      }
       foreachMenus({ mainMenu: res.result })
       nextTick(()=>{
         menu.mainMenu = res.result
       })
     })
-
-
-
+    
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))
