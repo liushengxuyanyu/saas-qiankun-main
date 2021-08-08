@@ -219,7 +219,12 @@ export default {
     
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
+
         router.push(children.path.replace(/^\/web-main/i, ''))
+        setTimeout(()=>{
+          foreachMenus({ mainMenu: menu.mainMenu })
+        },1)
+        
         pageVisit({
           href: children.path,
           tabName: children.name,
