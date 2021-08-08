@@ -174,6 +174,13 @@ export default {
   }
   .leve4Menus{
     margin: 20px 30px 0 30px;
+    :deep(.el-tabs__active-bar){
+      background-color: #1F5AFA;
+    }
+    :deep(.el-tabs__item.is-active){
+      font-weight: 500;
+      color: #222C3D;
+    }
   }
   .qiankun-container {
     flex: 1;
@@ -209,6 +216,7 @@ export default {
     :deep(#qiankun-sub-container > div) {
       height: 100%;
     }
+    
   }
 }
 </style>
