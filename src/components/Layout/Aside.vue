@@ -123,7 +123,9 @@ export default {
         localStorage.setItem("activePane", activePane || '')
         emit("updateTabPanes", tabPanes || [], activePane || "")
     };
-
+    const matchPath = (path, currentPath) => {
+      return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
+    }
     let foreachMenus = (menu) => {
       let currentPath = router.currentRoute.value.href
       try{
@@ -131,7 +133,7 @@ export default {
           let mainMenu = `main-menu-${leve1Index}`
           console.log('leve1.path == currentPath', leve1.path, currentPath)
           // if(leve1.path == currentPath){
-          if( leve1.path &&(new RegExp(leve1.path)).test(currentPath)){
+          if( matchPath(leve1.path ,currentPath) ){
             setMenusDefult(mainMenu, null, null, null, null)
             throw new Error("stop leve1")
             return
@@ -139,7 +141,7 @@ export default {
           leve1.children.forEach((leve2, leve2Index)=>{
             let level2Menu = `index-${leve2Index}`
             // if(leve2.path == currentPath){
-            if( leve2.path  && (new RegExp(leve2.path)).test(currentPath) ){
+            if( matchPath(leve2.path, currentPath) ){
               setMenusDefult(mainMenu, leve1, level2Menu, null, null)
               throw new Error("stop leve2")
               return;
@@ -147,14 +149,14 @@ export default {
             leve2.children.forEach((level3, leve3Index)=>{
               let level3Menu = `${level2Menu}-${leve3Index}`
               // if(level3.path == currentPath){
-              if( level3.path && (new RegExp(level3.path)).test(currentPath) ){
+              if( matchPath(level3.path, currentPath) ){
                 setMenusDefult(mainMenu, leve1, level3Menu, null, null)
                 throw new Error("stop leve3")
                 return;
               }
               level3.children.forEach((level4, leve4Index)=>{
                 // if(level4.path == currentPath){
-                if( level4.path && (new RegExp(level4.path)).test(currentPath) ){
+                if( matchPath(level4.path, currentPath) ){
                   let level4Menu = `tab-${level4.defId}`
                   setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
                   throw new Error("stop leve4")
