@@ -129,27 +129,32 @@ export default {
       try{
         menu.mainMenu.forEach((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
-          if(leve1.path == currentPath){
+          console.log('leve1.path == currentPath', leve1.path, currentPath)
+          // if(leve1.path == currentPath){
+          if( leve1.path &&(new RegExp(leve1.path)).test(currentPath)){
             setMenusDefult(mainMenu, null, null, null, null)
             throw new Error("stop leve1")
             return
           }
           leve1.children.forEach((leve2, leve2Index)=>{
             let level2Menu = `index-${leve2Index}`
-            if(leve2.path == currentPath){
+            // if(leve2.path == currentPath){
+            if( leve2.path  && (new RegExp(leve2.path)).test(currentPath) ){
               setMenusDefult(mainMenu, leve1, level2Menu, null, null)
               throw new Error("stop leve2")
               return;
             }
             leve2.children.forEach((level3, leve3Index)=>{
               let level3Menu = `${level2Menu}-${leve3Index}`
-              if(level3.path == currentPath){
+              // if(level3.path == currentPath){
+              if( level3.path && (new RegExp(level3.path)).test(currentPath) ){
                 setMenusDefult(mainMenu, leve1, level3Menu, null, null)
                 throw new Error("stop leve3")
                 return;
               }
               level3.children.forEach((level4, leve4Index)=>{
-                if(level4.path == currentPath){
+                // if(level4.path == currentPath){
+                if( level4.path && (new RegExp(level4.path)).test(currentPath) ){
                   let level4Menu = `tab-${level4.defId}`
                   setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
                   throw new Error("stop leve4")
@@ -158,6 +163,8 @@ export default {
             })
           })
         })
+        // 如果匹配不到路由则选择到一级
+        setMenusDefult('main-menu-0', null, null, null, null)
       }catch(e){
         // 用于终止forEach循环
         console.log(e.message)
@@ -223,7 +230,7 @@ export default {
         router.push(children.path.replace(/^\/web-main/i, ''))
         setTimeout(()=>{
           foreachMenus({ mainMenu: menu.mainMenu })
-        },1)
+        },2)
         
         pageVisit({
           href: children.path,
