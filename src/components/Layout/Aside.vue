@@ -338,7 +338,7 @@ export default {
   height: 100%;
   &>.el-menu{
     height: 100%;
-    z-index: 1003;
+    z-index: 903;
     width: 72px;
     flex: 1;
     :deep(.el-menu-item){
@@ -460,7 +460,7 @@ export default {
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-    z-index: 1003;
+    z-index: 903;
     .arrow{
       border: 4px solid #818EA9;
       border-left: none;

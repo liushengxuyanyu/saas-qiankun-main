@@ -139,7 +139,7 @@ export default {
     height: 50px;
     box-shadow: 0px 3px 6px 2px #e5e9ed;
     background: #fff;
-    z-index: 1100;
+    z-index: 910;
   }
   & > .saas-content {
     flex: 1;
@@ -158,7 +158,7 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     transition: width 0.3s;
-    z-index: 1000;
+    z-index: 900;
     // width: 220px;
     &.index-page{
       width: 73px;
