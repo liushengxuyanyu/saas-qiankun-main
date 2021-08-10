@@ -259,6 +259,10 @@ export default {
       }
 
       // 如果导航为新增加的则添加否则不处理
+      updateMenuPages(updateMenuPages)
+      
+    }
+    const updateMenuPages = (children) => {
       if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
         // 为当前按钮添加先跟
         children.type = 'primary'
@@ -327,6 +331,8 @@ export default {
 
       // 主菜单的选中状态
       mainMenuActive,
+
+      updateMenuPages,
       
     }
    },

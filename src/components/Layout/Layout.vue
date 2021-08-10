@@ -82,7 +82,7 @@ export default {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
-      // asideRef.value.fixedMenu(item, 5)
+      asideRef.value.updateMenuPages(item)
       pageVisit({
           href: item.path,
           tabName: item.name,
