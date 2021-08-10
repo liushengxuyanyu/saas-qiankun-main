@@ -37,7 +37,7 @@
     <div class="aside-sub-tmpl" 
       v-if="menu.subMenus.children && menu.subMenus.children.length" 
       :class="{'isShowSubMenus': menu.subMenus.children && menu.subMenus.children.length}">
-      <div>
+      <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
       <el-menu
@@ -124,7 +124,7 @@ export default {
         emit("updateTabPanes", tabPanes || [], activePane || "")
     };
     const matchPath = (path, currentPath) => {
-      return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
+      return path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
     let foreachMenus = (menu) => {
       let currentPath = router.currentRoute.value.href
@@ -261,9 +261,9 @@ export default {
       if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
         // 为当前按钮添加先跟
         children.type = 'primary'
-        menuPages.value.push(children)
+        menuPages.value.unshift(children)
         if(menuPages.value.length > 10){
-          menuPages.value.shift()
+          menuPages.value.pop()
           // menuPages.value = menuPages.value.splice(1,10)
         }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
@@ -390,13 +390,18 @@ export default {
         }
       }
     }
-    .sub-title{
-      font-size: 14px;
-      font-weight: bold;
-      color: #222C3D;
-      padding-top: 5px;
-      margin: 7px 0px 12px 10px;
+    .sub-title-block{
+      padding:0;
+      margin:0;
+      .sub-title{
+        font-size: 14px;
+        font-weight: bold;
+        color: #222C3D;
+        padding-top: 5px;
+        margin: 7px 0px 12px 10px;
+      }
     }
+    
     .svg-icon-q{
       display: inline-block;
       padding-right: 6px;
