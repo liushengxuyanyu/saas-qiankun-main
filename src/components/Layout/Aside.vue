@@ -263,7 +263,7 @@ export default {
       
     }
     const updateMenuPages = (children) => {
-      if( !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
+      if( children.children && !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
         // 为当前按钮添加先跟
         children.type = 'primary'
         menuPages.value.unshift(children)
