@@ -26,10 +26,11 @@
             <el-tab-pane
               v-for="tagpane in tabPanes.value"
               :key="tagpane.id" 
-              @click="clickTabPanes"
+              
               :label="tagpane.name"
               :name="'tab-' + tagpane.defId">
             </el-tab-pane>
+            <!-- @click="clickTabPanes" -->
           </el-tabs>
           </template>
           <router-view></router-view>
@@ -81,7 +82,7 @@ export default {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       localStorage.setItem("activePane", 'tab-' + item.defId)
-      asideRef.value.fixedMenu(item, 5)
+      // asideRef.value.fixedMenu(item, 5)
       pageVisit({
           href: item.path,
           tabName: item.name,
