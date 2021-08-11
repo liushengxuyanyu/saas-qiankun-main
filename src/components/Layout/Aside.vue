@@ -510,7 +510,8 @@ export default {
       background-image: url("@/assets/icons/index.svg");
     }
     &.portal-manage{
-      background-image: url("@/assets/icons/115.svg");
+      background-image: url("@/assets/icons/114.svg");
+      vertical-align: -0.20em;
     }
     &.product-info{
       background-image: url("@/assets/icons/117.svg");
@@ -525,10 +526,12 @@ export default {
     }
     &.station-manage{
       vertical-align: -0.25em;
-      background-image: url("@/assets/icons/113.svg");
+      background-image: url("@/assets/icons/115.svg");
     }
     &.setup-station{
-      background-image: url("@/assets/icons/111.svg");
+      background-image: url("@/assets/icons/113.svg");
+      vertical-align: -0.2em;
+}
     }
     &.customer-service{
       background-image: url("@/assets/icons/116.svg");
