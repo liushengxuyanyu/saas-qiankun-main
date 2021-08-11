@@ -531,7 +531,6 @@ export default {
     &.setup-station{
       background-image: url("@/assets/icons/113.svg");
       vertical-align: -0.2em;
-}
     }
     &.customer-service{
       background-image: url("@/assets/icons/116.svg");
