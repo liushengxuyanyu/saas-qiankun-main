@@ -25,7 +25,7 @@ export default {
         // },
         singular: true,
         excludeAssetFilter: (assetUrl) => {
-          return /(?=map.qq.com)/.test(assetUrl);
+          return /(?=map.*.com)/.test(assetUrl);
         }
       });
     });
@@ -44,15 +44,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  :deep(#qiankun-sub-container > div[data-name='heliosHeimdall']){
-    .main-content .i-router-view{
+  :deep(#qiankun-sub-container > div[data-name='heliosHeimdall']) {
+    .main-content .i-router-view {
       padding: 0;
     }
-    .el-button--small{
+    .el-button--small {
       font-size: 13px;
     }
   }
