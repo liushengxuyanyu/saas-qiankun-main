@@ -1,12 +1,13 @@
 <template>
   <div class="saas-layout">
-    <header class="saas-header">
+    <header class="saas-header" v-if="fullScreen">
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
       <div
         class="aside-main"
         :class="{'index-page': isIndexPage.active }"
+        v-if="fullScreen"
           >
            <!-- :style="{'width': asideWidth }" -->
         <Aside ref="asideRef" @triggerCloseAside="triggerCloseAside"
@@ -15,10 +16,17 @@
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
-        <div class="menu-pages"  v-if="menuPages.length">
+        
+        <div class="menu-pages"  v-if="menuPages.length && fullScreen" >
           <MenuTabPages :menuPages="menuPages" @updateRouter="updateMenuPages" />
         </div>
         <div class="qiankun-container-body">
+          <div class="rank-block">
+            <div @click="onFullScreen" :class="{'full-screen': true, 'close-screen': !fullScreen }">
+              <i class="el-icon-full-screen"></i>
+              <i class="el-icon-plus"></i>
+            </div>
+          </div>
           <template v-if="tabPanes.value && tabPanes.value.length">
           <el-tabs class="leve4Menus" 
                    @tab-click="pane=>clickTabPanes(tabPanes, pane)"
@@ -107,6 +115,12 @@ export default {
       console.log( asideRef.value.getMenusTree() )
     }
 
+    const fullScreen = ref(true)
+
+    const onFullScreen = (val) => {
+      fullScreen.value = !fullScreen.value
+    }
+
     return {
       asideRef,
       asideWidth,
@@ -119,6 +133,8 @@ export default {
       activePane,
       isIndexPage,
       updateMenuPages,
+      fullScreen,
+      onFullScreen,
     };
   },
   components: {
@@ -203,6 +219,31 @@ export default {
       background: #fff;
       border-radius: 6px;
       overflow-y: scroll;
+      .rank-block{
+        position: relative;
+        
+        .full-screen{
+          position: absolute;
+          right: 50px;
+          top: 10px;
+          font-size: 30px;
+          color: #4C5D7C;
+          i{
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+          .el-icon-plus{
+            transform:rotate(45deg);
+            transition: transform 0.5s;
+          }
+          &.close-screen{
+            .el-icon-plus{
+              transform:rotate(0deg);
+            }
+          }
+        }
+      }
     }
     #qiankun-sub-container {
       width: 100%;
