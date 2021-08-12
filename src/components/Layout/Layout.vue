@@ -224,9 +224,9 @@ export default {
         .full-screen{
           position: absolute;
           z-index: 1;
-          right: 50px;
+          right: 40px;
           top: 10px;
-          font-size: 30px;
+          font-size: 22px;
           color: #4C5D7C;
           i{
             position: absolute;
