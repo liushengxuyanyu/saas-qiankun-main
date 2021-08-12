@@ -44,6 +44,13 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/wuliu/css-qiankun",
     },
+    // 物流-运营管理
+    {
+      name: "saasdds",
+      entry: "/wuliu/dds-qiankun/index.html",
+      container,
+      activeRule: "/web-main/wuliu/dds-qiankun",
+    },
     // 商品管理
     {
       name: "goods-manage",
