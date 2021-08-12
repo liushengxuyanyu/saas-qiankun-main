@@ -221,9 +221,9 @@ export default {
       overflow-y: scroll;
       .rank-block{
         position: relative;
-        
         .full-screen{
           position: absolute;
+          z-index: 1;
           right: 50px;
           top: 10px;
           font-size: 30px;
