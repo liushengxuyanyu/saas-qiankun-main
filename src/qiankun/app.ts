@@ -51,6 +51,13 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/wuliu/dds-qiankun",
     },
+    // 物流-系统管理(系统配置)
+    {
+      name: "sasscloudcenter",
+      entry: "/wuliu/cloudcenter-qiankun/index.html",
+      container,
+      activeRule: "/web-main/wuliu/cloudcenter-qiankun",
+    },
     // 商品管理
     {
       name: "goods-manage",
