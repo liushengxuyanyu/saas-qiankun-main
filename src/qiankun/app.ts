@@ -91,10 +91,10 @@ export const getApps = () => {
 
     // 社交管理
     {
-      name: "cmsapp-act",
-      entry: "/cmsapp-act/index.html",
+      name: "cmsappActAdmin",
+      entry: "/act-admin/index.html",
       container,
-      activeRule: "/web-main/cmsapp-act",
+      activeRule: "/web-main/act-admin",
     },
   ]
   return apps;
