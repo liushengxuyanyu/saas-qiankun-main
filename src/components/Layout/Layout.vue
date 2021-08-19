@@ -33,8 +33,7 @@
                    v-model="activePane">
             <el-tab-pane
               v-for="tagpane in tabPanes.value"
-              :key="tagpane.id" 
-              
+              :key="tagpane.defId"
               :label="tagpane.name"
               :name="'tab-' + tagpane.defId">
             </el-tab-pane>
@@ -120,6 +119,20 @@ export default {
     const onFullScreen = (val) => {
       fullScreen.value = !fullScreen.value
     }
+
+    // history.pushState({
+    //   "isHistoryPush": true,
+    //   name: "门店订单配置",
+    //   defId: "124619",
+    //   path: "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list"
+    //   }, '门店订单配置', "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list")
+
+    // window.addEventListener('popstate', (event) => {
+    //   if(event.state.isHistoryPush){
+    //     asideRef.value.updateMenuPages(event.state)
+    //   }
+    //   console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    // })
 
     return {
       asideRef,

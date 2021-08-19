@@ -67,6 +67,13 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/mis-admin",
     },
+
+    {
+      name: "cmsAdminSaas",
+      entry: "/cms-admin/index.html",
+      container,
+      activeRule: "/web-main/cms-admin",
+    },
   ]
   return apps;
 };

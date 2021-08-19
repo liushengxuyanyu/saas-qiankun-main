@@ -9,7 +9,7 @@ const routes = [
     redirect: "/helios/portal/portalDoor"
   },
   { 
-    path: '/home', 
+    path: '/home',
     component: Home
   },
 ]
