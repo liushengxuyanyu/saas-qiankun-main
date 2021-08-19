@@ -88,6 +88,14 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/cms-admin",
     },
+
+    // 社交管理
+    {
+      name: "cmsapp-act",
+      entry: "/cmsapp-act/index.html",
+      container,
+      activeRule: "/web-main/cmsapp-act",
+    },
   ]
   return apps;
 };
