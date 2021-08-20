@@ -131,9 +131,16 @@ export default {
       if(event.state.isHistoryPush){
         let path = event.currentTarget.location.pathname + event.currentTarget.location.search ;
         let { name, defId } = event.state
-        asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
+        if(!defId){
+          defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/ig,'') 
+        }
+        if( patn && name && defId){
+          asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
+        }
       }
     })
+
+
 
     return {
       asideRef,
