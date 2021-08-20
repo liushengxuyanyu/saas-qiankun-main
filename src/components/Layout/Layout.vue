@@ -129,10 +129,10 @@ export default {
 
     window.addEventListener('popstate', (event) => {
       if(event.state.isHistoryPush){
-        let {path, name, defId} = event.state
+        let path = event.currentTarget.location.pathname + event.currentTarget.location.search ;
+        let { name, defId } = event.state
         asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
       }
-      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
     })
 
     return {
