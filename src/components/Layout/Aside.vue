@@ -124,8 +124,8 @@ export default {
         emit("updateTabPanes", tabPanes || [], activePane || "")
     };
     const matchPath = (path, currentPath) => {
-      return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
-      // return path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
+      // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
+      return path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
     let foreachMenus = (menu) => {
       let currentPath = router.currentRoute.value.href
@@ -228,6 +228,8 @@ export default {
     getMenusTree();
     
     const fixedMenu = (children, level) => {
+
+      
       if(children.path && children.path != router.currentRoute.value.path ){
 
         router.push(children.path.replace(/^\/web-main/i, ''))
