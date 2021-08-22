@@ -134,7 +134,7 @@ export default {
         if(!defId){
           defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/ig,'') 
         }
-        if( patn && name && defId){
+        if( path && name && defId){
           asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
         }
       }
