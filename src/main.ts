@@ -6,7 +6,7 @@ import store from './store'
 
 import App from './App.vue'
 import './index.css'
-import EventBus from './utils/eventBus'
+import EventBus from './utils/EventBus'
 // import './assets/element.css'
 (window as any).eventBus = new EventBus;
 
