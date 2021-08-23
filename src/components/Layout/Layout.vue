@@ -1,44 +1,47 @@
 <template>
   <div class="saas-layout">
-    <header class="saas-header" v-if="fullScreen">
+    <header class="saas-header"
+            v-if="fullScreen">
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
-      <div
-        class="aside-main"
-        :class="{'index-page': isIndexPage.active }"
-        v-if="fullScreen"
-          >
-           <!-- :style="{'width': asideWidth }" -->
-        <Aside ref="asideRef" @triggerCloseAside="triggerCloseAside"
+      <div class="aside-main"
+           :class="{'index-page': isIndexPage.active }"
+           v-if="fullScreen">
+        <!-- :style="{'width': asideWidth }" -->
+        <Aside ref="asideRef"
+               @triggerCloseAside="triggerCloseAside"
                :menuPages="menuPages"
                @mainMenusClick="mainMenusClick"
                @updateTabPanes="updateTabPanes"></Aside>
       </div>
-      <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
-        
-        <div class="menu-pages"  v-if="menuPages.length && fullScreen" >
-          <MenuTabPages :menuPages="menuPages" @updateRouter="updateMenuPages" />
+      <div class="qiankun-container"
+           :style="'width:calc(100% - '+ asideWidth + ')'">
+
+        <div class="menu-pages"
+             v-if="menuPages.length && fullScreen">
+          <MenuTabPages :menuPages="menuPages"
+                        @updateRouter="updateMenuPages" />
         </div>
         <div class="qiankun-container-body">
           <div class="rank-block">
-            <div @click="onFullScreen" :class="{'full-screen': true, 'close-screen': !fullScreen }">
+            <div @click="onFullScreen"
+                 :class="{'full-screen': true, 'close-screen': !fullScreen }">
               <i class="el-icon-full-screen"></i>
               <i class="el-icon-plus"></i>
             </div>
           </div>
           <template v-if="tabPanes.value && tabPanes.value.length">
-          <el-tabs class="leve4Menus" 
-                   @tab-click="pane=>clickTabPanes(tabPanes, pane)"
-                   v-model="activePane">
-            <el-tab-pane
-              v-for="tagpane in tabPanes.value"
-              :key="tagpane.defId"
-              :label="tagpane.name"
-              :name="'tab-' + tagpane.defId">
-            </el-tab-pane>
-            <!-- @click="clickTabPanes" -->
-          </el-tabs>
+            <el-tabs class="leve4Menus"
+                     @tab-click="pane=>clickTabPanes(tabPanes, pane)"
+                     v-model="activePane">
+              <el-tab-pane v-for="tagpane in tabPanes.value"
+                           :key="tagpane.defId"
+                           :label="tagpane.name"
+                           :name="'tab-' + tagpane.defId">
+              </el-tab-pane>
+              <!-- @click="clickTabPanes" -->
+            </el-tabs>
           </template>
           <router-view></router-view>
           <div id="qiankun-sub-container"></div>
@@ -54,11 +57,10 @@ import LayoutHeader from '@/components/Layout/Header.vue';
 import Aside from '@/components/Layout/Aside.vue';
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
 import { router } from '../../router';
-import { pageVisit } from "../../api/menu"
+import { pageVisit } from '../../api/menu';
 
 export default {
   setup() {
-
     let asideWidth = ref('auto');
     const triggerCloseAside = (width) => {
       asideWidth.value = width;
@@ -67,58 +69,66 @@ export default {
     let localMenuPages = localStorage.getItem('menuPages');
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
-    let tabPanes = reactive({ value: localStorage.getItem("tabPanes") && JSON.parse(localStorage.getItem("tabPanes")) || [] });
+    let tabPanes = reactive({
+      value:
+        (localStorage.getItem('tabPanes') && JSON.parse(localStorage.getItem('tabPanes'))) || []
+    });
     // tabPanes.value.find(item => { })
 
-    let activePane = ref( localStorage.getItem("activePane") || '');
+    let activePane = ref(localStorage.getItem('activePane') || '');
 
     const updateTabPanes = (tabs, activePaneVal) => {
-      tabPanes.value = tabs.filter(item=>{ return item.hide == 0 })
+      tabPanes.value = tabs.filter((item) => {
+        return item.hide == 0;
+      });
       tabs.length &&
         nextTick(() => {
-          let item = tabs.find(item => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
+          let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
-          localStorage.setItem("activePane", activePane.value)
-          localStorage.setItem("tabPanes", JSON.stringify(tabs))
-          tabs.length >0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
+          localStorage.setItem('activePane', activePane.value);
+          localStorage.setItem('tabPanes', JSON.stringify(tabs));
+          tabs.length > 0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
         });
-      
     };
 
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
-      localStorage.setItem("activePane", 'tab-' + item.defId)
-      asideRef.value.updateMenuPages(item)
+      localStorage.setItem('activePane', 'tab-' + item.defId);
+      asideRef.value.updateMenuPages(item);
       pageVisit({
-          href: item.path,
-          tabName: item.name,
-          name: item.name,
-        })
+        href: item.path,
+        tabName: item.name,
+        name: item.name
+      });
     };
-    let isIndexPage = reactive({active: false})
+    let isIndexPage = reactive({ active: false });
 
-    watch(()=> router.currentRoute, (currentRoutePath, oval)=>{
-      isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
-    }, {
-      immediate: true,
-      deep: true
-    })
+    watch(
+      () => router.currentRoute,
+      (currentRoutePath, oval) => {
+        isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path);
+      },
+      {
+        immediate: true,
+        deep: true
+      }
+    );
 
     const mainMenusClick = (index) => {
-      isIndexPage.active = index == 'main-menu-0'
-    }
+      isIndexPage.active = index == 'main-menu-0';
+    };
     const asideRef = ref(null);
 
     const updateMenuPages = () => {
-      console.log( asideRef.value.getMenusTree() )
-    }
+      console.log(asideRef.value.getMenusTree());
+    };
 
-    const fullScreen = ref(true)
+    const fullScreen = ref(true);
 
     const onFullScreen = (val) => {
-      fullScreen.value = !fullScreen.value
-    }
+      fullScreen.value = !fullScreen.value;
+    };
 
     // history.pushState({
     //   "isHistoryPush": true,
@@ -128,19 +138,17 @@ export default {
     //   }, '门店订单配置', "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list")
 
     window.addEventListener('popstate', (event) => {
-      if(event.state.isHistoryPush){
-        let path = event.currentTarget.location.pathname + event.currentTarget.location.search ;
-        let { name, defId } = event.state
-        if(!defId){
-          defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/ig,'') 
+      if (event.state.isHistoryPush) {
+        let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
+        let { name, defId } = event.state;
+        if (!defId) {
+          defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/gi, '');
         }
-        if( path && name && defId){
-          asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
+        if (path && name && defId) {
+          asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
         }
       }
-    })
-
-
+    });
 
     return {
       asideRef,
@@ -155,7 +163,7 @@ export default {
       isIndexPage,
       updateMenuPages,
       fullScreen,
-      onFullScreen,
+      onFullScreen
     };
   },
   components: {
@@ -199,26 +207,26 @@ export default {
     transition: width 0.3s;
     z-index: 900;
     // width: 220px;
-    &.index-page{
+    &.index-page {
       width: 73px;
-      :deep(.aside-tmpl){
+      :deep(.aside-tmpl) {
         width: 73px;
         position: relative;
-        .aside-sub-tmpl{
+        .aside-sub-tmpl {
           left: 73px;
           position: absolute;
         }
       }
     }
   }
-  .leve4Menus{
+  .leve4Menus {
     margin: 20px 30px 0 30px;
-    :deep(.el-tabs__active-bar){
-      background-color: #1F5AFA;
+    :deep(.el-tabs__active-bar) {
+      background-color: #1f5afa;
     }
-    :deep(.el-tabs__item.is-active){
+    :deep(.el-tabs__item.is-active) {
       font-weight: 500;
-      color: #222C3D;
+      color: #222c3d;
     }
   }
   .qiankun-container {
@@ -240,27 +248,27 @@ export default {
       background: #fff;
       border-radius: 6px;
       overflow-y: scroll;
-      .rank-block{
+      .rank-block {
         position: relative;
-        .full-screen{
+        .full-screen {
           position: absolute;
           z-index: 1;
           right: 40px;
           top: 10px;
           font-size: 22px;
-          color: #4C5D7C;
-          i{
+          color: #4c5d7c;
+          i {
             position: absolute;
             left: 0;
             top: 0;
           }
-          .el-icon-plus{
-            transform:rotate(45deg);
+          .el-icon-plus {
+            transform: rotate(45deg);
             transition: transform 0.5s;
           }
-          &.close-screen{
-            .el-icon-plus{
-              transform:rotate(0deg);
+          &.close-screen {
+            .el-icon-plus {
+              transform: rotate(0deg);
             }
           }
         }
@@ -280,7 +288,6 @@ export default {
     :deep(#qiankun-sub-container > div) {
       height: 100%;
     }
-    
   }
 }
 </style>
