@@ -43,9 +43,7 @@
               <!-- @click="clickTabPanes" -->
             </el-tabs>
           </template>
-          <keep-alive :include="['order-search']">
-            <router-view></router-view>
-          </keep-alive>
+          <router-view></router-view>
           <div id="qiankun-sub-container"></div>
         </div>
       </div>
