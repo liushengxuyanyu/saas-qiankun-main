@@ -3,7 +3,6 @@
 let env = 'prod'
 
 export const getApps = () => {
-  console.log('============')
   let container = document.getElementById('qiankun-sub-container')
   const apps = [
     // 客服系统
@@ -51,13 +50,13 @@ export const getApps = () => {
       container,
       activeRule: "/web-main/wuliu/dds-qiankun",
     },
-    // // 物流-系统管理(系统配置)
-    // {
-    //   name: "saascloudcenter",
-    //   entry: "/wuliu/cloudcenter-qiankun/index.html",
-    //   container,
-    //   activeRule: "/web-main/wuliu/cloudcenter-qiankun",
-    // },
+    // 物流-系统管理(系统配置)
+    {
+      name: "saascloudcenter",
+      entry: "/wuliu/cloudcenter-qiankun/index.html",
+      container,
+      activeRule: "/web-main/wuliu/cloudcenter-qiankun",
+    },
     // 商品管理
     {
       name: "goods-manage",
@@ -82,12 +81,12 @@ export const getApps = () => {
       activeRule: "/web-main/mis-admin",
     },
 
-    // {
-    //   name: "cmsAdminSaas",
-    //   entry: "/cms-admin/index.html",
-    //   container,
-    //   activeRule: "/web-main/cms-admin",
-    // },
+    {
+      name: "cmsAdminSaas",
+      entry: "/cms-admin/index.html",
+      container,
+      activeRule: "/web-main/cms-admin",
+    },
 
     // 社交管理
     // {

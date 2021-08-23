@@ -3,7 +3,7 @@
     <el-button v-for="(menu, index) of menuPages" :key="index" size="small" 
       :type="menu.type" @click="changRouter(menu)" >
       {{menu.name}}
-      <i @click="closeTab(index)" class="el-icon-close el-icon--right"></i>
+      <i @click="event => closeTab(event, index)" class="el-icon-close el-icon--right"></i>
     </el-button>
   </el-row>
 </template>
@@ -41,7 +41,10 @@ export default {
       deep: true
     })
     
-    const closeTab = (index) => {
+    const closeTab = (event, index) => {
+      event.stopPropagation()
+      event.preventDefault()
+      window.eventBus.$emit("closeTabPane", menuPages && menuPages.value[index] )
       menuPages.value.splice(index, 1)
       updateMenu()
     }
@@ -54,6 +57,11 @@ export default {
           name: menu.name,
         })
     }
+
+    window.eventBus.$on("closeTabPane", function(data){
+      console.log(data)
+    })
+
     return {
       menuPages,
       closeTab,
