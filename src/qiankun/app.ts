@@ -89,12 +89,12 @@ export const getApps = () => {
     // },
 
     // 社交管理
-    // {
-    //   name: "cmsappActAdmin",
-    //   entry: "/act-admin/index.html",
-    //   container,
-    //   activeRule: "/web-main/act-admin",
-    // },
+    {
+      name: "cmsappActAdmin",
+      entry: "/act-admin/index.html",
+      container,
+      activeRule: "/web-main/act-admin",
+    },
   ]
   return apps;
 };
