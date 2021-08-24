@@ -54,8 +54,8 @@ export default {
       event.preventDefault();
       if(menuPages && menuPages.value){
         let closePath = menuPages.value[index].path 
-        let pathRegExp = new RegExp('^' + closePath)
-        if(pathRegExp.test(location.pathname)){
+        let pathRegExp = new RegExp('^' + location.pathname)
+        if(pathRegExp.test( closePath )){
           let menu = menuPages.value[index+1] || menuPages.value[index-1] ;
           menu && changRouter( menu )
         }
