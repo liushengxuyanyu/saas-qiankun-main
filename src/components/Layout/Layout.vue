@@ -32,7 +32,7 @@
             </div>
           </div>
           <template v-if="tabPanes.value && tabPanes.value.length">
-            <el-tabs class="leve4Menus"
+            <el-tabs class="leve4Menus" info="四级导航"
                      @tab-click="pane=>clickTabPanes(tabPanes, pane)"
                      v-model="activePane">
               <el-tab-pane v-for="tagpane in tabPanes.value"
@@ -61,6 +61,7 @@ import { pageVisit } from '../../api/menu';
 
 export default {
   setup() {
+    localStorage.removeItem('navMenus')
     let asideWidth = ref('auto');
     const triggerCloseAside = (width) => {
       asideWidth.value = width;
@@ -76,7 +77,7 @@ export default {
 
     let activePane = ref('');
 
-    const updateTabPanes = (tabs, activePaneVal) => {
+    const updateTabPanes = (tabs, activePaneVal, auto) => {
       tabPanes.value = tabs.filter((item) => {
         return item.hide == 0;
       });
@@ -86,7 +87,7 @@ export default {
           activePane.value = 'tab-' + item.defId;
           // localStorage.setItem('activePane', activePane.value);
           // localStorage.setItem('tabPanes', JSON.stringify(tabs));
-          tabs.length > 0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
+          auto && router.push(item.path.replace(/^\/web-main/i, ''));
         });
     };
 
@@ -94,7 +95,7 @@ export default {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
       // localStorage.setItem('activePane', 'tab-' + item.defId);
-      asideRef.value.updateMenuPages(item);
+      // asideRef.value.updateMenuPages(item);
       pageVisit({
         href: item.path,
         tabName: item.name,

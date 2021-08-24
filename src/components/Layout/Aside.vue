@@ -121,56 +121,55 @@ export default {
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
         // localStorage.setItem("activePane", activePane || '')
-        emit("updateTabPanes", tabPanes || [], activePane || "")
+        emit("updateTabPanes", tabPanes || [], activePane || "", false)
     };
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
       return path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
     let foreachMenus = (menu) => {
+
       let currentPath = router.currentRoute.value.href
-      try{
-        menu.mainMenu.forEach((leve1, leve1Index)=>{
+      // try{
+      let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
           // if(leve1.path == currentPath){
           if( matchPath(leve1.path ,currentPath) ){
             setMenusDefult(mainMenu, null, null, null, null)
-            throw new Error("stop leve1")
-            return
+            return true
           }
-          leve1.children.forEach((leve2, leve2Index)=>{
+          return leve1.children.some((leve2, leve2Index)=>{
             let level2Menu = `index-${leve2Index}`
             // if(leve2.path == currentPath){
             if( matchPath(leve2.path, currentPath) ){
               setMenusDefult(mainMenu, leve1, level2Menu, null, null)
-              throw new Error("stop leve2")
-              return;
+              return true
             }
-            leve2.children.forEach((level3, leve3Index)=>{
+            return leve2.children.some((level3, leve3Index)=>{
               let level3Menu = `${level2Menu}-${leve3Index}`
               // if(level3.path == currentPath){
               if( matchPath(level3.path, currentPath) ){
                 setMenusDefult(mainMenu, leve1, level3Menu, null, null)
-                throw new Error("stop leve3")
-                return;
+                return true
               }
-              level3.children.forEach((level4, leve4Index)=>{
+              return level3.children.some((level4, leve4Index)=>{
                 // if(level4.path == currentPath){
                 if( matchPath(level4.path, currentPath) ){
                   let level4Menu = `tab-${level4.defId}`
                   setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
-                  throw new Error("stop leve4")
+                  return true
                 }
               })
             })
           })
         })
         // 如果匹配不到路由则选择到一级
-        setMenusDefult('main-menu-0', null, null, null, null)
-      }catch(e){
-        // 用于终止forEach循环
-        console.log(e.message)
-      }
+        
+        !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
+      // }catch(e){
+      //   // 用于终止forEach循环
+      //   console.log(e.message)
+      // }
       
     }
     const getMenusTree = () => {
@@ -217,25 +216,20 @@ export default {
           info.menus.hashIndexRole = false
         }
         info.menus.tree = res.result
-        state.setGlobalState(info)
+        // state.setGlobalState(info)
         foreachMenus({ mainMenu: res.result })
         nextTick(()=>{
           menu.mainMenu = res.result
         })
+      }).catch(err=>{
+        console.log("err", err)
       })
     }
     getMenusTree();
     
     const fixedMenu = (children, level) => {
-
-      
       if(children.path && children.path != router.currentRoute.value.path ){
-
-        router.push(children.path.replace(/^\/web-main/i, ''))
-        setTimeout(()=>{
-          foreachMenus({ mainMenu: menu.mainMenu })
-        },2)
-        
+        router.push(children.path.replace(/^\/web-main/i, ''))        
         pageVisit({
           href: children.path,
           tabName: children.name,
@@ -252,7 +246,7 @@ export default {
       })
       // emit('updateTabPanes', level == 4 ? children.children : []) 
       if(level == 4){
-        emit('updateTabPanes', children.children ) 
+        emit('updateTabPanes', children.children , '', true) 
         if(!children.children.length){
           // localStorage.setItem("activePane", '')
           // localStorage.setItem("tabPanes", JSON.stringify([]))
