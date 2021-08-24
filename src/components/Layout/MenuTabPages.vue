@@ -50,8 +50,8 @@ export default {
     );
 
     const closeTab = (event, index) => {
-      // event.stopPropagation();
-      // event.preventDefault();
+      event.stopPropagation();
+      event.preventDefault();
       window.eventBus.$emit('closeTabPane', menuPages && menuPages.value[index]);
       menuPages.value.splice(index, 1);
       updateMenu();
