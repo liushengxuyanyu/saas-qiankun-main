@@ -24,7 +24,7 @@ export default {
     let { menuPages } = toRefs(props);
 
     const updateMenu = () => {
-      localStorage.setItem('menuPages', JSON.stringify(menuPages.value));
+      // localStorage.setItem('menuPages', JSON.stringify(menuPages.value));
     };
 
     // 路由发生变化后，更新按钮选中状态

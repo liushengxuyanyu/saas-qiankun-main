@@ -89,7 +89,7 @@ export default {
       // console.log('handleClose', key, keyPath);
     },
     handleSelect(key, keyPath){
-      localStorage.setItem("activeMenu", key);
+      // localStorage.setItem("activeMenu", key);
     } 
   },
   props:{
@@ -102,7 +102,7 @@ export default {
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
-      subMenus: JSON.parse(localStorage.getItem('subMenus')) || {
+      subMenus: {
         children: []
       }
     })
@@ -115,12 +115,12 @@ export default {
         tabPanes, activePane
       ) => {
         // 更新默认状态，及存储
-        localStorage.setItem("mainMenuActive", mainMenuActive || '')
-        localStorage.setItem("subMenus", JSON.stringify(subMenus) || {})
-        localStorage.setItem("activeMenu", activeMenu1 || '')
+        // localStorage.setItem("mainMenuActive", mainMenuActive || '')
+        // localStorage.setItem("subMenus", JSON.stringify(subMenus) || {})
+        // localStorage.setItem("activeMenu", activeMenu1 || '')
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
-        localStorage.setItem("activePane", activePane || '')
+        // localStorage.setItem("activePane", activePane || '')
         emit("updateTabPanes", tabPanes || [], activePane || "")
     };
     const matchPath = (path, currentPath) => {
@@ -132,7 +132,6 @@ export default {
       try{
         menu.mainMenu.forEach((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
-          console.log('leve1.path == currentPath', leve1.path, currentPath)
           // if(leve1.path == currentPath){
           if( matchPath(leve1.path ,currentPath) ){
             setMenusDefult(mainMenu, null, null, null, null)
@@ -255,8 +254,8 @@ export default {
       if(level == 4){
         emit('updateTabPanes', children.children ) 
         if(!children.children.length){
-          localStorage.setItem("activePane", '')
-          localStorage.setItem("tabPanes", JSON.stringify([]))
+          // localStorage.setItem("activePane", '')
+          // localStorage.setItem("tabPanes", JSON.stringify([]))
         }
       }
 
@@ -274,15 +273,15 @@ export default {
           menuPages.value.pop()
           // menuPages.value = menuPages.value.splice(1,10)
         }
-        localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
+        // localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
     }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       emit("mainMenusClick", index)
-      localStorage.setItem("mainMenuActive", index) 
+      // localStorage.setItem("mainMenuActive", index) 
       fixedMenu(children)
-      localStorage.setItem("subMenus", JSON.stringify(children))
+      // localStorage.setItem("subMenus", JSON.stringify(children))
       activeMenu.value = "";
       menu.subMenus = children
     }
@@ -308,10 +307,10 @@ export default {
     })
 
     //  子菜单的状态
-    let activeMenu = ref( localStorage.getItem("activeMenu") || '');
+    let activeMenu = ref('');
 
     // 主导航的选中状态
-    let mainMenuActive = ref( localStorage.getItem("mainMenuActive") || '');
+    let mainMenuActive = ref('');
 
     return {
       getMenusTree,

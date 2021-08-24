@@ -66,16 +66,15 @@ export default {
       asideWidth.value = width;
       console.log('closeAside', width);
     };
-    let localMenuPages = localStorage.getItem('menuPages');
-    let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
+    // let localMenuPages = localStorage.getItem('menuPages');
+    let menuPages = reactive([]);
 
     let tabPanes = reactive({
-      value:
-        (localStorage.getItem('tabPanes') && JSON.parse(localStorage.getItem('tabPanes'))) || []
+      value: []
     });
     // tabPanes.value.find(item => { })
 
-    let activePane = ref(localStorage.getItem('activePane') || '');
+    let activePane = ref('');
 
     const updateTabPanes = (tabs, activePaneVal) => {
       tabPanes.value = tabs.filter((item) => {
@@ -85,8 +84,8 @@ export default {
         nextTick(() => {
           let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
-          localStorage.setItem('activePane', activePane.value);
-          localStorage.setItem('tabPanes', JSON.stringify(tabs));
+          // localStorage.setItem('activePane', activePane.value);
+          // localStorage.setItem('tabPanes', JSON.stringify(tabs));
           tabs.length > 0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
         });
     };
@@ -94,7 +93,7 @@ export default {
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
-      localStorage.setItem('activePane', 'tab-' + item.defId);
+      // localStorage.setItem('activePane', 'tab-' + item.defId);
       asideRef.value.updateMenuPages(item);
       pageVisit({
         href: item.path,
@@ -148,6 +147,7 @@ export default {
           asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
         }
       }
+      asideRef.value.getMenusTree()
     });
 
     return {
