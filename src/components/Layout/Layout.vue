@@ -70,7 +70,6 @@ export default {
     let localMenuPages = localStorage.getItem('menuPages');
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
-
     let tabPanes = reactive({
       value: []
     });
@@ -91,7 +90,8 @@ export default {
 
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
-      router.push(item.path.replace(/^\/web-main/i, ''));
+      router.push(item.path.replace(/^\/web-main/i, ''))
+      asideRef.value.updateMenuPages(item);
       pageVisit({
         href: item.path,
         tabName: item.name,
