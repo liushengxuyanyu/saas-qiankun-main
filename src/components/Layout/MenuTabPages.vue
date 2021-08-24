@@ -52,7 +52,16 @@ export default {
     const closeTab = (event, index) => {
       event.stopPropagation();
       event.preventDefault();
-      window.eventBus.$emit('closeTabPane', menuPages && menuPages.value[index]);
+      if(menuPages && menuPages.value){
+        let closePath = menuPages.value[index].path 
+        let pathRegExp = new RegExp('^' + closePath)
+        if(pathRegExp.test(location.pathname)){
+          let menu = menuPages.value[index+1] || menuPages.value[index-1] ;
+          menu && changRouter( menu )
+        }
+        window.eventBus.$emit('closeTabPane', menuPages && menuPages.value[index]);
+      }
+      
       menuPages.value.splice(index, 1);
       updateMenu();
     };
