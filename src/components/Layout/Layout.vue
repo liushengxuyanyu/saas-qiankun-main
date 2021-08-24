@@ -67,13 +67,13 @@ export default {
       asideWidth.value = width;
       console.log('closeAside', width);
     };
-    // let localMenuPages = localStorage.getItem('menuPages');
-    let menuPages = reactive([]);
+    let localMenuPages = localStorage.getItem('menuPages');
+    let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
+
 
     let tabPanes = reactive({
       value: []
     });
-    // tabPanes.value.find(item => { })
 
     let activePane = ref('');
 
@@ -85,8 +85,6 @@ export default {
         nextTick(() => {
           let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
-          // localStorage.setItem('activePane', activePane.value);
-          // localStorage.setItem('tabPanes', JSON.stringify(tabs));
           auto && router.push(item.path.replace(/^\/web-main/i, ''));
         });
     };
@@ -94,8 +92,6 @@ export default {
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''));
-      // localStorage.setItem('activePane', 'tab-' + item.defId);
-      // asideRef.value.updateMenuPages(item);
       pageVisit({
         href: item.path,
         tabName: item.name,
@@ -129,13 +125,6 @@ export default {
     const onFullScreen = (val) => {
       fullScreen.value = !fullScreen.value;
     };
-
-    // history.pushState({
-    //   "isHistoryPush": true,
-    //   name: "门店订单配置",
-    //   defId: "124619",
-    //   path: "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list"
-    //   }, '门店订单配置', "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list")
 
     window.addEventListener('popstate', (event) => {
       if (event.state.isHistoryPush) {

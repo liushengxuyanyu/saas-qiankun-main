@@ -83,13 +83,10 @@ import { state } from "../../qiankun/state"
 export default {
   methods: {
     handleOpen(key, keyPath) {
-      // console.log('handleOpen',key, keyPath);
     },
     handleClose(key, keyPath) {
-      // console.log('handleClose', key, keyPath);
     },
     handleSelect(key, keyPath){
-      // localStorage.setItem("activeMenu", key);
     } 
   },
   props:{
@@ -114,13 +111,8 @@ export default {
         subMenus, activeMenu1, 
         tabPanes, activePane
       ) => {
-        // 更新默认状态，及存储
-        // localStorage.setItem("mainMenuActive", mainMenuActive || '')
-        // localStorage.setItem("subMenus", JSON.stringify(subMenus) || {})
-        // localStorage.setItem("activeMenu", activeMenu1 || '')
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
-        // localStorage.setItem("activePane", activePane || '')
         emit("updateTabPanes", tabPanes || [], activePane || "", false)
     };
     const matchPath = (path, currentPath) => {
@@ -130,30 +122,25 @@ export default {
     let foreachMenus = (menu) => {
 
       let currentPath = router.currentRoute.value.href
-      // try{
       let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
-          // if(leve1.path == currentPath){
           if( matchPath(leve1.path ,currentPath) ){
             setMenusDefult(mainMenu, null, null, null, null)
             return true
           }
           return leve1.children.some((leve2, leve2Index)=>{
             let level2Menu = `index-${leve2Index}`
-            // if(leve2.path == currentPath){
             if( matchPath(leve2.path, currentPath) ){
               setMenusDefult(mainMenu, leve1, level2Menu, null, null)
               return true
             }
             return leve2.children.some((level3, leve3Index)=>{
               let level3Menu = `${level2Menu}-${leve3Index}`
-              // if(level3.path == currentPath){
               if( matchPath(level3.path, currentPath) ){
                 setMenusDefult(mainMenu, leve1, level3Menu, null, null)
                 return true
               }
               return level3.children.some((level4, leve4Index)=>{
-                // if(level4.path == currentPath){
                 if( matchPath(level4.path, currentPath) ){
                   let level4Menu = `tab-${level4.defId}`
                   setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
@@ -166,11 +153,6 @@ export default {
         // 如果匹配不到路由则选择到一级
         
         !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
-      // }catch(e){
-      //   // 用于终止forEach循环
-      //   console.log(e.message)
-      // }
-      
     }
     const getMenusTree = () => {
       // 获取栏目树
@@ -216,7 +198,7 @@ export default {
           info.menus.hashIndexRole = false
         }
         info.menus.tree = res.result
-        // state.setGlobalState(info)
+        state.setGlobalState(info)
         foreachMenus({ mainMenu: res.result })
         nextTick(()=>{
           menu.mainMenu = res.result
@@ -236,21 +218,14 @@ export default {
           name: children.name,
         })
       }
-      // history.pushState( {}, children.name || "零售云", children.path)
-      
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
         if(item.type != 'primary'){
           item.type = 'primary'
         }
       })
-      // emit('updateTabPanes', level == 4 ? children.children : []) 
       if(level == 4){
         emit('updateTabPanes', children.children , '', true) 
-        if(!children.children.length){
-          // localStorage.setItem("activePane", '')
-          // localStorage.setItem("tabPanes", JSON.stringify([]))
-        }
       }
 
       // 如果导航为新增加的则添加否则不处理
@@ -265,17 +240,14 @@ export default {
         menuPages.value.unshift(children)
         if(menuPages.value.length > 10){
           menuPages.value.pop()
-          // menuPages.value = menuPages.value.splice(1,10)
         }
-        // localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
+        localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
     }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       emit("mainMenusClick", index)
-      // localStorage.setItem("mainMenuActive", index) 
       fixedMenu(children)
-      // localStorage.setItem("subMenus", JSON.stringify(children))
       activeMenu.value = "";
       menu.subMenus = children
     }
@@ -283,15 +255,6 @@ export default {
     // 收起导航
     const asideRef = ref(null);
     onMounted(()=>{
-      // nextTick(()=>{
-      //   window.addEventListener("click", (event)=>{
-      //     let includesAside = event.path.includes(asideRef.value)
-      //     // 如果点击路径不包含 aside-tmpl 则关闭二级导航
-      //     if(!includesAside){
-      //       menu.subMenus = {}
-      //     }
-      //   });
-      // })
     })
 
     // 监听关闭按钮
