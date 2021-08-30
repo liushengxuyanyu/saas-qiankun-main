@@ -81,13 +81,12 @@ export const getApps = () => {
       activeRule: "/web-main/mis-admin",
     },
 
-    // {
-    //   name: "cmsAdminSaas",
-    //   entry: "/cms-admin/index.html",
-    //   container,
-    //   activeRule: "/web-main/cms-admin",
-    // },
-
+    {
+      name: "cmsAdminSaas",
+      entry: "/activity/cms-admin/index.html",
+      container,
+      activeRule: "/web-main/cms-admin",
+    },
     // 社交管理
     {
       name: "cmsappActAdmin",
