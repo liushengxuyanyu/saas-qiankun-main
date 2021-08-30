@@ -83,13 +83,10 @@ import { state } from "../../qiankun/state"
 export default {
   methods: {
     handleOpen(key, keyPath) {
-      // console.log('handleOpen',key, keyPath);
     },
     handleClose(key, keyPath) {
-      // console.log('handleClose', key, keyPath);
     },
     handleSelect(key, keyPath){
-      localStorage.setItem("activeMenu", key);
     } 
   },
   props:{
@@ -102,7 +99,7 @@ export default {
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
-      subMenus: JSON.parse(localStorage.getItem('subMenus')) || {
+      subMenus: {
         children: []
       }
     })
@@ -114,65 +111,48 @@ export default {
         subMenus, activeMenu1, 
         tabPanes, activePane
       ) => {
-        // 更新默认状态，及存储
-        localStorage.setItem("mainMenuActive", mainMenuActive || '')
-        localStorage.setItem("subMenus", JSON.stringify(subMenus) || {})
-        localStorage.setItem("activeMenu", activeMenu1 || '')
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
-        localStorage.setItem("activePane", activePane || '')
-        emit("updateTabPanes", tabPanes || [], activePane || "")
+        emit("updateTabPanes", tabPanes || [], activePane || "", false)
     };
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
-      return path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
+      return  path == currentPath || path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
     let foreachMenus = (menu) => {
+
       let currentPath = router.currentRoute.value.href
-      try{
-        menu.mainMenu.forEach((leve1, leve1Index)=>{
+      let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
-          console.log('leve1.path == currentPath', leve1.path, currentPath)
-          // if(leve1.path == currentPath){
           if( matchPath(leve1.path ,currentPath) ){
             setMenusDefult(mainMenu, null, null, null, null)
-            throw new Error("stop leve1")
-            return
+            return true
           }
-          leve1.children.forEach((leve2, leve2Index)=>{
+          return leve1.children.some((leve2, leve2Index)=>{
             let level2Menu = `index-${leve2Index}`
-            // if(leve2.path == currentPath){
             if( matchPath(leve2.path, currentPath) ){
               setMenusDefult(mainMenu, leve1, level2Menu, null, null)
-              throw new Error("stop leve2")
-              return;
+              return true
             }
-            leve2.children.forEach((level3, leve3Index)=>{
+            return leve2.children.some((level3, leve3Index)=>{
               let level3Menu = `${level2Menu}-${leve3Index}`
-              // if(level3.path == currentPath){
               if( matchPath(level3.path, currentPath) ){
                 setMenusDefult(mainMenu, leve1, level3Menu, null, null)
-                throw new Error("stop leve3")
-                return;
+                return true
               }
-              level3.children.forEach((level4, leve4Index)=>{
-                // if(level4.path == currentPath){
+              return level3.children.some((level4, leve4Index)=>{
                 if( matchPath(level4.path, currentPath) ){
                   let level4Menu = `tab-${level4.defId}`
                   setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
-                  throw new Error("stop leve4")
+                  return true
                 }
               })
             })
           })
         })
         // 如果匹配不到路由则选择到一级
-        setMenusDefult('main-menu-0', null, null, null, null)
-      }catch(e){
-        // 用于终止forEach循环
-        console.log(e.message)
-      }
-      
+        
+        !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = () => {
       // 获取栏目树
@@ -223,41 +203,29 @@ export default {
         nextTick(()=>{
           menu.mainMenu = res.result
         })
+      }).catch(err=>{
+        console.log("err", err)
       })
     }
     getMenusTree();
     
     const fixedMenu = (children, level) => {
-
-      
       if(children.path && children.path != router.currentRoute.value.path ){
-
-        router.push(children.path.replace(/^\/web-main/i, ''))
-        setTimeout(()=>{
-          foreachMenus({ mainMenu: menu.mainMenu })
-        },2)
-        
+        router.push(children.path.replace(/^\/web-main/i, ''))        
         pageVisit({
           href: children.path,
           tabName: children.name,
           name: children.name,
         })
       }
-      // history.pushState( {}, children.name || "零售云", children.path)
-      
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
         if(item.type != 'primary'){
           item.type = 'primary'
         }
       })
-      // emit('updateTabPanes', level == 4 ? children.children : []) 
       if(level == 4){
-        emit('updateTabPanes', children.children ) 
-        if(!children.children.length){
-          localStorage.setItem("activePane", '')
-          localStorage.setItem("tabPanes", JSON.stringify([]))
-        }
+        emit('updateTabPanes', children.children , '', true) 
       }
 
       // 如果导航为新增加的则添加否则不处理
@@ -272,7 +240,6 @@ export default {
         menuPages.value.unshift(children)
         if(menuPages.value.length > 10){
           menuPages.value.pop()
-          // menuPages.value = menuPages.value.splice(1,10)
         }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
       }
@@ -280,9 +247,7 @@ export default {
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       emit("mainMenusClick", index)
-      localStorage.setItem("mainMenuActive", index) 
       fixedMenu(children)
-      localStorage.setItem("subMenus", JSON.stringify(children))
       activeMenu.value = "";
       menu.subMenus = children
     }
@@ -290,15 +255,6 @@ export default {
     // 收起导航
     const asideRef = ref(null);
     onMounted(()=>{
-      // nextTick(()=>{
-      //   window.addEventListener("click", (event)=>{
-      //     let includesAside = event.path.includes(asideRef.value)
-      //     // 如果点击路径不包含 aside-tmpl 则关闭二级导航
-      //     if(!includesAside){
-      //       menu.subMenus = {}
-      //     }
-      //   });
-      // })
     })
 
     // 监听关闭按钮
@@ -308,10 +264,10 @@ export default {
     })
 
     //  子菜单的状态
-    let activeMenu = ref( localStorage.getItem("activeMenu") || '');
+    let activeMenu = ref('');
 
     // 主导航的选中状态
-    let mainMenuActive = ref( localStorage.getItem("mainMenuActive") || '');
+    let mainMenuActive = ref('');
 
     return {
       getMenusTree,

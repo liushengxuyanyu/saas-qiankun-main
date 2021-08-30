@@ -50,9 +50,18 @@ export default {
     );
 
     const closeTab = (event, index) => {
-      // event.stopPropagation();
-      // event.preventDefault();
-      window.eventBus.$emit('closeTabPane', menuPages && menuPages.value[index]);
+      event.stopPropagation();
+      event.preventDefault();
+      if (menuPages && menuPages.value) {
+        let closePath = menuPages.value[index].path;
+        let pathRegExp = new RegExp('^' + location.pathname);
+        if (pathRegExp.test(closePath)) {
+          let menu = menuPages.value[index + 1] || menuPages.value[index - 1];
+          menu && changRouter(menu);
+        }
+        window.eventBus.$emit('closeTabPane', menuPages && menuPages.value[index]);
+      }
+
       menuPages.value.splice(index, 1);
       updateMenu();
     };
@@ -68,7 +77,10 @@ export default {
 
     window.eventBus.$on('closeTabPane', function (data) {
       // 关闭门店-订单 清空订单相关缓存
-      if (data.path.indexOf('/web-main/wuliu/css-qiankun/css/outbound-manage/order/search') > -1) {
+      if (
+        data.path.indexOf('/web-main/wuliu/css-qiankun/css/outbound-manage/order/search') > -1 &&
+        data.name === '订单管理'
+      ) {
         sessionStorage.removeItem('css-order-params');
         sessionStorage.removeItem('css-order-page');
       }

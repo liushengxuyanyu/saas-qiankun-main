@@ -16,6 +16,16 @@ export const menusRoot = () => {
     })
 }
 export const menus = () => {
+  let navMenus = localStorage.getItem('navMenus')
+  if(navMenus){
+    try{
+      let menus = JSON.parse(navMenus)
+      return Promise.resolve(menus)
+    }catch{
+      console.log('JSON.parse(navMenus)')
+    }
+  }
+  
   return service.get('/defender/api/admin/menu/nav', {
       params: {
         "platform": "ROOT",
@@ -24,6 +34,7 @@ export const menus = () => {
       }
     })
     .then(res=>{
+      localStorage.setItem('navMenus', JSON.stringify(res.data))
       return res.data
     })
     .catch(err=>{
