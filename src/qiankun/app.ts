@@ -51,12 +51,12 @@ export const getApps = () => {
       activeRule: "/web-main/wuliu/dds-qiankun",
     },
     // 物流-系统管理(系统配置)
-    // {
-    //   name: "saascloudcenter",
-    //   entry: "/wuliu/cloudcenter-qiankun/index.html",
-    //   container,
-    //   activeRule: "/web-main/wuliu/cloudcenter-qiankun",
-    // },
+    {
+      name: "saascloudcenter",
+      entry: "/wuliu/cloudcenter-qiankun/index.html",
+      container,
+      activeRule: "/web-main/wuliu/cloudcenter-qiankun",
+    },
     // 商品管理
     {
       name: "goods-manage",
@@ -81,20 +81,19 @@ export const getApps = () => {
       activeRule: "/web-main/mis-admin",
     },
 
-    // {
-    //   name: "cmsAdminSaas",
-    //   entry: "/cms-admin/index.html",
-    //   container,
-    //   activeRule: "/web-main/cms-admin",
-    // },
-
+    {
+      name: "cmsAdminSaas",
+      entry: "/activity/cms-admin/index.html",
+      container,
+      activeRule: "/web-main/cms-admin",
+    },
     // 社交管理
-    // {
-    //   name: "cmsappActAdmin",
-    //   entry: "/act-admin/index.html",
-    //   container,
-    //   activeRule: "/web-main/act-admin",
-    // },
+    {
+      name: "cmsappActAdmin",
+      entry: "/act-admin/index.html",
+      container,
+      activeRule: "/web-main/act-admin",
+    },
   ]
   return apps;
 };

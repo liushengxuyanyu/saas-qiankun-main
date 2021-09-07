@@ -32,7 +32,7 @@
             </div>
           </div>
           <template v-if="tabPanes.value && tabPanes.value.length">
-            <el-tabs class="leve4Menus"
+            <el-tabs class="leve4Menus" info="四级导航"
                      @tab-click="pane=>clickTabPanes(tabPanes, pane)"
                      v-model="activePane">
               <el-tab-pane v-for="tagpane in tabPanes.value"
@@ -61,6 +61,7 @@ import { pageVisit } from '../../api/menu';
 
 export default {
   setup() {
+    localStorage.removeItem('navMenus')
     let asideWidth = ref('auto');
     const triggerCloseAside = (width) => {
       asideWidth.value = width;
@@ -70,14 +71,12 @@ export default {
     let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
 
     let tabPanes = reactive({
-      value:
-        (localStorage.getItem('tabPanes') && JSON.parse(localStorage.getItem('tabPanes'))) || []
+      value: []
     });
-    // tabPanes.value.find(item => { })
 
-    let activePane = ref(localStorage.getItem('activePane') || '');
+    let activePane = ref('');
 
-    const updateTabPanes = (tabs, activePaneVal) => {
+    const updateTabPanes = (tabs, activePaneVal, auto) => {
       tabPanes.value = tabs.filter((item) => {
         return item.hide == 0;
       });
@@ -85,16 +84,13 @@ export default {
         nextTick(() => {
           let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
           activePane.value = 'tab-' + item.defId;
-          localStorage.setItem('activePane', activePane.value);
-          localStorage.setItem('tabPanes', JSON.stringify(tabs));
-          tabs.length > 0 && item.path && router.push(item.path.replace(/^\/web-main/i, ''));
+          auto && router.push(item.path.replace(/^\/web-main/i, ''));
         });
     };
 
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
-      router.push(item.path.replace(/^\/web-main/i, ''));
-      localStorage.setItem('activePane', 'tab-' + item.defId);
+      router.push(item.path.replace(/^\/web-main/i, ''))
       asideRef.value.updateMenuPages(item);
       pageVisit({
         href: item.path,
@@ -130,13 +126,6 @@ export default {
       fullScreen.value = !fullScreen.value;
     };
 
-    // history.pushState({
-    //   "isHistoryPush": true,
-    //   name: "门店订单配置",
-    //   defId: "124619",
-    //   path: "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list"
-    //   }, '门店订单配置', "/web-main/wuliu/css-qiankun/css/baseinfo/manage/order/list")
-
     window.addEventListener('popstate', (event) => {
       if (event.state.isHistoryPush) {
         let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
@@ -148,6 +137,7 @@ export default {
           asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
         }
       }
+      asideRef.value.getMenusTree()
     });
 
     return {
