@@ -121,7 +121,7 @@ export default {
     }
     let foreachMenus = (menu) => {
 
-      let currentPath = router.currentRoute.value.href
+      let currentPath = menu.currentPath || router.currentRoute.value.href
       let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
           let mainMenu = `main-menu-${leve1Index}`
           if( matchPath(leve1.path ,currentPath) ){
@@ -154,7 +154,7 @@ export default {
         
         !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
-    const getMenusTree = () => {
+    const getMenusTree = (currentPath) => {
       // 获取栏目树
       getmenus().then(res=>{
         let info = {
@@ -199,8 +199,8 @@ export default {
         }
         info.menus.tree = res.result
         state.setGlobalState(info)
-        foreachMenus({ mainMenu: res.result })
         nextTick(()=>{
+          foreachMenus({ mainMenu: res.result, currentPath })
           menu.mainMenu = res.result
         })
       }).catch(err=>{

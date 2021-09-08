@@ -127,8 +127,8 @@ export default {
     };
 
     window.addEventListener('popstate', (event) => {
+      let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
       if (event.state.isHistoryPush) {
-        let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
         let { name, defId } = event.state;
         if (!defId) {
           defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/gi, '');
@@ -137,7 +137,7 @@ export default {
           asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
         }
       }
-      asideRef.value.getMenusTree()
+      asideRef.value.getMenusTree(path)
     });
 
     return {
