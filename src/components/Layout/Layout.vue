@@ -139,7 +139,7 @@ export default {
       }
       if(event.state.closeDefId){
         let index = menuPages.findIndex((item)=>{ return item.defId == event.state.closeDefId})
-        menuTabPagesRef.value.closeTab({}, index)
+        index > -1 && menuTabPagesRef.value.closeTab({}, index)
       }
       asideRef.value.getMenusTree(path)
     });
