@@ -50,8 +50,8 @@ export default {
     );
 
     const closeTab = (event, index) => {
-      event.stopPropagation();
-      event.preventDefault();
+      event.stopPropagation && event.stopPropagation();
+      event.preventDefault && event.preventDefault();
       if (menuPages && menuPages.value) {
         let closePath = menuPages.value[index].path;
         let pathRegExp = new RegExp('^' + location.pathname);

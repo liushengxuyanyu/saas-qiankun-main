@@ -20,7 +20,7 @@
 
         <div class="menu-pages"
              v-if="menuPages.length && fullScreen">
-          <MenuTabPages :menuPages="menuPages"
+          <MenuTabPages ref="menuTabPagesRef" :menuPages="menuPages"
                         @updateRouter="updateMenuPages" />
         </div>
         <div class="qiankun-container-body">
@@ -125,7 +125,7 @@ export default {
     const onFullScreen = (val) => {
       fullScreen.value = !fullScreen.value;
     };
-
+    const menuTabPagesRef = ref(null)
     window.addEventListener('popstate', (event) => {
       let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
       if (event.state.isHistoryPush) {
@@ -136,6 +136,10 @@ export default {
         if (path && name && defId) {
           asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
         }
+      }
+      if(event.state.closeDefId){
+        let index = menuPages.findIndex((item)=>{ return item.defId == event.state.closeDefId})
+        menuTabPagesRef.value.closeTab({}, index)
       }
       asideRef.value.getMenusTree(path)
     });
@@ -153,7 +157,8 @@ export default {
       isIndexPage,
       updateMenuPages,
       fullScreen,
-      onFullScreen
+      onFullScreen,
+      menuTabPagesRef,
     };
   },
   components: {
