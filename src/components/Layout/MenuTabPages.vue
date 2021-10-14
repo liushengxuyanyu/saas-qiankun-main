@@ -84,6 +84,14 @@ export default {
         sessionStorage.removeItem('css-order-params');
         sessionStorage.removeItem('css-order-page');
       }
+      // 关闭集团商品 清空相关缓存
+      if (
+        data.path.indexOf('/web-main/goods-manage/goods/groupGoods') > -1 &&
+        data.name === '集团商品'
+      ) {
+        sessionStorage.removeItem('goods-manage-params');
+        sessionStorage.removeItem('goods-manage-page');
+      }
       console.log(data);
     });
 
