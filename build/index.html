@@ -159,7 +159,7 @@
                 this.setRequestHeader('Authorization', token);
                 this.setRequestHeader('token', token);
                 if(
-                  !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save)|importProductExcel/ig.test(url)
+                  !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save)|importProductExcel\.do/ig.test(url)
                 ){
                   this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
                 }
