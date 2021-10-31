@@ -63,6 +63,10 @@ export const getApps = () => {
       entry: "/goods-manage/index.html",
       container,
       activeRule: "/web-main/goods-manage",
+      props: {
+        document: document,
+        window: window
+      }
     },
 
     // 河狸系统

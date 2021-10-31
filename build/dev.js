@@ -2,6 +2,8 @@ const webpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const VUE_APP_URL = 'https://mryxb12.cloud.dev.missfresh.net'
+// const VUE_APP_URL = 'https://mryx.cloud.test.missfresh.net'
 
 async function start() {
   let port = 0;
@@ -21,29 +23,28 @@ async function start() {
       index: 'index.html',
     },
     proxy: {
-
       '/helios/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        target: VUE_APP_URL,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/ccs/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        target: VUE_APP_URL,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/heimdall/api': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: VUE_APP_URL,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/sobot': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: VUE_APP_URL,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/defender/api': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: VUE_APP_URL,
         changeOrigin: true,
         logLevel: 'debug'
       },
