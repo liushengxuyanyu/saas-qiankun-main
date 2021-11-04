@@ -23,14 +23,14 @@
             </li>
           </ul>
         </el-popover>
-        
+
       </div>
     </div>
   </div>
 </template>
 <script>
 import { ref, reactive } from 'vue'
-import Logo from '@/assets/mryx_lsy.png'
+import Logo from '@/assets/logo.svg'
 import { ElMessageBox } from 'element-plus'
 export default {
   setup() {
@@ -63,7 +63,7 @@ export default {
     padding: 11px 0 0 20px;
     width: 300px;
     .logo-img img{
-      width: 104px ;
+      height: 30px ;
     }
   }
   .userinfo{
