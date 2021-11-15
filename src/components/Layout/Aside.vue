@@ -7,11 +7,8 @@
     <el-menu
       class="main-menus"
       :default-active="mainMenuActive"
-      @open="handleOpen"
-      @close="handleClose"
-      @select="handleSelect"
       :collapse="isCollapse"
-      :unique-opened="uniqueOpend">
+      :unique-opened="true">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
         <!-- @mouseover="changeSubMenus(menu)" -->
         <el-menu-item :index="'main-menu-' + index " 
@@ -25,7 +22,7 @@
         <el-menu-item 
           :index="'main-menu-' + index"  
           v-if="menu.children.length && !menu.hide" 
-          style="padding-left:5px"
+          style="padding-left: 5px"
           @click="changeSubMenus(menu, 'main-menu-' + index)">
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
@@ -41,34 +38,31 @@
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
       <el-menu
-        @open="handleOpen"
-        @close="handleClose"
-        collapse-transition="true"
+        :collapse-transition="true"
         :default-openeds="defaultOpeneds"
         :default-active="activeMenu"
-        @select="handleSelect"
         menu-trigger="hover"
-        >
-      <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-        <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
-          <template #title>
-            <span v-html="submenu.name"></span>
-          </template>
-        </el-menu-item>
-        <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
-          <template #title>
-            <span v-html="submenu.name"></span>
-          </template>
-          <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
-              <template #title>
-                <i class="svg-icon-q"></i>
-                <span v-html="submenuChild.name"></span>
-              </template>
-            </el-menu-item>
-          </template>
-        </el-submenu>
-      </template>
+      >
+        <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
+          <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
+            <template #title>
+              <span v-html="submenu.name"></span>
+            </template>
+          </el-menu-item>
+          <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
+            <template #title>
+              <span v-html="submenu.name"></span>
+            </template>
+            <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
+              <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
+                <template #title>
+                  <i class="svg-icon-q"></i>
+                  <span v-html="submenuChild.name"></span>
+                </template>
+              </el-menu-item>
+            </template>
+          </el-submenu>
+        </template>
       </el-menu>
     </div>
   </div>
@@ -81,14 +75,6 @@ import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
 
 export default {
-  methods: {
-    handleOpen(key, keyPath) {
-    },
-    handleClose(key, keyPath) {
-    },
-    handleSelect(key, keyPath){
-    } 
-  },
   props:{
     emits: ['triggerCloseAside'],
     menuPages: Array,
@@ -113,6 +99,10 @@ export default {
       ) => {
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
+
+        console.log('??', menu.subMenus, activeMenu)
+
+        // 更新tab信息
         emit("updateTabPanes", tabPanes || [], activePane || "", false)
     };
     const matchPath = (path, currentPath) => {
@@ -199,9 +189,11 @@ export default {
         }
         info.menus.tree = res.result
         state.setGlobalState(info)
+
         nextTick(()=>{
           foreachMenus({ mainMenu: res.result, currentPath })
           menu.mainMenu = res.result
+          console.log('info: --->', info)
         })
       }).catch(err=>{
         console.log("err", err)
@@ -210,13 +202,14 @@ export default {
     getMenusTree();
     
     const fixedMenu = (children, level) => {
+      console.log('fixed menu: --->', children, level)
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))        
-        pageVisit({
-          href: children.path,
-          tabName: children.name,
-          name: children.name,
-        })
+        // pageVisit({
+        //   href: children.path,
+        //   tabName: children.name,
+        //   name: children.name,
+        // })
       }
       // 重置所有按钮状态
       menuPages.value.forEach(item=>{
@@ -272,7 +265,7 @@ export default {
     return {
       getMenusTree,
       isCollapse: false,
-      uniqueOpend: true,
+      // uniqueOpend: true,
       menu,
 
       asideRef,

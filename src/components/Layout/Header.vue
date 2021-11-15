@@ -9,7 +9,7 @@
           placement="bottom-end"
           :width="80"
           trigger="click"
-          appendToBody="false"
+          :append-to-body="false"
         >
           <template #reference>
             <el-avatar size="medium" :src="circleUrl"></el-avatar>

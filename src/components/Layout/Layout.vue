@@ -20,8 +20,11 @@
 
         <div class="menu-pages"
              v-if="menuPages.length && fullScreen">
-          <MenuTabPages ref="menuTabPagesRef" :menuPages="menuPages"
-                        @updateRouter="updateMenuPages" />
+          <MenuTabPages 
+            ref="menuTabPagesRef" 
+            :menuPages="menuPages"
+            @updateRouter="updateMenuPages" 
+          />
         </div>
         <div class="qiankun-container-body">
           <div class="rank-block">
