@@ -212,7 +212,7 @@ export default {
         nextTick(()=>{
           foreachMenus({ mainMenu: res.result, currentPath })
           menu.mainMenu = res.result
-          console.log('info: --->', info)
+          // console.log('info: --->', info)
         })
       }).catch(err=>{
         console.log("err", err)
@@ -259,7 +259,7 @@ export default {
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       // debugger
-      console.log('changeSubMenus testing ...')
+      console.log('changeSubMenus testing ...', children)
       // emit("mainMenusClick", index)
       fixedMenu(children)
       // activeMenu.value = "";

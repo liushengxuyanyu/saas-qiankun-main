@@ -18,14 +18,14 @@
       <div class="qiankun-container"
            :style="'width:calc(100% - '+ asideWidth + ')'">
 
-        <div class="menu-pages"
+        <!-- <div class="menu-pages"
              v-if="menuPages.length && fullScreen">
           <MenuTabPages 
             ref="menuTabPagesRef" 
             :menuPages="menuPages"
             @updateRouter="updateMenuPages" 
           />
-        </div>
+        </div> -->
         <div class="qiankun-container-body">
           {{ tabPanes }}
           <template v-if="tabPanes.value && tabPanes.value.length">
@@ -37,7 +37,6 @@
                            :label="tagpane.name"
                            :name="'tab-' + tagpane.defId">
               </el-tab-pane>
-              <!-- @click="clickTabPanes" -->
             </el-tabs>
           </template>
           <router-view></router-view>

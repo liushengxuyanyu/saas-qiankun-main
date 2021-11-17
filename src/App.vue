@@ -14,7 +14,7 @@ export default {
   name: 'App',
   setup() {
     onMounted(() => {
-      console.log('register', register);
+      // console.log('register', register);
       register();
       startQK({
         prefetch: false,
