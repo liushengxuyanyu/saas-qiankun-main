@@ -27,13 +27,7 @@
           />
         </div>
         <div class="qiankun-container-body">
-          <div class="rank-block">
-            <div @click="onFullScreen"
-                 :class="{'full-screen': true, 'close-screen': !fullScreen }">
-              <i class="el-icon-full-screen"></i>
-              <i class="el-icon-plus"></i>
-            </div>
-          </div>
+          {{ tabPanes }}
           <template v-if="tabPanes.value && tabPanes.value.length">
             <el-tabs class="leve4Menus" info="四级导航"
                      @tab-click="pane=>clickTabPanes(tabPanes, pane)"
@@ -115,12 +109,13 @@ export default {
     );
 
     const mainMenusClick = (index) => {
+      console.log('触发 mainMenusClick: --->', index)
       isIndexPage.active = index == 'main-menu-0';
     };
     const asideRef = ref(null);
 
     const updateMenuPages = () => {
-      console.log(asideRef.value.getMenusTree());
+      console.log('updateMenuPages: --->', asideRef.value.getMenusTree());
     };
 
     const fullScreen = ref(true);

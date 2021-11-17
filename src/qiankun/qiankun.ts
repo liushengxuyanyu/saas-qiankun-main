@@ -44,6 +44,6 @@ addGlobalUncaughtErrorHandler((event) => {
   const { message: msg } = event;
   // 加载失败时提示
   if (msg && msg.includes("died in status LOADING_SOURCE_CODE")) {
-    console.error("微应用加载失败，请检查应用是否可运行");
+    console.error("[ ❌ 微应用加载失败，请检查应用是否可运行 ]");
   }
 });

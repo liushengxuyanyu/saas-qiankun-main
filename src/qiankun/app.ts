@@ -7,7 +7,8 @@ export const getApps = () => {
   const apps = [
     // 客服系统
     {
-      name: "heliosHeimdall",
+      // name: "heliosHeimdall",
+      name: "CUSTOM_SERVICE_SUB_SYSTEM", // 新命名
       entry: "/helios/index.html",
       container,
       activeRule: "/web-main/helios",
