@@ -1,6 +1,4 @@
 
-import { Message as ElMessage } from 'element-plus';
-
 const menu = {
   state: {
     menus: [],

@@ -1,10 +1,10 @@
 
 import { createStore } from 'vuex'
 
-import user from "./modules/user";
-import menu from "./modules/menu";
+import user from "./modules/user"
+import menu from "./modules/menu"
 
-import getters from "./getters";
+import getters from "./getters"
 
 
 const store = createStore({
@@ -13,6 +13,6 @@ const store = createStore({
     menu,
   },
   getters
-});
+})
 
-export default store;
+export default store

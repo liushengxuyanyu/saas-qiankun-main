@@ -1,8 +1,8 @@
 import {
   loginByUsername,
   getUserName
-} from '@/api/login';
-import { getToken, setToken, removeToken } from '@/utils/auth';
+} from '@/api/login'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
@@ -13,7 +13,7 @@ const user = {
     name: '',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     roles: [],
-    userName: '',
+    userName: ''
   },
 
   mutations: {
@@ -61,19 +61,19 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      const username = userInfo.username.trim();
+      const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password)
           .then(response => {
-            const data = response.data;
-            commit('SET_TOKEN', data.token);
-            setToken(response.data.token);
+            const data = response.data
+            commit('SET_TOKEN', data.token)
+            setToken(response.data.token)
             resolve();
           })
           .catch(error => {
             reject(error);
-          });
-      });
+          })
+      })
     },
 
     // 获取用户信息
@@ -82,37 +82,36 @@ const user = {
     getUserName({ commit }) {
       getUserName().then(res => {
         if (res.data.name && res.data.userId) {
-          commit('SET_USERNAME', res.data.name);
+          commit('SET_USERNAME', res.data.name)
         } else {
-          commit('SET_USERNAME', res.data);
+          commit('SET_USERNAME', res.data)
         }
-      });
+      })
     },
 
     // 登出
     LogOut({ commit }) {
       return new Promise((resolve, reject) => {
         try {
-          commit('SET_TOKEN', '');
-          commit('SET_ROLES', []);
-          removeToken();
-          resolve();
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          removeToken()
+          resolve()
         } catch (error) {
-          reject();
+          reject()
         }
-      });
+      })
     },
 
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '');
-        removeToken();
-        resolve();
-      });
+        commit('SET_TOKEN', '')
+        removeToken()
+        resolve()
+      })
     },
-
   }
 };
 
-export default user;
+export default user

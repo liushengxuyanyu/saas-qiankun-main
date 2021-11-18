@@ -6,7 +6,7 @@
 import { onMounted } from 'vue'
 import { qiankunRegister, qiankunStart } from './qiankun/index'
 import HelloWorld from './components/HelloWorld.vue'
-import Layout from '@/components/Layout/Layout.vue'
+import Layout from '@/components/Layout/index.vue'
 
 export default {
   name: 'App',

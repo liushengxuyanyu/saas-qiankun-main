@@ -1,5 +1,4 @@
 const getters = {
-
   token: state => state.user.token,
   name: state => state.user.name,
   status: state => state.user.status,
@@ -8,5 +7,6 @@ const getters = {
   appList: state => state.user.appList,
   userName: state => state.user.userName,
 
-};
-export default getters;
+}
+
+export default getters

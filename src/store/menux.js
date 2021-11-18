@@ -11,7 +11,7 @@ const store = createStore({
       mainMenuActive: '',
       subMenus: '',
       activePane: '',
-      tabPanes: '',
+      tabPanes: ''
     }
   },
   mutations: {
@@ -35,15 +35,14 @@ const store = createStore({
     },
     tabPanes(state, data) {
       state.tabPanes = data
-    },
-
+    }
   },
   actions: {
     increment(context) { // store.dispatch('increment')
       context.commit('increment')
     }
   }
-});
+})
 
-export default store;
+export default store
 

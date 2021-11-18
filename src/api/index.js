@@ -1,33 +1,33 @@
-import axios from "axios";
-import { ElMessageBox as MessageBox } from "element-plus";
-import store from "@/store";
-import { getToken } from "@/utils/auth";
-import { BASE_API, TIMEOUT } from "@/config";
+import axios from "axios"
+import { ElMessageBox as MessageBox } from "element-plus"
+import store from "@/store"
+import { getToken } from "@/utils/auth"
+import { BASE_API, TIMEOUT } from "@/config"
 
 // create an axios instance
 const service = axios.create({
   baseURL: BASE_API, // api 的 base_url
   timeout: TIMEOUT // request timeout
-});
+})
 
 // request interceptor
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
-      config.headers["Authorization"] = getToken();
-      config.headers["token"] = getToken();
+      config.headers["Authorization"] = getToken()
+      config.headers["token"] = getToken()
     }
     return config;
   },
   error => {
-    Promise.reject(error);
+    Promise.reject(error)
   }
-);
+)
 
 // response interceptor
 service.interceptors.response.use(
   response => {
-   return response; 
+    return response;
   },
   error => {
     let status = error.response.status
@@ -35,9 +35,9 @@ service.interceptors.response.use(
     if(status == "401" || code == "401") {
       logout()
     }
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 function logout() {
   MessageBox.confirm(
@@ -50,8 +50,8 @@ function logout() {
   ).then(() => {
     store.dispatch("FedLogOut").then(() => {
       window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
-    });
-  });
+    })
+  })
 }
 
 export default service;

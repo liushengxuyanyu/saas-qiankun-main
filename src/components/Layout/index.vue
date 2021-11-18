@@ -22,7 +22,7 @@
           />
         </div>
         <div class="qiankun-container-body">
-          {{ tabPanes }}
+          <!-- {{ tabPanes }} -->
           <template v-if="tabPanes.value && tabPanes.value.length">
             <el-tabs v-model="activePane" class="leve4Menus" info="四级导航" @tab-click="pane=>clickTabPanes(tabPanes, pane)">
               <el-tab-pane 
