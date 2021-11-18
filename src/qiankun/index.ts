@@ -11,8 +11,8 @@ import { getMicroApps } from "./app"
  * 第一个参数 - 微应用的注册信息
  * 第二个参数 - 全局生命周期钩子
  */
-export const startQK = start;
-export const register = () => {
+export const qiankunStart = start;
+export const qiankunRegister = () => {
   registerMicroApps(
     getMicroApps(), {
       // qiankun 生命周期钩子 - 微应用加载前

@@ -1,41 +1,35 @@
 <template>
-  <layout />
+  <Layout />
 </template>
 
 <script>
-import { register, startQK } from './qiankun/index';
-
-import HelloWorld from './components/HelloWorld.vue';
-import Layout from '@/components/Layout/Layout.vue';
-
-import { ref, reactive, onMounted } from 'vue';
+import { onMounted } from 'vue'
+import { qiankunRegister, qiankunRegister } from './qiankun/index'
+import HelloWorld from './components/HelloWorld.vue'
+import Layout from '@/components/Layout/Layout.vue'
 
 export default {
   name: 'App',
   setup() {
     onMounted(() => {
-      // console.log('register', register);
-      register();
-      startQK({
+      qiankunRegister();
+      qiankunRegister({
         prefetch: false,
         sandbox: false,
-        // sandbox: {
-        //   strictStyleIsolation: true
-        //   // experimentalStyleIsolation: true,
-        // },
         singular: true,
         excludeAssetFilter: (assetUrl) => {
-          return /(?=map.*.com)/.test(assetUrl);
+          return /(?=map.*.com)/.test(assetUrl)
         }
-      });
-    });
-    return {};
+      })
+    })
+
+    return {}
   },
   components: {
     HelloWorld,
     Layout
   }
-};
+}
 </script>
 <style lang="less" scoped>
 #app {
