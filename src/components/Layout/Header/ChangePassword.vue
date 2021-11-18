@@ -1,3 +1,3 @@
 <template>
-  <div>Reset Password</div>
+  <div></div>
 </template>
