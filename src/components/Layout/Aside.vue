@@ -5,11 +5,11 @@
       :default-active="mainMenuActive"
       :collapse="isCollapse"
       :unique-opened="true">
-      <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
+      <template v-for="(menu, index) in menu.mainMenu" :key="'key-' + index">
         <el-menu-item 
-          :index="'main-menu-' + index " 
+          :index="'main-menu-' + index" 
           style="padding-left:5px"
-          v-if="!menu.children.length  && !menu.hide" 
+          v-if="!menu.children.length && !menu.hide" 
           @click="changeSubMenus(menu, 'index-page')"
         >
           <template #title>
@@ -31,7 +31,7 @@
       </template>
     </el-menu>
 
-    <div class="aside-sub-container" v-if="menu.subMenus.children && menu.subMenus.children.length">
+    <div v-if="menu.subMenus.children && menu.subMenus.children.length" class="aside-sub-container">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
