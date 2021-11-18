@@ -6,10 +6,12 @@
       :collapse="isCollapse"
       :unique-opened="true">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
-        <el-menu-item :index="'main-menu-' + index " 
+        <el-menu-item 
+          :index="'main-menu-' + index " 
           style="padding-left:5px"
           v-if="!menu.children.length  && !menu.hide" 
-          @click="changeSubMenus(menu, 'index-page')">
+          @click="changeSubMenus(menu, 'index-page')"
+        >
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0,2)"></span>
@@ -19,7 +21,8 @@
           :index="'main-menu-' + index"  
           v-if="menu.children.length && !menu.hide" 
           style="padding-left: 5px"
-          @click="changeSubMenus(menu, 'main-menu-' + index)">
+          @click="changeSubMenus(menu, 'main-menu-' + index)"
+        >
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0,2)"></span>
@@ -28,7 +31,7 @@
       </template>
     </el-menu>
 
-    <div class="aside-sub-tmpl" v-if="menu.subMenus.children && menu.subMenus.children.length">
+    <div class="aside-sub-container" v-if="menu.subMenus.children && menu.subMenus.children.length">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
@@ -317,7 +320,7 @@ export default {
     line-height: 50px;
   }
 
-  .aside-sub-tmpl{
+  .aside-sub-container {
     width: 152px;
     height: 100%;
     background: #fff;
