@@ -42,90 +42,90 @@
 </template>
 
 <script>
-import { ref, reactive, watch, nextTick } from 'vue';
-import LayoutHeader from '@/components/Layout/Header.vue';
-import Aside from '@/components/Layout/Aside.vue';
-import MenuTabPages from '@/components/Layout/MenuTabPages.vue';
-import { router } from '../../router';
-import { pageVisit } from '../../api/menu';
+import { ref, reactive, watch, nextTick } from 'vue'
+import LayoutHeader from '@/components/Layout/Header.vue'
+import Aside from '@/components/Layout/Aside.vue'
+import MenuTabPages from '@/components/Layout/MenuTabPages.vue'
+import { router } from '../../router'
+import { pageVisit } from '../../api/menu'
 
 export default {
   setup() {
-    localStorage.removeItem('navMenus')
-    let asideWidth = ref('auto');
-    const triggerCloseAside = (width) => {
-      asideWidth.value = width;
-      console.log('closeAside', width);
-    };
-    let localMenuPages = localStorage.getItem('menuPages');
-    let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || []);
-
+    const fullScreen = ref(true)
+    const asideRef = ref(null)
+    const menuTabPagesRef = ref(null)
+    let activePane = ref('')
+    let asideWidth = ref('auto')
+    let isIndexPage = reactive({ active: false })
+    let localMenuPages = localStorage.getItem('menuPages')
+    let menuPages = reactive((localMenuPages && JSON.parse(localMenuPages)) || [])
+        
     let tabPanes = reactive({
       value: []
-    });
-
-    let activePane = ref('');
+    })
+    
+    localStorage.removeItem('navMenus')
+    const triggerCloseAside = (width) => {
+      asideWidth.value = width;
+      console.log('closeAside', width)
+    }
 
     const updateTabPanes = (tabs, activePaneVal, auto) => {
       tabPanes.value = tabs.filter((item) => {
         return item.hide == 0;
-      });
+      })
       tabs.length &&
         nextTick(() => {
-          let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0];
+          let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0]
           activePane.value = 'tab-' + item.defId;
-          auto && router.push(item.path.replace(/^\/web-main/i, ''));
-        });
-    };
+          auto && router.push(item.path.replace(/^\/web-main/i, ''))
+        })
+    }
 
     const clickTabPanes = (tabPanes, pane) => {
       let item = tabPanes.value[pane.index];
       router.push(item.path.replace(/^\/web-main/i, ''))
-      asideRef.value.updateMenuPages(item);
+      asideRef.value.updateMenuPages(item)
       pageVisit({
         href: item.path,
         tabName: item.name,
         name: item.name
-      });
-    };
-    let isIndexPage = reactive({ active: false });
+      })
+    }
 
     watch(
       () => router.currentRoute,
       (currentRoutePath, oval) => {
-        isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path);
+        isIndexPage.active = /^\/helios\/portal\/portalDoor/.test(currentRoutePath.value.path)
       },
       {
         immediate: true,
         deep: true
       }
-    );
+    )
 
     const mainMenusClick = (index) => {
       console.log('触发 mainMenusClick: --->', index)
-      isIndexPage.active = index == 'main-menu-0';
-    };
-    const asideRef = ref(null);
-
+      isIndexPage.active = index == 'main-menu-0'
+    }
+    
     const updateMenuPages = () => {
-      console.log('updateMenuPages: --->', asideRef.value.getMenusTree());
-    };
-
-    const fullScreen = ref(true);
+      console.log('updateMenuPages: --->', asideRef.value.getMenusTree())
+    }
 
     const onFullScreen = (val) => {
-      fullScreen.value = !fullScreen.value;
-    };
-    const menuTabPagesRef = ref(null)
+      fullScreen.value = !fullScreen.value
+    }
+
     window.addEventListener('popstate', (event) => {
-      let path = event.currentTarget.location.pathname + event.currentTarget.location.search;
+      let path = event.currentTarget.location.pathname + event.currentTarget.location.search
       if (event.state.isHistoryPush) {
         let { name, defId } = event.state;
         if (!defId) {
-          defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/gi, '');
+          defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/gi, '')
         }
         if (path && name && defId) {
-          asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4);
+          asideRef.value.fixedMenu({ path, name, defId, children: [] }, 4)
         }
       }
       if(event.state.closeDefId){
@@ -133,7 +133,7 @@ export default {
         index > -1 && menuTabPagesRef.value.closeTab({}, index)
       }
       asideRef.value.getMenusTree(path)
-    });
+    })
 
     return {
       asideRef,
@@ -150,16 +150,15 @@ export default {
       fullScreen,
       onFullScreen,
       menuTabPagesRef,
-    };
+    }
   },
   components: {
     LayoutHeader,
     Aside,
     MenuTabPages
   }
-};
+}
 </script>
-
 <style lang="less" scoped>
 .saas-layout {
   display: flex;
