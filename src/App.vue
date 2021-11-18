@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { register, startQK } from './qiankun/qiankun';
+import { register, startQK } from './qiankun/index';
 
 import HelloWorld from './components/HelloWorld.vue';
 import Layout from '@/components/Layout/Layout.vue';
