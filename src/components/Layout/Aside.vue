@@ -14,7 +14,7 @@
         >
           <template #title>
             <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
-            <span v-html="menu.pluginName.substring(0,2)"></span>
+            <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
         <el-menu-item 
@@ -25,7 +25,7 @@
         >
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
-            <span v-html="menu.pluginName.substring(0,2)"></span>
+            <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
       </template>
