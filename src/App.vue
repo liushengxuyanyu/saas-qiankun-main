@@ -4,16 +4,20 @@
 
 <script>
 import { onMounted } from 'vue'
-import { qiankunRegister, qiankunRegister } from './qiankun/index'
+import { qiankunRegister, qiankunStart } from './qiankun/index'
 import HelloWorld from './components/HelloWorld.vue'
 import Layout from '@/components/Layout/Layout.vue'
 
 export default {
   name: 'App',
+  components: {
+    HelloWorld,
+    Layout
+  },
   setup() {
     onMounted(() => {
-      qiankunRegister();
-      qiankunRegister({
+      qiankunRegister()
+      qiankunStart({
         prefetch: false,
         sandbox: false,
         singular: true,
@@ -24,10 +28,6 @@ export default {
     })
 
     return {}
-  },
-  components: {
-    HelloWorld,
-    Layout
   }
 }
 </script>
