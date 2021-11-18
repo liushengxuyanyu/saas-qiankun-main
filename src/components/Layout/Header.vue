@@ -1,5 +1,5 @@
 <template>
-  <div class="header-tmpl">
+  <div class="header-container">
     <div class="logo">
       <div class="logo-img"><img :src="Logo"></div>
     </div>
@@ -15,9 +15,9 @@
             <el-avatar size="medium" :src="circleUrl"></el-avatar>
           </template>
           <ul class="action-list" id="ActionList">
-            <!-- <li>
+            <li>
               <a @click="resetPassword">修改密码</a>
-            </li> -->
+            </li>
             <li>
               <a @click="userLogout">用户退出</a>
             </li>
@@ -50,15 +50,15 @@ export default {
       Logo,
       circleUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resetPassword,
-      userLogout,
+      userLogout
     }
    }
 }
 </script>
 <style lang="less" scoped>
-.header-tmpl{
-  height: 50px;
+.header-container{
   display: flex;
+  height: 50px;
   .logo{
     padding: 11px 0 0 20px;
     width: 300px;

@@ -14,13 +14,13 @@
         </Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
-        <!-- <div class="menu-pages" v-if="menuPages.length && fullScreen">
+        <div class="menu-pages" v-if="menuPages.length && fullScreen">
           <MenuTabPages 
             ref="menuTabPagesRef" 
             :menuPages="menuPages"
             @updateRouter="updateMenuPages" 
           />
-        </div> -->
+        </div>
         <div class="qiankun-container-body">
           {{ tabPanes }}
           <template v-if="tabPanes.value && tabPanes.value.length">
@@ -192,18 +192,6 @@ export default {
     align-items: flex-start;
     transition: width 0.3s;
     z-index: 900;
-    // width: 220px;
-    // &.index-page {
-    //   width: 73px;
-    //   :deep(.aside-tmpl) {
-    //     width: 73px;
-    //     position: relative;
-    //     .aside-sub-tmpl {
-    //       left: 73px;
-    //       position: absolute;
-    //     }
-    //   }
-    // }
   }
   .leve4Menus {
     margin: 20px 30px 0 30px;

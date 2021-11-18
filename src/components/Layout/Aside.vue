@@ -1,15 +1,11 @@
 <template>
-  <div class="aside-tmpl" ref="asideRef" :class="{'aside-close': isCloseAside }" >
-    <!-- <div class="arrow-ctrol"
-      @click=" isCloseAside = !isCloseAside ">
-      <div class="arrow"  :class="{'arrow-close': isCloseAside }" ></div>
-    </div> -->
+  <div class="aside-container" ref="asideRef" :class="{'aside-close': isCloseAside }" >
     <el-menu
       class="main-menus"
       :default-active="mainMenuActive"
       :collapse="isCollapse"
       :unique-opened="true">
-      <!-- <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
+      <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
         <el-menu-item :index="'main-menu-' + index " 
           style="padding-left:5px"
           v-if="!menu.children.length  && !menu.hide" 
@@ -29,25 +25,6 @@
             <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
         </el-menu-item>
-      </template> -->
-      <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
-        <el-menu-item :index="'main-menu-' + index " 
-          style="padding-left: 5px"
-          @click="changeSubMenus(menu, 'index-page')">
-          <template #title>
-            <!-- <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i> -->
-            <span v-html="menu.pluginName.substring(0,2)"></span>
-          </template>
-        </el-menu-item>
-        <!-- <el-menu-item 
-          :index="'main-menu-' + index"  
-          style="padding-left: 5px"
-          @click="changeSubMenus(menu, 'main-menu-' + index)">
-          <template #title>
-            <i class="svg-icon" :class="[menu.icon]"></i>
-            <span v-html="menu.pluginName.substring(0,2)"></span>
-          </template>
-        </el-menu-item> -->
       </template>
     </el-menu>
 
@@ -85,7 +62,7 @@
   </div>
 </template>
 <script>
-import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
+import { ref, toRefs, reactive, watch, nextTick } from 'vue'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
@@ -107,7 +84,7 @@ export default {
       }
     })
 
-    let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
+    // let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
 
     let setMenusDefult = (
         mainMenuActive, 
@@ -117,8 +94,7 @@ export default {
         menu.subMenus = subMenus || {}
         activeMenu.value = activeMenu1 || {}
 
-        console.log('??', menu.subMenus, activeMenu)
-
+        // console.log('??', menu.subMenus, activeMenu)
         // 更新tab信息
         emit("updateTabPanes", tabPanes || [], activePane || "", false)
     };
@@ -128,7 +104,6 @@ export default {
     }
     
     let foreachMenus = (menu) => {
-
       let currentPath = menu.currentPath || router.currentRoute.value.href
       let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
           console.log('leve1 --->', leve1Index)
@@ -224,42 +199,41 @@ export default {
       console.log('fixed menu: --->', children, level, router)
       if(children.path && children.path != router.currentRoute.value.path ){
         router.push(children.path.replace(/^\/web-main/i, ''))        
-        // pageVisit({
-        //   href: children.path,
-        //   tabName: children.name,
-        //   name: children.name,
-        // })
+        pageVisit({
+          href: children.path,
+          tabName: children.name,
+          name: children.name,
+        })
       }
       // 重置所有按钮状态
-      // menuPages.value.forEach(item=>{
-      //   if(item.type != 'primary'){
-      //     item.type = 'primary'
-      //   }
-      // })
-      // if(level == 4){
-      //   emit('updateTabPanes', children.children , '', true) 
-      // }
+      menuPages.value.forEach(item=>{
+        if(item.type != 'primary'){
+          item.type = 'primary'
+        }
+      })
+      if(level == 4){
+        emit('updateTabPanes', children.children , '', true) 
+      }
 
-      // // 如果导航为新增加的则添加否则不处理
-      // updateMenuPages(children)
+      // 如果导航为新增加的则添加否则不处理
+      updateMenuPages(children)
       
     }
-    // const updateMenuPages = (children) => {
-
-    //   if( children.children && !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
-    //     // 为当前按钮添加先跟
-    //     children.type = 'primary'
-    //     menuPages.value.unshift(children)
-    //     if(menuPages.value.length > 10){
-    //       menuPages.value.pop()
-    //     }
-    //     localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
-    //   }
-    // }
+    const updateMenuPages = (children) => {
+      if( children.children && !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
+        // 为当前按钮添加先跟
+        children.type = 'primary'
+        menuPages.value.unshift(children)
+        if(menuPages.value.length > 10){
+          menuPages.value.pop()
+        }
+        localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
+      }
+    }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       // debugger
-      console.log('changeSubMenus testing ...', children)
+      console.log('changeSubMenus testing ...', children, index)
       // emit("mainMenusClick", index)
       fixedMenu(children)
       // activeMenu.value = "";
@@ -289,23 +263,17 @@ export default {
       isCollapse: false,
       // uniqueOpend: true,
       menu,
-
       asideRef,
       // 子导航
       changeSubMenus,
-      defaultOpeneds,
-
+      // defaultOpeneds,s
       // 关闭左侧导航
       isCloseAside,
-
       // 打开新tab页
       fixedMenu,
-
       activeMenu,
-
       // 主菜单的选中状态
       mainMenuActive,
-
       // updateMenuPages,
       
     }
@@ -313,7 +281,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.aside-tmpl{
+.aside-container{
   border: none;
   flex: 1;
   left: 0;
