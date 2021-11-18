@@ -1,10 +1,10 @@
 <template>
   <div class="saas-layout">
-    <header v-if="fullScreen" class="saas-header">
+    <header class="saas-header">
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
-      <div v-if="fullScreen" class="aside-main" :class="{'index-page': isIndexPage.active }">
+      <div class="aside-main" :class="{'index-page': isIndexPage.active }">
         <Aside 
           ref="asideRef"
           :menuPages="menuPages"
@@ -14,7 +14,7 @@
         </Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
-        <div class="menu-pages" v-if="menuPages.length && fullScreen">
+        <div class="menu-pages" v-if="menuPages.length">
           <MenuTabPages 
             ref="menuTabPagesRef" 
             :menuPages="menuPages"
@@ -43,15 +43,14 @@
 
 <script>
 import { ref, reactive, watch, nextTick } from 'vue'
-import LayoutHeader from '@/components/Layout/Header.vue'
 import Aside from '@/components/Layout/Aside.vue'
+import LayoutHeader from '@/components/Layout/Header/index.vue'
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue'
 import { router } from '../../router'
 import { pageVisit } from '../../api/menu'
 
 export default {
   setup() {
-    const fullScreen = ref(true)
     const asideRef = ref(null)
     const menuTabPagesRef = ref(null)
     let activePane = ref('')
@@ -113,10 +112,6 @@ export default {
       console.log('updateMenuPages: --->', asideRef.value.getMenusTree())
     }
 
-    const onFullScreen = (val) => {
-      fullScreen.value = !fullScreen.value
-    }
-
     window.addEventListener('popstate', (event) => {
       let path = event.currentTarget.location.pathname + event.currentTarget.location.search
       if (event.state.isHistoryPush) {
@@ -147,8 +142,6 @@ export default {
       activePane,
       isIndexPage,
       updateMenuPages,
-      fullScreen,
-      onFullScreen,
       menuTabPagesRef,
     }
   },

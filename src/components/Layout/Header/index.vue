@@ -1,28 +1,22 @@
 <template>
   <div class="header-container">
     <div class="logo-img">
-      <img :src="Logo">
+      <img :src="userInfo.logo">
     </div>
     <div class="userinfo">
+      <div>
+        {{ userInfo.userName }}
+      </div>
       <div class="avatar">
-        <el-popover
-          placement="bottom-end"
-          :width="80"
-          trigger="click"
-          :append-to-body="false"
-        >
-          <template #reference>
-            <el-avatar size="medium" :src="circleUrl"></el-avatar>
-          </template>
-          <ul class="action-list" id="ActionList">
-            <li>
-              <a @click="resetPassword">修改密码</a>
-            </li>
-            <li>
-              <a @click="userLogout">用户退出</a>
-            </li>
-          </ul>
-        </el-popover>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item icon="el-icon-lock" command="resetPassword">修改密码</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-switch-button" command="userLogout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>  
+        </el-dropdown>
       </div>
     </div>
   </div>
@@ -30,9 +24,16 @@
 <script>
 import { ElMessageBox } from 'element-plus'
 import Logo from '@/assets/logo.svg'
+import Avatar from '@/assets/avatar.svg'
+import { reactive } from 'vue'
 
 export default {
   setup() {
+    let userInfo = reactive({
+      logo: Logo,
+      avatar: Avatar,
+      userName: "" // 用户名
+    })
     const resetPassword = () => {
       window.location.href = `${location.origin}/ccs/reset?ret=${encodeURIComponent(window.location.href)}`
     }
@@ -45,11 +46,17 @@ export default {
         window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
       })
     }
+    const handleCommand = (cmd) => {
+      console.log("testing ...", cmd)
+    }
+
     return {
-      Logo,
-      circleUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      // Logo,
+      // Avatar,
+      userInfo,
       resetPassword,
-      userLogout
+      userLogout,
+      handleCommand
     }
   }
 }

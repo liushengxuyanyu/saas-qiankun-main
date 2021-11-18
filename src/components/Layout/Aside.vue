@@ -85,21 +85,15 @@ export default {
       }
     })
     // let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
-    let setMenusDefult = (
-        mainMenuActive, 
-        subMenus, activeMenu1, 
-        tabPanes, activePane
-      ) => {
+    let setMenusDefult = (mainMenuActive, subMenus, activeMenu1, tabPanes, activePane) => {
       menu.subMenus = subMenus || {}
       activeMenu.value = activeMenu1 || {}
-
-      // console.log('??', menu.subMenus, activeMenu)
       // 更新tab信息
       emit("updateTabPanes", tabPanes || [], activePane || "", false)
     }
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
-      return  path == currentPath || path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
+      return path === currentPath || path && (new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
     
     let foreachMenus = (menu) => {
@@ -134,7 +128,6 @@ export default {
         })
       })
       // 如果匹配不到路由则选择到一级
-      
       !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
