@@ -72,13 +72,11 @@ import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
 
 export default {
-  props:{
+  props: {
     emits: ['triggerCloseAside'],
     menuPages: Array,
   },
   setup(props, { emit, attrs, slots }) {
-
-    
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
@@ -86,21 +84,19 @@ export default {
         children: []
       }
     })
-
     // let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
-
     let setMenusDefult = (
         mainMenuActive, 
         subMenus, activeMenu1, 
         tabPanes, activePane
       ) => {
-        menu.subMenus = subMenus || {}
-        activeMenu.value = activeMenu1 || {}
+      menu.subMenus = subMenus || {}
+      activeMenu.value = activeMenu1 || {}
 
-        // console.log('??', menu.subMenus, activeMenu)
-        // 更新tab信息
-        emit("updateTabPanes", tabPanes || [], activePane || "", false)
-    };
+      // console.log('??', menu.subMenus, activeMenu)
+      // 更新tab信息
+      emit("updateTabPanes", tabPanes || [], activePane || "", false)
+    }
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
       return  path == currentPath || path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
@@ -108,38 +104,38 @@ export default {
     
     let foreachMenus = (menu) => {
       let currentPath = menu.currentPath || router.currentRoute.value.href
-      let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
-          console.log('leve1 --->', leve1Index)
-          let mainMenu = `main-menu-${leve1Index}`
-          if( matchPath(leve1.path ,currentPath) ){
-            setMenusDefult(mainMenu, null, null, null, null)
+      let findMnus = menu.mainMenu.some((leve1, leve1Index) => {
+        console.log('leve1 --->', leve1Index)
+        let mainMenu = `main-menu-${leve1Index}`
+        if( matchPath(leve1.path ,currentPath) ){
+          setMenusDefult(mainMenu, null, null, null, null)
+          return true
+        }
+        return leve1.children.some((leve2, leve2Index)=>{
+          let level2Menu = `index-${leve2Index}`
+          if( matchPath(leve2.path, currentPath) ){
+            setMenusDefult(mainMenu, leve1, level2Menu, null, null)
             return true
           }
-          return leve1.children.some((leve2, leve2Index)=>{
-            let level2Menu = `index-${leve2Index}`
-            if( matchPath(leve2.path, currentPath) ){
-              setMenusDefult(mainMenu, leve1, level2Menu, null, null)
+          return leve2.children.some((level3, leve3Index)=>{
+            let level3Menu = `${level2Menu}-${leve3Index}`
+            if( matchPath(level3.path, currentPath) ){
+              setMenusDefult(mainMenu, leve1, level3Menu, null, null)
               return true
             }
-            return leve2.children.some((level3, leve3Index)=>{
-              let level3Menu = `${level2Menu}-${leve3Index}`
-              if( matchPath(level3.path, currentPath) ){
-                setMenusDefult(mainMenu, leve1, level3Menu, null, null)
+            return level3.children.some((level4, leve4Index)=>{
+              if( matchPath(level4.path, currentPath) ){
+                let level4Menu = `tab-${level4.defId}`
+                setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
                 return true
               }
-              return level3.children.some((level4, leve4Index)=>{
-                if( matchPath(level4.path, currentPath) ){
-                  let level4Menu = `tab-${level4.defId}`
-                  setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
-                  return true
-                }
-              })
             })
           })
         })
-        // 如果匹配不到路由则选择到一级
-        
-        !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
+      })
+      // 如果匹配不到路由则选择到一级
+      
+      !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
       // 获取栏目树
@@ -152,7 +148,7 @@ export default {
           }
         }
 
-        let nav = res.result.find((nav)=>{
+        let nav = res.result.find((nav) => {
           return nav.name == '首页'
         })
         
@@ -196,11 +192,11 @@ export default {
         console.log("err", err)
       })
     }
-    getMenusTree();
+    getMenusTree()
     
     const fixedMenu = (children, level) => {
       console.log('fixed menu: --->', children, level, router)
-      if(children.path && children.path != router.currentRoute.value.path ){
+      if(children.path && children.path != router.currentRoute.value.path){
         router.push(children.path.replace(/^\/web-main/i, ''))        
         pageVisit({
           href: children.path,
@@ -223,11 +219,11 @@ export default {
       
     }
     const updateMenuPages = (children) => {
-      if( children.children && !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
+      if(children.children && !children.children.length && !menuPages.value.find(item => { return item.defId == children.defId })) {
         // 为当前按钮添加先跟
         children.type = 'primary'
         menuPages.value.unshift(children)
-        if(menuPages.value.length > 10){
+        if(menuPages.value.length > 10) {
           menuPages.value.pop()
         }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
@@ -254,12 +250,10 @@ export default {
       console.log('isCloseAside testing ....')
       emit('triggerCloseAside', isCloseAside.value ? '0' : '152px')
     })
-
     //  子菜单的状态
-    let activeMenu = ref('');
-
+    let activeMenu = ref('')
     // 主导航的选中状态
-    let mainMenuActive = ref('');
+    let mainMenuActive = ref('')
 
     return {
       getMenusTree,
@@ -276,11 +270,10 @@ export default {
       fixedMenu,
       activeMenu,
       // 主菜单的选中状态
-      mainMenuActive,
-      // updateMenuPages,
-      
+      mainMenuActive
+      // updateMenuPages, 
     }
-   },
+  }
 }
 </script>
 <style lang="less" scoped>
