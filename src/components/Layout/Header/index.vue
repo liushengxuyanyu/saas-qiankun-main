@@ -22,16 +22,25 @@
         </el-dropdown>
       </div>
     </div>
+    <!-- 对话框部分 -->
+    <AsyncDownload />
+    <ChangePassword />
   </div>
 </template>
 <script>
+import { reactive } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import Logo from '@/assets/logo.svg'
 import Avatar from '@/assets/avatar.svg'
 import DownloadIcon from '@/assets/download.svg'
-import { reactive } from 'vue'
+import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
+import ChangePassword from '@/components/Layout/Header/ChangePassword.vue'
 
 export default {
+  components: {
+    AsyncDownload,
+    ChangePassword
+  },
   setup() {
     let userInfo = reactive({
       logo: Logo,
