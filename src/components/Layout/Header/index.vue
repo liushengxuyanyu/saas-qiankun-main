@@ -15,10 +15,10 @@
           <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="el-icon-lock" command="resetPassword">修改密码</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-lock" command="changePassword">修改密码</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" command="userLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
-          </template>  
+          </template>
         </el-dropdown>
       </div>
     </div>
@@ -39,29 +39,57 @@ export default {
       downloadIcon: DownloadIcon,
       userName: "假的用户名" // 用户名
     })
-    const resetPassword = () => {
-      window.location.href = `${location.origin}/ccs/reset?ret=${encodeURIComponent(window.location.href)}`
-    }
+
+    const asyncDownloadDialog = reactive({
+      title: "下载中心",
+      visible: false
+    })
+    const changePwdDialog = reactive({
+      title: '修改密码',
+      visible: false
+    })
+
     const userLogout = () => {
       ElMessageBox.confirm('确定退出登录?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
+        // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
       })
     }
+
     const handleCommand = (cmd) => {
-      console.log("testing ...", cmd)
+      switch (cmd) {
+        case 'changePassword':
+          changePassword()
+          break;
+        case 'userLogout':
+          userLogout()
+          break;
+        default:
+          break;
+      }
+    }
+
+    const handleAsyncDownload = () => {
+      console.log('处理异步下载对话框')
+      asyncDownloadDialog.visible = !asyncDownloadDialog.visible
+    }
+
+    const changePassword = () => {
+      console.log('修改密码')
+      changePwdDialog.visible = !changePwdDialog.visible
     }
 
     return {
-      // Logo,
-      // Avatar,
       userInfo,
-      resetPassword,
+      asyncDownloadDialog,
+      changePwdDialog,
+      handleCommand,
+      handleAsyncDownload,
       userLogout,
-      handleCommand
+      changePassword
     }
   }
 }
