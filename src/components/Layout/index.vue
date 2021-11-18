@@ -66,24 +66,24 @@ export default {
     
     localStorage.removeItem('navMenus')
     const triggerCloseAside = (width) => {
-      asideWidth.value = width;
+      asideWidth.value = width
       console.log('closeAside', width)
     }
 
     const updateTabPanes = (tabs, activePaneVal, auto) => {
       tabPanes.value = tabs.filter((item) => {
-        return item.hide == 0;
+        return item.hide == 0
       })
       tabs.length &&
         nextTick(() => {
           let item = tabs.find((item) => 'tab-' + item.defId == activePaneVal) || tabPanes.value[0]
-          activePane.value = 'tab-' + item.defId;
+          activePane.value = 'tab-' + item.defId
           auto && router.push(item.path.replace(/^\/web-main/i, ''))
         })
     }
 
     const clickTabPanes = (tabPanes, pane) => {
-      let item = tabPanes.value[pane.index];
+      let item = tabPanes.value[pane.index]
       router.push(item.path.replace(/^\/web-main/i, ''))
       asideRef.value.updateMenuPages(item)
       pageVisit({
@@ -120,7 +120,7 @@ export default {
     window.addEventListener('popstate', (event) => {
       let path = event.currentTarget.location.pathname + event.currentTarget.location.search
       if (event.state.isHistoryPush) {
-        let { name, defId } = event.state;
+        let { name, defId } = event.state
         if (!defId) {
           defId = 'id' + encodeURIComponent(name).replace(/[^a-zA-Z0-9]/gi, '')
         }
