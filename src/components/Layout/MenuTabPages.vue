@@ -107,7 +107,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .menuTapItems {
-  padding: 20px 20px 0;
+  padding: 10px 15px 0;
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;

@@ -210,7 +210,7 @@ export default {
     }
     .qiankun-container-body {
       flex: 1;
-      margin: 20px;
+      margin: 10px 15px;
       background: #fff;
       border-radius: 6px;
       overflow-y: scroll;
