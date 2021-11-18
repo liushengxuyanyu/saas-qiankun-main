@@ -171,8 +171,10 @@
           if(
             /(tag\/exportTag|discount\/integralDownload|recharge\/downResult|downExcel|hotline\/export|exportEquityRecord|modelDownload|timereport\/exportExcel|user\/userModelDownload|scene\/exportTagScene|task\/exportAll|task\/download|downloadImportTemplate|downloadImportUpdateTemplate|downloadImportRsvTemp|frontCategoryNew\/goodsExport|frontCategoryRelationExport|downloadFailData|inviteGiftV3\/export|downloadVoucherInfo)/.test(url)
           ){
-            this.responseType = 'blob'
-          }
+            if(!/(inviteGiftV3\/export\/check)/.test(url)) {
+              this.responseType = 'blob'
+            }  
+          } 
         }
         XMLHttpRequest.intercept = true;
       }
