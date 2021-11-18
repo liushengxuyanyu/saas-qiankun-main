@@ -1,8 +1,4 @@
-
-
-let env = 'prod'
-
-export const getApps = () => {
+export const getMicroApps = () => {
   let container = document.getElementById('qiankun-sub-container')
   const apps = [
     // 客服系统

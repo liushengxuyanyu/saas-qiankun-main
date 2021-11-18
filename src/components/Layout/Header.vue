@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
-    <div class="logo">
-      <div class="logo-img"><img :src="Logo"></div>
+    <div class="logo-img">
+      <img :src="Logo">
     </div>
     <div class="userinfo">
       <div class="avatar">
@@ -23,15 +23,14 @@
             </li>
           </ul>
         </el-popover>
-        
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref, reactive } from 'vue'
-import Logo from '@/assets/mryx_lsy.png'
 import { ElMessageBox } from 'element-plus'
+import Logo from '@/assets/logo.svg'
+
 export default {
   setup() {
     const resetPassword = () => {
@@ -52,18 +51,21 @@ export default {
       resetPassword,
       userLogout
     }
-   }
+  }
 }
 </script>
 <style lang="less" scoped>
 .header-container{
   display: flex;
+  align-items: center;
+  justify-content: center;
   height: 50px;
-  .logo{
-    padding: 11px 0 0 20px;
-    width: 300px;
-    .logo-img img{
-      width: 104px ;
+  .logo-img {
+    display: flex;
+    align-items: center;
+    img {
+      padding: 0 10px;
+      height: 30px;
     }
   }
   .userinfo{
