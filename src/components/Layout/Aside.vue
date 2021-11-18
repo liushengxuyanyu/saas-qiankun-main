@@ -31,7 +31,7 @@
       </template>
     </el-menu>
 
-    <div v-if="menu.subMenus.children && menu.subMenus.children.length" class="aside-sub-container">
+    <div v-show="menu.subMenus.children.length > 0" class="aside-sub-container" :class="[menu.subMenus.children.length > 0 ? 'show' : '']">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
@@ -307,7 +307,8 @@ export default {
   }
 
   .aside-sub-container {
-    width: 152px;
+    // width: 152px;
+    width: 0;
     height: 100%;
     background: #fff;
     overflow-y: auto;
@@ -391,6 +392,12 @@ export default {
       right: 132px;
     }
   }
+
+  .show {
+    width: 152px;
+    transition-duration: .3s; 
+  }
+
   .arrow-ctrol{
     width: 10px;
     height: 48px;

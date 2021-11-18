@@ -4,7 +4,10 @@
       <img :src="userInfo.logo">
     </div>
     <div class="userinfo">
-      <div>
+      <div class="async-download">
+        <img :src="userInfo.downloadIcon" />
+      </div>
+      <div class="name">
         {{ userInfo.userName }}
       </div>
       <div class="avatar">
@@ -25,6 +28,7 @@
 import { ElMessageBox } from 'element-plus'
 import Logo from '@/assets/logo.svg'
 import Avatar from '@/assets/avatar.svg'
+import DownloadIcon from '@/assets/download.svg'
 import { reactive } from 'vue'
 
 export default {
@@ -32,7 +36,8 @@ export default {
     let userInfo = reactive({
       logo: Logo,
       avatar: Avatar,
-      userName: "" // 用户名
+      downloadIcon: DownloadIcon,
+      userName: "假的用户名" // 用户名
     })
     const resetPassword = () => {
       window.location.href = `${location.origin}/ccs/reset?ret=${encodeURIComponent(window.location.href)}`
@@ -82,6 +87,27 @@ export default {
     justify-content: flex-end;
     align-items: center;
     margin-right: 20px;
+    .async-download {
+      margin-right: 10px;
+      img {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        // &:hover {
+        //   color: red;
+        // }
+      }
+    }
+    .name {
+      padding-right: 15px;
+      color: #606266;
+      font-size: 14px;
+      font-weight: bold;
+      max-width: 100px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
     .avatar{
       height: 36px;
       line-height: 36px;

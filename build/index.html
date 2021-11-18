@@ -12,6 +12,7 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script>
       (function(){
+        console.log('index.html entry testing ...')
       if(!XMLHttpRequest.intercept){
         var interceptOpen = XMLHttpRequest.prototype.open;
         var interceptHeader = XMLHttpRequest.prototype.setRequestHeader;
