@@ -8,12 +8,12 @@
       <template v-for="(menu, index) in menu.mainMenu" :key="'key-' + index">
         <el-menu-item
           :index="'main-menu-' + index"
-          style="padding-left:5px"
+          style="padding-left: 5px"
           v-if="!menu.children.length && !menu.hide"
           @click="changeSubMenus(menu, 'index-page')"
         >
           <template #title>
-            <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
+            <i class="svg-icon" :class="['icon-' + menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
