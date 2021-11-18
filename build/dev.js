@@ -1,17 +1,17 @@
-const webpackDevServer = require('webpack-dev-server');
-const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
+const webpackDevServer = require('webpack-dev-server')
+const webpack = require('webpack')
+const path = require('path')
+const fs = require('fs')
 
 async function start() {
-  let port = 0;
+  let port = 0
   try {
-    port = fs.readFileSync(path.resolve('.port'), 'utf8');
+    port = fs.readFileSync(path.resolve('.port'), 'utf8')
   } catch (e) {
-    throw 'not found .port';
+    throw 'not found .port'
   }
 
-  const config = require('./webpack.config')('development');
+  const config = require('./webpack.config')('development')
   const options = {
     contentBase: path.resolve('dist'),
     contentBasePublicPath: "/web-main",
@@ -21,7 +21,6 @@ async function start() {
       index: 'index.html',
     },
     proxy: {
-
       '/helios/api': {
         target: 'https://mryx.cloud.test.missfresh.net/',  //预发
         changeOrigin: true,
@@ -48,15 +47,15 @@ async function start() {
         logLevel: 'debug'
       },
     }
-  };
-  webpackDevServer.addDevServerEntrypoints(config, options);
-  const compiler = webpack(config);
-  const server = new webpackDevServer(compiler, options);
+  }
+  webpackDevServer.addDevServerEntrypoints(config, options)
+  const compiler = webpack(config)
+  const server = new webpackDevServer(compiler, options)
   server.listen(port, 'localhost', () => {
-  });
+  })
   server.invalidate(() => {
-    console.log(`Project is running at http://${options.host}:${port}`);
-  });
+    console.log(`Project is running at http://${options.host}:${port}`)
+  })
 }
 
-start().then();
+start().then()
