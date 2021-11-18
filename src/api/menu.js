@@ -1,5 +1,4 @@
 
-import menusInfo from '../mock/menus'
 import service from './index'
 
 export const menusRoot = () => {
@@ -8,9 +7,9 @@ export const menusRoot = () => {
       "platform": "ROOT",
       "systemId": "10408",
     }
-  }).then(res=>{
+  }).then(res => {
     return res.data
-  }).catch(err=>{
+  }).catch(err => {
     console.log(err)
   })
 }
