@@ -6,10 +6,10 @@
       :collapse="isCollapse"
       :unique-opened="true">
       <template v-for="(menu, index) in menu.mainMenu" :key="'key-' + index">
-        <el-menu-item 
-          :index="'main-menu-' + index" 
+        <el-menu-item
+          :index="'main-menu-' + index"
           style="padding-left:5px"
-          v-if="!menu.children.length && !menu.hide" 
+          v-if="!menu.children.length && !menu.hide"
           @click="changeSubMenus(menu, 'index-page')"
         >
           <template #title>
@@ -17,9 +17,9 @@
             <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
-        <el-menu-item 
-          :index="'main-menu-' + index"  
-          v-if="menu.children.length && !menu.hide" 
+        <el-menu-item
+          :index="'main-menu-' + index"
+          v-if="menu.children.length && !menu.hide"
           style="padding-left: 5px"
           @click="changeSubMenus(menu, 'main-menu-' + index)"
         >
@@ -31,7 +31,7 @@
       </template>
     </el-menu>
 
-    <div v-show="menu.subMenus.children.length > 0" class="aside-sub-container" :class="[menu.subMenus.children.length > 0 ? 'show' : '']">
+    <div v-show="menu.subMenus.children && menu.subMenus.children.length" class="aside-sub-container" :class="[menu.subMenus.children && menu.subMenus.children.length ? 'show' : '']">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
@@ -95,7 +95,7 @@ export default {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
       return path === currentPath || path && (new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
-    
+
     let foreachMenus = (menu) => {
       let currentPath = menu.currentPath || router.currentRoute.value.href
       let findMnus = menu.mainMenu.some((leve1, leve1Index) => {
@@ -144,7 +144,7 @@ export default {
         let nav = res.result.find((nav) => {
           return nav.name == '首页'
         })
-        
+
         if(!nav){
           res.result.unshift({
             actionList: null,
@@ -186,11 +186,11 @@ export default {
       })
     }
     getMenusTree()
-    
+
     const fixedMenu = (children, level) => {
       console.log('fixed menu: --->', children, level, router)
       if(children.path && children.path != router.currentRoute.value.path){
-        router.push(children.path.replace(/^\/web-main/i, ''))        
+        router.push(children.path.replace(/^\/web-main/i, ''))
         pageVisit({
           href: children.path,
           tabName: children.name,
@@ -204,12 +204,12 @@ export default {
         }
       })
       if(level == 4){
-        emit('updateTabPanes', children.children , '', true) 
+        emit('updateTabPanes', children.children , '', true)
       }
 
       // 如果导航为新增加的则添加否则不处理
       updateMenuPages(children)
-      
+
     }
     const updateMenuPages = (children) => {
       if(children.children && !children.children.length && !menuPages.value.find(item => { return item.defId == children.defId })) {
@@ -264,7 +264,7 @@ export default {
       activeMenu,
       // 主菜单的选中状态
       mainMenuActive
-      // updateMenuPages, 
+      // updateMenuPages,
     }
   }
 }
@@ -340,7 +340,7 @@ export default {
         margin: 7px 0px 12px 10px;
       }
     }
-    
+
     .svg-icon-q{
       display: inline-block;
       padding-right: 6px;
@@ -395,7 +395,7 @@ export default {
 
   .show {
     width: 152px;
-    transition-duration: .3s; 
+    transition-duration: .3s;
   }
 
   .arrow-ctrol{
@@ -482,14 +482,14 @@ export default {
     height: 2px;
     background-color: #fff;
   }
-  
+
   /*定义滚动条轨道 内阴影+圆角*/
   ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
     border-radius: 2px;
     background-color: #fff;
   }
-  
+
   /*定义滑块 内阴影+圆角*/
   ::-webkit-scrollbar-thumb {
     border-radius: 2px;
