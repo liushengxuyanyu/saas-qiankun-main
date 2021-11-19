@@ -4,7 +4,7 @@
       <img :src="userInfo.logo">
     </div>
     <div class="userinfo">
-      <div class="async-download">
+      <div class="async-download" @click="handleAsyncDownload">
         <img :src="userInfo.downloadIcon" />
       </div>
       <div class="name">
@@ -23,8 +23,8 @@
       </div>
     </div>
     <!-- 对话框部分 -->
-    <AsyncDownload />
-    <ChangePassword />
+    <AsyncDownload ref="asyncDownloadRef" v-model:visible="asyncDownloadDialog.visible" :title="asyncDownloadDialog.title"/>
+    <ChangePassword ref="changePasswordRef" v-model:visible="changePwdDialog.visible" :title="changePwdDialog.title" />
   </div>
 </template>
 <script>
@@ -67,7 +67,7 @@ export default {
         // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
       })
     }
-
+    
     const handleCommand = (cmd) => {
       switch (cmd) {
         case 'changePassword':
