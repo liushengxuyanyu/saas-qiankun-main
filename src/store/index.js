@@ -6,7 +6,6 @@ import menu from "./modules/menu"
 
 import getters from "./getters"
 
-
 const store = createStore({
   modules: {
     user,
