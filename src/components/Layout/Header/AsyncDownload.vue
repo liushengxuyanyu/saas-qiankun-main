@@ -2,7 +2,7 @@
   <el-dialog :title="title" v-model="visible" width="80%" :before-close="handleDialogClose">
     <!-- TODO: 添加下载列表 -->
     <section class="list-container">
-      <el-table :data="dataList" height="400px" style="width: 100%" v-loading="loading" size="mini">
+      <el-table :data="tableData.list" height="400px" style="width: 100%" v-loading="tableData.loading" size="mini">
         <el-table-column
           prop="id"
           label="任务ID"
@@ -80,7 +80,7 @@
 </template>
 <script>
 import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from '@/common/constants'
-// import { reactive } from 'vue'
+import { reactive } from 'vue'
 
 export default {
   name: 'AsyncDownloadDialog',
@@ -94,12 +94,19 @@ export default {
       required: true
     },
   },
+  // props 不能去掉
   setup(props, context) {
+    let tableData = reactive({
+      loading: false,
+      list: []
+    })
+
     const handleDialogClose = () => {
       context.emit("update:visible", false)
     }
 
     return {
+      tableData,
       handleDialogClose
     }
   }

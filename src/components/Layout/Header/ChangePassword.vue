@@ -16,10 +16,10 @@ export default {
       required: true
     }
   },
-  setup() {
+  // props 不能去掉
+  setup(props, context) {
     const handleDialogClose = () => {
-      console.log('testing ...')
-      visible = !visible
+      context.emit("update:visible", false)
     }
     return {
       handleDialogClose
