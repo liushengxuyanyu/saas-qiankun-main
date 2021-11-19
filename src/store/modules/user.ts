@@ -6,7 +6,7 @@ const state = {
   token: getToken(),
   name: "",
   isLogin: false, // 默认未登录
-  appList: []
+  appList: Array
 }
 
 const mutations = {
@@ -54,23 +54,18 @@ const actions = {
   // logout action
   logout({ commit, /* state, dispatch */ }: any) {
     return new Promise<void>((resolve, reject) => {
-      logout()
-        .then(() => {
-          commit("SET_TOKEN", "")
-          removeToken()
-          removeLocalStorage("username")
-          removeLocalStorage("islogin")
-          // reset visited views and cached views
-          // dispatch('tagsView/delAllViews', null, { root: true })
+      logout().then(() => {
+        commit("SET_TOKEN", "")
+        removeToken()
+        removeLocalStorage("username")
+        removeLocalStorage("islogin")
+        // reset visited views and cached views
+        // dispatch('tagsView/delAllViews', null, { root: true })
 
-          resolve()
-        })
-        .catch(error => {
-          reject(error)
-        })
-      // commit("SET_TOKEN", "")
-      // removeToken()
-      // removeLocalStorage("username")
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }
