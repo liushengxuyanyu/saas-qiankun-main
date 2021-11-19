@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import Logo from '@/assets/logo.svg'
 import Avatar from '@/assets/avatar.svg'
@@ -58,6 +58,11 @@ export default {
       visible: false
     })
 
+    // watch(() => asyncDownloadDialog.visible, (val) => {
+    //   console.log('--->>>', val)
+    //   asyncDownloadDialog.visible = !asyncDownloadDialog.visible
+    // })
+
     const userLogout = () => {
       ElMessageBox.confirm('确定退出登录?', '提示', {
         confirmButtonText: '确定',
@@ -67,7 +72,7 @@ export default {
         // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
       })
     }
-    
+
     const handleCommand = (cmd) => {
       switch (cmd) {
         case 'changePassword':
@@ -82,7 +87,6 @@ export default {
     }
 
     const handleAsyncDownload = () => {
-      console.log('处理异步下载对话框')
       asyncDownloadDialog.visible = !asyncDownloadDialog.visible
     }
 
