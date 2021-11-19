@@ -2,7 +2,7 @@
  * 检查localStorage中是否有指定的值
  * @param {*} key
  */
- export function getLocalStorage(key: string) {
+export function getLocalStorage(key: string) {
   return window.localStorage.getItem(key)
 }
 
