@@ -24,22 +24,19 @@
     </div>
     <!-- 对话框部分 -->
     <AsyncDownload ref="asyncDownloadRef" v-model:visible="asyncDownloadDialog.visible" :title="asyncDownloadDialog.title"/>
-    <ChangePassword ref="changePasswordRef" v-model:visible="changePwdDialog.visible" :title="changePwdDialog.title" />
   </div>
 </template>
 <script>
 import { reactive } from 'vue'
-import { ElMessageBox } from 'element-plus'
-import Logo from '@/assets/logo.svg'
-import Avatar from '@/assets/avatar.svg'
-import DownloadIcon from '@/assets/download.svg'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import Logo from '@/assets/images/logo.svg'
+import Avatar from '@/assets/images/avatar.svg'
+import DownloadIcon from '@/assets/images/download.svg'
 import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
-import ChangePassword from '@/components/Layout/Header/ChangePassword.vue'
 
 export default {
   components: {
-    AsyncDownload,
-    ChangePassword
+    AsyncDownload
   },
   setup() {
     let userInfo = reactive({
@@ -51,10 +48,6 @@ export default {
 
     const asyncDownloadDialog = reactive({
       title: "下载中心",
-      visible: false
-    })
-    const changePwdDialog = reactive({
-      title: '修改密码',
       visible: false
     })
 
@@ -86,13 +79,28 @@ export default {
     }
 
     const changePassword = () => {
-      changePwdDialog.visible = !changePwdDialog.visible
+      ElMessageBox.confirm(
+        `确认修改密码？`,
+        '修改密码',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(() => {
+        // TODO: 跳转到修改密码页
+        console.log('修改密码--->')
+      }).catch(() => {
+        ElMessage({
+          type: 'info',
+          message: `修改密码操作已取消`
+        })
+      })
     }
 
     return {
       userInfo,
       asyncDownloadDialog,
-      changePwdDialog,
       handleCommand,
       handleAsyncDownload,
       changePassword,
