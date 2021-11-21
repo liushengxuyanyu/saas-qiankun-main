@@ -69,6 +69,7 @@ export default {
       belongTo: "",
       showHeader: true,
       showSidebar: true,
+      showDownloadIcon: true,
       showTagsView: true,
       showSubContainer: true
     })
@@ -290,6 +291,7 @@ export default {
 
     .no-margin {
       margin: 0;
+      overflow: hidden;
     }
     #qiankun-sub-container {
       width: 100%;

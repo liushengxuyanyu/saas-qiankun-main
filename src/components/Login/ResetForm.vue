@@ -57,7 +57,9 @@
   </div>
 </template>
 <script>
-import { reactive } from '@vue/reactivity'
+import { reactive } from 'vue'
+import { router } from '@/router'
+
 export default {
   name: 'ResetForm',
   setup() {
@@ -69,7 +71,7 @@ export default {
     })
 
     const goBack = () => {
-      this.$router.push({
+      router.push({
         path: '/login'
       })
     }

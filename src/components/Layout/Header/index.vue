@@ -4,7 +4,7 @@
       <img :src="userInfo.logo">
     </div>
     <div class="userinfo">
-      <div class="async-download" @click="handleAsyncDownload" v-if="userInfo.showDownloadIcon">
+      <div v-if="userInfo.showDownloadIcon" class="async-download" @click="handleAsyncDownload">
         <img :src="userInfo.downloadIcon" />
       </div>
       <div class="name">
@@ -27,8 +27,9 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import store from '@/store'
 import { router } from '@/router'
 import Logo from '@/assets/images/logo.svg'
 import Avatar from '@/assets/images/avatar.svg'
@@ -53,6 +54,12 @@ export default {
       title: "下载中心",
       visible: false
     })
+
+    watch(() => store.state.settings.showDownload, 
+      (val) => {
+        userInfo.showDownloadIcon = val
+      }
+    )
 
     const userLogout = () => {
       ElMessageBox.confirm('确定退出登录?', '提示', {

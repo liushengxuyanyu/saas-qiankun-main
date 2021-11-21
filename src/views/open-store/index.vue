@@ -13,6 +13,7 @@
 </template>
 <script>
 import { reactive } from 'vue'
+
 export default {
   setup() {
     const info = reactive({
@@ -41,6 +42,7 @@ export default {
 .create-store-container {
   padding-top: 10%;
   background-color: #F2F3F6;
+  height: 100%;
   .store-card {
     display: flex;
     flex-direction: column;
