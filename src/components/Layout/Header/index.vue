@@ -4,7 +4,7 @@
       <img :src="userInfo.logo">
     </div>
     <div class="userinfo">
-      <div class="async-download" @click="handleAsyncDownload">
+      <div class="async-download" @click="handleAsyncDownload" v-if="userInfo.showDownloadIcon">
         <img :src="userInfo.downloadIcon" />
       </div>
       <div class="name">
@@ -29,6 +29,7 @@
 <script>
 import { reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { router } from '@/router'
 import Logo from '@/assets/images/logo.svg'
 import Avatar from '@/assets/images/avatar.svg'
 import DownloadIcon from '@/assets/images/download.svg'
@@ -39,10 +40,12 @@ export default {
     AsyncDownload
   },
   setup() {
+
     let userInfo = reactive({
       logo: Logo,
       avatar: Avatar,
-      downloadIcon: DownloadIcon,
+      downloadIcon: DownloadIcon, 
+      showDownloadIcon: true,     // 是否展示下载按钮
       userName: "假的用户名" // 用户名
     })
 
@@ -58,6 +61,10 @@ export default {
         type: 'warning'
       }).then(() => {
         // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
+        console.log('退出登录')
+        router.replace({
+          path: '/login'
+        })
       })
     }
 
@@ -90,6 +97,10 @@ export default {
       ).then(() => {
         // TODO: 跳转到修改密码页
         console.log('修改密码--->')
+        router.push({
+          path: '/reset'
+        })
+
       }).catch(() => {
         ElMessage({
           type: 'info',

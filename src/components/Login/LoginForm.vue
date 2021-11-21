@@ -193,8 +193,8 @@ export default {
   padding-top: 51px; // 81px;
   width: 520px;
   .login-tabs {
-    width: 420px;
-    min-height: 500px;
+    // width: 420px;
+    // min-height: 500px;
     background: #fff;
     box-shadow: 0px 2px 16px 2px rgba(239, 240, 244, 0.73);
     border-radius: 24px;
@@ -260,19 +260,19 @@ input::placeholder {
 }
 
 // 重写element ui的tabs样式
-::v-deep .el-tabs__nav {
+:deep(.el-tabs__nav) {
   padding-bottom: 10px;
 }
-::v-deep .el-tabs__item {
+:deep(.el-tabs__item) {
   font-size: 16px;
 }
-::v-deep .el-tabs__item:hover {
+:deep(.el-tabs__item:hover) {
   color: #1f5afa;
 }
-::v-deep .el-tabs__active-bar {
+:deep(.el-tabs__active-bar) {
   background-color: #1f5afa;
 }
-::v-deep .el-tabs__item.is-active {
+:deep(.el-tabs__item.is-active) {
   color: #1f5afa;
 }
 </style>

@@ -99,7 +99,7 @@ export default {
     let foreachMenus = (menu) => {
       let currentPath = menu.currentPath || router.currentRoute.value.href
       let findMnus = menu.mainMenu.some((leve1, leve1Index) => {
-        console.log('leve1 --->', leve1Index)
+        // console.log('leve1 --->', leve1Index)
         let mainMenu = `main-menu-${leve1Index}`
         if( matchPath(leve1.path ,currentPath) ){
           setMenusDefult(mainMenu, null, null, null, null)

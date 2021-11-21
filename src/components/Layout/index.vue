@@ -1,10 +1,10 @@
 <template>
   <div class="saas-layout">
-    <header class="saas-header">
+    <header class="saas-header" v-if="settingInfo.showHeader">
       <LayoutHeader></LayoutHeader>
     </header>
     <div class="saas-content">
-      <div class="aside-main" :class="{'index-page': isIndexPage.active }">
+      <div v-if="settingInfo.showSidebar" class="aside-main" :class="{'index-page': isIndexPage.active }">
         <Aside 
           ref="asideRef"
           :menuPages="menuPages"
@@ -14,14 +14,14 @@
         </Aside>
       </div>
       <div class="qiankun-container" :style="'width:calc(100% - '+ asideWidth + ')'">
-        <div class="menu-pages" v-if="menuPages.length">
+        <div class="menu-pages" v-if="menuPages.length && settingInfo.showTagsView">
           <MenuTabPages 
             ref="menuTabPagesRef" 
             :menuPages="menuPages"
             @updateRouter="updateMenuPages" 
           />
         </div>
-        <div class="qiankun-container-body">
+        <div class="qiankun-container-body" :class="[settingInfo.showSubContainer ? '' : 'no-margin']">
           <!-- {{ tabPanes }} -->
           <template v-if="tabPanes.value && tabPanes.value.length">
             <el-tabs v-model="activePane" class="leve4Menus" info="四级导航" @tab-click="pane => clickTabPanes(tabPanes, pane)">
@@ -34,7 +34,7 @@
             </el-tabs>
           </template>
           <router-view></router-view>
-          <div id="qiankun-sub-container"></div>
+          <div v-show="settingInfo.showSubContainer" id="qiankun-sub-container"></div>
         </div>
       </div>
     </div>
@@ -42,12 +42,13 @@
 </template>
 
 <script>
-import { ref, reactive, watch, nextTick } from 'vue'
+import { ref, reactive, watch, nextTick, onMounted } from 'vue'
 import Aside from '@/components/Layout/Aside.vue'
 import LayoutHeader from '@/components/Layout/Header/index.vue'
 import MenuTabPages from '@/components/Layout/MenuTabPages.vue'
-import { router } from '../../router'
+import { router } from '@/router/index'
 import { pageVisit } from '../../api/menu'
+import store from '@/store'
 
 export default {
   setup() {
@@ -61,6 +62,15 @@ export default {
         
     let tabPanes = reactive({
       value: []
+    })
+
+    // 默认设置值
+    let settingInfo = reactive({
+      belongTo: "",
+      showHeader: true,
+      showSidebar: true,
+      showTagsView: true,
+      showSubContainer: true
     })
     
     localStorage.removeItem('navMenus')
@@ -103,6 +113,41 @@ export default {
       }
     )
 
+    watch(() => store.state.settings.showHeader,
+      (val) => {
+        settingInfo.showHeader = val
+      }
+    )
+
+    watch(() => store.state.settings.showSidebar,
+      (val) => {
+        settingInfo.showSidebar = val
+      }
+    )
+
+    watch(() => store.state.settings.showTagsView,
+      (val) => {
+        settingInfo.showTagsView = val
+      }
+    )
+
+    watch(() => store.state.settings.showSubContainer,
+      (val) => {
+        settingInfo.showSubContainer = val
+      }
+    )
+
+    onMounted(() => {
+      settingInfo.belongTo = store.state.settings.belongTo,
+      settingInfo.showHeader = store.state.settings.showHeader,
+      settingInfo.showSidebar = store.state.settings.showSidebar,
+      settingInfo.showTagsView = store.state.settings.showTagsView,
+      settingInfo.show
+      settingInfo.showSubContainer = store.state.settings.showSubContainer
+
+      console.log("🍉 get settingInfo status: --->", settingInfo)
+    })
+
     const mainMenusClick = (index) => {
       console.log('触发 mainMenusClick: --->', index)
       isIndexPage.active = index == 'main-menu-0'
@@ -113,6 +158,7 @@ export default {
     }
 
     window.addEventListener('popstate', (event) => {
+      console.log('触发popstate')
       let path = event.currentTarget.location.pathname + event.currentTarget.location.search
       if (event.state.isHistoryPush) {
         let { name, defId } = event.state
@@ -143,6 +189,7 @@ export default {
       isIndexPage,
       updateMenuPages,
       menuTabPagesRef,
+      settingInfo // 配置信息
     }
   },
   components: {
@@ -197,7 +244,6 @@ export default {
   }
   .qiankun-container {
     flex: 1;
-    // padding: 20px;
     box-sizing: border-box;
     width: calc(100% - 290px);
     height: 100%;
@@ -211,6 +257,7 @@ export default {
     .qiankun-container-body {
       flex: 1;
       margin: 0 15px 10px 15px;
+      // margin: 0;
       background: #fff;
       border-radius: 6px;
       overflow-y: scroll;
@@ -239,6 +286,10 @@ export default {
           }
         }
       }
+    }
+
+    .no-margin {
+      margin: 0;
     }
     #qiankun-sub-container {
       width: 100%;

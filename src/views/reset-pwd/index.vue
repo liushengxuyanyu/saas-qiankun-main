@@ -58,7 +58,8 @@ export default {
 
     .right-bg-img {
       position: absolute;
-      top: -747px;
+      // top: -747px;
+      top: -751px;
       right: 0;
       width: 410px;
       height: 100vh;
