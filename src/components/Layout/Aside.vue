@@ -66,6 +66,7 @@
 </template>
 <script>
 import { ref, toRefs, reactive, watch, nextTick } from 'vue'
+import { getMenuList, recordRouteAccess } from '@/api/_index'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
@@ -144,6 +145,8 @@ export default {
         let nav = res.result.find((nav) => {
           return nav.name == '首页'
         })
+
+        console.log('Aside.vue - nav: --->', nav)
 
         if(!nav){
           res.result.unshift({
