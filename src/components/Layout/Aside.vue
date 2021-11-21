@@ -14,7 +14,7 @@
       :unique-opened="uniqueOpend">
       <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
         <!-- @mouseover="changeSubMenus(menu)" -->
-        <el-menu-item :index="'main-menu-' + index " 
+        <el-menu-item :index="'main-menu-' + index "
           style="padding-left:5px"
           v-if="!menu.children.length  && !menu.hide" @click="changeSubMenus(menu, 'index-page')">
           <template #title>
@@ -22,9 +22,9 @@
             <span v-html="menu.pluginName.substring(0,2)"></span>
           </template>
         </el-menu-item>
-        <el-menu-item 
-          :index="'main-menu-' + index"  
-          v-if="menu.children.length && !menu.hide" 
+        <el-menu-item
+          :index="'main-menu-' + index"
+          v-if="menu.children.length && !menu.hide"
           style="padding-left:5px"
           @click="changeSubMenus(menu, 'main-menu-' + index)">
           <template #title>
@@ -34,8 +34,8 @@
         </el-menu-item>
       </template>
     </el-menu>
-    <div class="aside-sub-tmpl" 
-      v-if="menu.subMenus.children && menu.subMenus.children.length" 
+    <div class="aside-sub-tmpl"
+      v-if="menu.subMenus.children && menu.subMenus.children.length"
       :class="{'isShowSubMenus': menu.subMenus.children && menu.subMenus.children.length}">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
@@ -87,7 +87,7 @@ export default {
     handleClose(key, keyPath) {
     },
     handleSelect(key, keyPath){
-    } 
+    }
   },
   props:{
     emits: ['triggerCloseAside'],
@@ -95,7 +95,7 @@ export default {
   },
   setup(props, { emit, attrs, slots }) {
 
-    
+
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
@@ -107,8 +107,8 @@ export default {
     let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
 
     let setMenusDefult = (
-        mainMenuActive, 
-        subMenus, activeMenu1, 
+        mainMenuActive,
+        subMenus, activeMenu1,
         tabPanes, activePane
       ) => {
         menu.subMenus = subMenus || {}
@@ -151,7 +151,7 @@ export default {
           })
         })
         // 如果匹配不到路由则选择到一级
-        
+
         !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
@@ -168,7 +168,7 @@ export default {
         let nav = res.result.find((nav)=>{
           return nav.name == '首页'
         })
-        
+
         if(!nav){
           res.result.unshift({
             actionList: null,
@@ -208,10 +208,10 @@ export default {
       })
     }
     getMenusTree();
-    
+
     const fixedMenu = (children, level) => {
       if(children.path && children.path != router.currentRoute.value.path ){
-        router.push(children.path.replace(/^\/web-main/i, ''))        
+        router.push(children.path.replace(/^\/web-main/i, ''))
         pageVisit({
           href: children.path,
           tabName: children.name,
@@ -225,12 +225,12 @@ export default {
         }
       })
       if(level == 4){
-        emit('updateTabPanes', children.children , '', true) 
+        emit('updateTabPanes', children.children , '', true)
       }
 
       // 如果导航为新增加的则添加否则不处理
       updateMenuPages(children)
-      
+
     }
     const updateMenuPages = (children) => {
 
@@ -292,7 +292,7 @@ export default {
       mainMenuActive,
 
       updateMenuPages,
-      
+
     }
    },
 }
@@ -367,7 +367,7 @@ export default {
         margin: 7px 0px 12px 10px;
       }
     }
-    
+
     .svg-icon-q{
       display: inline-block;
       padding-right: 6px;
@@ -493,6 +493,10 @@ export default {
     &.customer-service{
       background-image: url("@/assets/icons/116.svg");
     }
+    &.data-analysis{
+      background-image: url("@/assets/icons/data-analysis.svg");
+      vertical-align: -0.25em;
+    }
   }
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
@@ -503,14 +507,14 @@ export default {
     height: 2px;
     background-color: #fff;
   }
-  
+
   /*定义滚动条轨道 内阴影+圆角*/
   ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
     border-radius: 2px;
     background-color: #fff;
   }
-  
+
   /*定义滑块 内阴影+圆角*/
   ::-webkit-scrollbar-thumb {
     border-radius: 2px;
