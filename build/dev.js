@@ -21,6 +21,11 @@ async function start() {
       index: 'index.html',
     },
     proxy: {
+      '/download/api': {
+        target: 'https://mryx.cloud.test.missfresh.net/',
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
       '/tms/api': {
         target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,

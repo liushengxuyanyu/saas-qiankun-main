@@ -6,7 +6,7 @@
           <el-button type="primary" size="mini" icon="el-icon-search" @click="handleSearch">查询</el-button>
           <el-button type="default" size="mini" icon="el-icon-refresh" @click="handleReset">重置</el-button>
         </el-form-item>
-        <el-form-item label="系统名称">
+        <el-form-item label="系统名称" prop="systemName">
           <el-select v-model="searchForm.systemName" placeholder="全部" clearable style="width: 150px">
             <el-option
               v-for="(item, index) in systemCodeList"
@@ -17,21 +17,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="报表类型">
+        <el-form-item label="报表类型" prop="reportType">
           <el-select v-model="searchForm.reportType" placeholder="全部" clearable style="width: 150px">
             <el-option
-              v-for="(type, index) in reportTypeList"
+              v-for="(item, index) in reportTypeList.list"
               :key="index"
-              :value="type"
+              :value="item.type"
             >
-              {{ type }}
+              {{ item.type }}
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="报表名称">
-          <el-input v-model="searchForm.reportName" style="width: 150px"></el-input>
+        <el-form-item label="报表名称" prop="reportName">
+          <el-input v-model="searchForm.reportName" style="width: 150px" placeholder="请输入报表名称"></el-input>
         </el-form-item>
-        <el-form-item label="任务状态">
+        <el-form-item label="任务状态" prop="taskStatus">
           <el-select v-model="searchForm.taskStatus" placeholder="全部" clearable style="width: 150px">
             <el-option
               v-for="(item, index) in taskStatusList"
@@ -106,7 +106,6 @@
         <el-table-column
           prop="failureMessage"
           label="失败原因"
-          align="center"
         />
         <el-table-column label="操作" width="80" align="center" fixed="right">
           <template #default>
@@ -123,8 +122,9 @@
   </el-dialog>  
 </template>
 <script>
-import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from '@/common/constants'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from "vue"
+import { fetchReportTypes, fetchDownloadList } from "@/api/download"
+import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from "@/common/constants"
 
 export default {
   name: 'AsyncDownloadDialog',
@@ -140,11 +140,20 @@ export default {
   },
   // props 不能去掉
   setup(props, context) {
-    let reportTypeList = ref([])
+    let searchFormRef = ref(null)
+        
+    let reportTypeList = reactive({
+      list: []
+    })
 
     let tableData = reactive({
       loading: false,
       list: []
+    })
+
+    let pagination = reactive({
+      page: 1,
+      limit: 10
     })
 
     let searchForm = reactive({
@@ -157,22 +166,64 @@ export default {
     const taskStatusList = TASK_STATUS_LIST
     const systemCodeList = BUSINESS_LINE_CODES
 
-    const handleSearch = () => {
-      console.log('start search ...')
+    onMounted(() => {
+      getReportTypes()
+      getDownloadList()
+    })
+
+    const getReportTypes = async () => {
+      let reportTypes = []
+      const res = await fetchReportTypes()
+      if (res.code === 200) {
+        const tmpArr = res.result || []
+        tmpArr.forEach((item, index) => {
+          if (item === "") {
+            // reportTypes.push({
+            //   index,
+            //   type: "全部"
+            // })
+          } else {
+            reportTypes.push({
+              index,
+              type: item
+            })
+          }
+        })
+        reportTypeList.list = reportTypes
+      }
     }
+
+    const getDownloadList = async (params) => {
+      const res = await fetchDownloadList(params)
+      if (res.code === 200) {
+        tableData.list = res.result.list
+      }
+    }
+
+    const handleSearch = async (params) => {
+      getDownloadList(params)
+    }
+
     const handleReset = () => {
-      console.log('reset search ...')
+      // console.log('reset search ...', searchFormRef.value.resetFields)
+      searchFormRef.value.resetFields()
+
     }
     const handleDialogClose = () => {
       context.emit("update:visible", false)
+      searchFormRef.value.resetFields()
     }
 
     return {
+      searchFormRef, // ref 类型
       tableData,
+      pagination, // 分页设置
       searchForm,
       reportTypeList,
       taskStatusList,
       systemCodeList,
+      getReportTypes,
+      getDownloadList,
       handleSearch,
       handleReset,
       handleDialogClose
@@ -193,6 +244,10 @@ export default {
 .list-container {
   :deep(.el-table__header) {
     font-size: 13px;
+  }
+  :deep(.el-table__row) {
+    font-size: 13px;
+    color: #222c3d;
   }
 }
 </style>
