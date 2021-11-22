@@ -35,6 +35,9 @@ router.beforeResolve(async (to) => {
   if (to.meta && to.meta.belongTo === "main") {
     // store.dispatch("settings/updateSetting", to.meta)
     if (to.path === "/login" && getToken()) {
+      router.replace({
+        path: "/home"
+      })
       return false
     } else {
       store.dispatch("settings/updateSetting", to.meta)
