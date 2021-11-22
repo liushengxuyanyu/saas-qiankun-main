@@ -22,6 +22,7 @@ router.beforeEach((to, from, next) => {
       path: "/login"
     })
   } else {
+    console.log("[token: ✅ ]", to.path)
     next()
   }
 
@@ -32,7 +33,13 @@ router.beforeEach((to, from, next) => {
 router.beforeResolve(async (to) => {
   // 当meta中的belongTo不为'main'时，表示路由来自子应用
   if (to.meta && to.meta.belongTo === "main") {
-    store.dispatch("settings/updateSetting", to.meta)
+    // store.dispatch("settings/updateSetting", to.meta)
+    if (to.path === "/login" && getToken()) {
+      return false
+    } else {
+      store.dispatch("settings/updateSetting", to.meta)
+      // return true
+    }
   } else {
     store.dispatch("settings/updateSetting", {
       belongTo: "", // 设置路由地址是否属于主框架, 默认不属于
@@ -42,6 +49,7 @@ router.beforeResolve(async (to) => {
       showTagsView: true, // 显示 ｜ 隐藏标签列表
       showSubContainer: true // 显示 ｜ 隐藏子容器
     })
+    // return true
   }
 })
 
