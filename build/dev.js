@@ -56,6 +56,11 @@ async function start() {
         changeOrigin: true,
         logLevel: 'debug'
       },
+      '/retail-portal/api': {
+        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      }
     }
   }
   webpackDevServer.addDevServerEntrypoints(config, options)

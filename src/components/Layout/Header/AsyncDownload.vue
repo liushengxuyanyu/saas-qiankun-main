@@ -69,7 +69,7 @@
         <el-table-column
           prop="typeName"
           label="报表类型"
-          width="160"
+          width="120"
           align="center"
           sortable="true"
         />
@@ -90,7 +90,8 @@
           label="任务创建时间"
           width="160"
           align="center"
-        />
+        >
+        </el-table-column>
         <el-table-column
           prop="taskEndTime"
           label="任务完成时间"
@@ -106,28 +107,41 @@
         <el-table-column
           prop="failureMessage"
           label="失败原因"
+          width="200"
         />
         <el-table-column label="操作" width="80" align="center" fixed="right">
-          <template #default>
-            <el-button size="mini" type="text" @click="download(scope.row)">下载</el-button>
+          <template v-slot="scope">
+            <el-button v-if="scope.row.downloadUrl" size="mini" type="text" @click="downloadFile(scope.row)">下载</el-button>
           </template>  
         </el-table-column> 
-      </el-table>  
+      </el-table>
+      <section class="pagination-section">
+        <el-config-provider :locale="locale">
+          <el-pagination small layout="total, prev, pager, next, sizes, jumper" :total="50"></el-pagination>
+        </el-config-provider>  
+      </section>
+      
     </section>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="handleDialogClose">关闭</el-button>
+        <el-button type="primary" size="small" @click="handleDialogClose">关闭</el-button>
       </span>
     </template>  
   </el-dialog>  
 </template>
 <script>
 import { onMounted, reactive, ref } from "vue"
-import { fetchReportTypes, fetchDownloadList } from "@/api/download"
+import { ElConfigProvider, ElMessage } from "element-plus"
+import zhCn from "element-plus/lib/locale/lang/zh-cn"
+import { fetchReportTypes, fetchDownloadList, donwloadExcelFile } from "@/api/download"
 import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from "@/common/constants"
+import dayjs from "dayjs"
 
 export default {
   name: 'AsyncDownloadDialog',
+  components: {
+    [ElConfigProvider.name]: ElConfigProvider
+  },
   props: {
     title: {
       type: String,
@@ -140,6 +154,7 @@ export default {
   },
   // props 不能去掉
   setup(props, context) {
+    let locale = zhCn
     let searchFormRef = ref(null)
         
     let reportTypeList = reactive({
@@ -197,7 +212,38 @@ export default {
       const res = await fetchDownloadList(params)
       if (res.code === 200) {
         tableData.list = res.result.list
+        let rawData = res.result.list
+        let finalData = []
+        let item = Object.assign({})
+        
+        rawData.forEach((data) => {
+          item = {
+            id: data.id,
+            configId: data.configId,
+            businessLineCode: data.businessLineCode,
+            typeName: data.typeName,
+            fileName: data.fileName,
+            downloadUrl: data.downloadUrl,
+            dataCount: data.dataCount,
+            taskBeginTime: dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss"),
+            taskEndTime: dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss"),
+            taskStatus: _parseTaskStatus(data.taskStatus),
+            failureMessage: data.failureMessage || '-' // 失败原因
+          }
+          finalData.push(item)
+        })
+        tableData.list = finalData
       }
+    }
+
+    const _parseTaskStatus = (status) => {
+      let res = ""
+      TASK_STATUS_LIST.forEach(s => {
+        if (s.value.toString() == status) {
+          res = s.label
+        }
+      })
+      return res
     }
 
     const handleSearch = async (params) => {
@@ -207,14 +253,42 @@ export default {
     const handleReset = () => {
       // console.log('reset search ...', searchFormRef.value.resetFields)
       searchFormRef.value.resetFields()
-
     }
+
+    const downloadFile = async (item) => {
+      const res = await donwloadExcelFile(item.downloadUrl, {})
+      console.log("download file: --->", res)
+      if (res instanceof Blob) {
+        let blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob);
+        link.download = item.fileName + dayjs().format("YYYYMMDDHHmmss") + ".xls"
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        ElMessage({
+          type: "success",
+          message: "导出文件成功！",
+          showClose: true,
+          duration: 1000
+        })
+      } else {
+        ElMessage({
+          type: "error",
+          message: "导出文件失败！",
+          showClose: true,
+          duration: 3000
+        })
+      }
+    }
+
     const handleDialogClose = () => {
       context.emit("update:visible", false)
       searchFormRef.value.resetFields()
     }
 
     return {
+      locale,
       searchFormRef, // ref 类型
       tableData,
       pagination, // 分页设置
@@ -222,10 +296,11 @@ export default {
       reportTypeList,
       taskStatusList,
       systemCodeList,
-      getReportTypes,
       getDownloadList,
+      getReportTypes,
       handleSearch,
       handleReset,
+      downloadFile,
       handleDialogClose
     }
   }
@@ -234,14 +309,20 @@ export default {
 <style lang="scss" scoped>
 .search-container {
   .search-form {
-    // font-size: 13px;
-    .testing {
-      font-size: 13px;
-    }
+    font-size: 13px;
   }
 }
 
 .list-container {
+  display: flex;
+  flex-direction: column;
+  .pagination-section {
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   :deep(.el-table__header) {
     font-size: 13px;
   }

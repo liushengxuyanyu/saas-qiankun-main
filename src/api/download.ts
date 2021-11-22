@@ -18,3 +18,13 @@ export function fetchDownloadList(params: any) {
     params: params
   })
 }
+
+export function donwloadExcelFile(url: string, data: any) {
+  return request({
+    url: url,
+    method: "POST",
+    responseType: "blob",
+    timeout: 300000,
+    data: data
+  })
+}
