@@ -98,6 +98,11 @@ export default {
         // 删除localStorage中的信息
         removeLocalStorage("username")
         removeLocalStorage("isLogin")
+      }).catch (() => {
+        ElMessage({
+          type: 'info',
+          message: `退出登录操作已取消`
+        })
       })
     }
 
