@@ -35,6 +35,7 @@ import Logo from '@/assets/images/logo.svg'
 import Avatar from '@/assets/images/avatar.svg'
 import DownloadIcon from '@/assets/images/download.svg'
 import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
+import { removeToken } from "@/utils/auth"
 
 export default {
   components: {
@@ -72,6 +73,8 @@ export default {
         router.replace({
           path: '/login'
         })
+        // 删除对应的ccs-token
+        removeToken()
       })
     }
 

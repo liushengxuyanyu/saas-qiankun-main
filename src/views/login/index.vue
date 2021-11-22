@@ -30,10 +30,11 @@ export default {
     // 根据meta信息刷新store中的数据信息
     this.updateLayoutSettings({
       belongTo: "main", // 设置路由地址是否属于主框架, 默认不属于
-      showTopNavbar: false, // 显示 ｜ 隐藏顶部导航栏
+      showHeader: false, // 显示 ｜ 隐藏顶部导航栏
       showDownload: false, // 显示 ｜ 隐藏顶部右侧下载按钮
       showSidebar: false, // 显示 ｜ 隐藏侧边栏
-      showTagsView: false // 显示 ｜ 隐藏标签列表
+      showTagsView: false, // 显示 ｜ 隐藏标签列表
+      showSubContainer: false
     })
   },
   methods: {
