@@ -169,7 +169,7 @@ export default {
     display: flex;
     align-items: center;
     img {
-      padding: 0 10px;
+      padding: 0 20px;
       height: 30px;
     }
   }
