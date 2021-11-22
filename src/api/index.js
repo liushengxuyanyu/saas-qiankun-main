@@ -12,28 +12,28 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  config => {
+  (config) => {
     if (store.getters.token) {
       config.headers["Authorization"] = getToken()
       config.headers["token"] = getToken()
     }
-    return config;
+    return config
   },
-  error => {
+  (error) => {
     Promise.reject(error)
   }
 )
 
 // response interceptor
 service.interceptors.response.use(
-  response => {
-    return response;
+  (response) => {
+    return response
   },
-  error => {
+  (error) => {
     let status = error.response.status
     let code = error.response.data.code
-    if(status == "401" || code == "401") {
-      logout()
+    if (status == "401" || code == "401") {
+      // logout()
     }
     return Promise.reject(error)
   }
@@ -54,4 +54,4 @@ service.interceptors.response.use(
 //   })
 // }
 
-export default service;
+export default service

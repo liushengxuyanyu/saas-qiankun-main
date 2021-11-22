@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" @tab-click="handleLoginTabSwitch" stretch class="login-tabs">
       <el-tab-pane label="账号密码登录" name="first">
         <el-form
-          ref="accountLoginForm"
+          ref="accountLoginFormRef"
           :model="accountLoginForm"
           :rules="accountLoginRules"
           label-width="0px"
@@ -35,10 +35,11 @@
                 v-model.trim="accountLoginForm.verficationCode"
                 @keyup.enter="accountLogin"
               />
+              <!-- {{ accountLoginForm.base64Code }} -->
               <img
-                v-if="base64Code"
+                v-if="accountLoginForm.base64Code"
                 class="code-image"
-                :src="'data:image/png;base64,' + base64Code"
+                :src="accountLoginForm.base64Code"
                 @click="getVerficationCode"
               />
             </div>
@@ -58,13 +59,20 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="手机号码登录" name="second"> </el-tab-pane>
+      <el-tab-pane label="手机号码登录" name="second">
+        <!-- TODO -->
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
+import { ElMessage } from 'element-plus'
 import JSEncrypt from "encryptlong"
+import { Buffer } from "buffer"
+import store from "@/store"
+import { router } from "@/router"
 import { getVerificationData, canCreateNewStore } from "@/api/user"
+import { onBeforeMount, reactive, ref } from "vue"
 
 let jsEncrypt = new JSEncrypt()
 jsEncrypt.setPublicKey(
@@ -73,117 +81,194 @@ jsEncrypt.setPublicKey(
 
 export default {
   name: 'LoginForm',
-  data() {
-    return {
-      activeName: "first",
-      accountLoginRules: {
-        account: [
-          {
-            required: true,
-            message: "请输入账号",
-            trigger: "blur"
-          }
-        ],
-        password: [
-          {
-            required: true,
-            message: "请输入登录密码",
-            trigger: "blur"
-          }
-        ],
-        verficationCode: [
-          {
-            required: true,
-            message: "请输入验证码",
-            trigger: "blur"
-          }
-        ]
-      },
-      // 账户登录表单对象
-      accountLoginForm: {
-        account: "",
-        password: "",
-        verficationCode: ""
-      },
-      timestamp: "", // 随机码(时间戳)
-      base64Code: "" // 验证码
-    }
-  },
-  mounted() {
-    this.getVerficationCode()
-  },
-  methods: {
-    // 登录方式切换
-    handleLoginTabSwitch() {},
-    // 账号登录
-    accountLogin() {
-      this.$refs.accountLoginForm.validate(valid => {
-        if (valid) {
-          this.onSubmit({
-            account: this.accountLoginForm.account,
-            password: jsEncrypt.encrypt(this.accountLoginForm.password),
-            code: this.accountLoginForm.verficationCode,
-            randomStr: this.timestamp
-          })
+  setup() {
+    const accountLoginRules = reactive({
+      account: [
+        {
+          required: true,
+          message: "请输入账号",
+          trigger: "blur"
         }
+      ],
+      password: [
+        {
+          required: true,
+          message: "请输入登录密码",
+          trigger: "blur"
+        }
+      ],
+      verficationCode: [
+        {
+          required: true,
+          message: "请输入验证码",
+          trigger: "blur"
+        }
+      ]
+    })
+
+    let accountLoginForm = reactive({
+      account: "",
+      password: "",
+      verficationCode: "",
+    })
+
+    let activeName = ref("first")
+    let timestamp = ref("")
+    let accountLoginFormRef = ref(null)
+
+    onBeforeMount(() => {
+      getVerficationCode()
+    })
+
+    const accountLogin = () => {
+      accountLoginFormRef.value.validate(valid => {
+        console.log("[login from validate]--->", valid)
+        onSubmit({
+          account: accountLoginForm.account,
+          password: jsEncrypt.encrypt(accountLoginForm.password),
+          code: accountLoginForm.verficationCode,
+          randomStr: timestamp
+        })
       })
-    },
-    // 提交登录信息
-    async onSubmit(data) {
-      const res = await this.$store.dispatch("user/login", data)
+    }
+
+    const onSubmit = async (data) => {
+      const res = await store.dispatch("user/login", data)
       console.log('onSubmit: --->', res)
-      /* eslint-disable no-debugger */
-      // debugger
-      // 提交后，执行刷新验证码操作
-      this.getVerficationCode()
       if (res.success) {
-        this.$message({
-          showClose: true,
-          message: "登录成功", // res.message,
+        ElMessage({
           type: "success",
+          message: "登录成功", // res.message,
+          showClose: true,
           duration: 1000
         })
 
         // 检查用户是否能够开店
         const storeInfo = await canCreateNewStore()
         if (storeInfo.code === 200) {
-          console.log("storeInfo ---===>>>", storeInfo)
           const stores = storeInfo.result
           if (stores.length > 0) {
-            this.$router.push({
-              path: '/welcome' // 主程序路由
-              // path: '/web-main/helios/portal/portalDoor' // 子项目路由
+            router.push({
+              path: '/home' // 主程序路由
             })
           } else {
-            // 如果门店数量为0，则跳转到创建门店页面
-            this.$router.push({
+            router.push({
               path: '/store/create'
             })
           }
         }
 
-        // 重置表单信息
-        this.$refs["accountLoginForm"].resetFields()
-
-      } else {
-        this.accountLoginForm.verficationCode = ""
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: "error"
-        })
+        // 重置表单
+        console.log("--->", accountLoginFormRef.value)
       }
-    },
-    // 获取验证码
-    async getVerficationCode() {
-      this.timestamp = +new Date()
-      const res = await getVerificationData(this.timestamp)
+
+      // 最终刷新验证码
+      getVerficationCode()
+    }
+
+    const getVerficationCode = async () => {
+      timestamp = +new Date()
+      const res = await getVerificationData(timestamp)
       let code = Buffer.from(res, "binary").toString("base64")
-      this.base64Code = code
-    },
-    // 操作重置密码
-    handleResetPassword() {}
-  }
+      accountLoginForm.base64Code = "data:image/png;base64," + code
+    }
+
+    const handleLoginTabSwitch = (tab, event) => {
+      console.log("tab ---===>>>", tab, event)
+      console.log(activeName.value)
+    }
+
+    const handleResetPassword = () => {
+
+    }
+
+    return {
+      accountLoginRules,
+      accountLoginForm,
+      activeName,
+      timestamp,
+      accountLoginFormRef,
+      accountLogin,
+      getVerficationCode,
+      handleLoginTabSwitch,
+      handleResetPassword
+    }
+  },
+  // mounted() {
+  //   this.getVerficationCode()
+  // },
+  // methods: {
+  //   // 登录方式切换
+  //   handleLoginTabSwitch() {},
+  //   // 账号登录
+  //   accountLogin() {
+  //     this.$refs.accountLoginForm.validate(valid => {
+  //       if (valid) {
+  //         this.onSubmit({
+  //           account: this.accountLoginForm.account,
+  //           password: jsEncrypt.encrypt(this.accountLoginForm.password),
+  //           code: this.accountLoginForm.verficationCode,
+  //           randomStr: this.timestamp
+  //         })
+  //       }
+  //     })
+  //   },
+  //   // 提交登录信息
+  //   async onSubmit(data) {
+  //     const res = await this.$store.dispatch("user/login", data)
+  //     console.log('onSubmit: --->', res)
+  //     /* eslint-disable no-debugger */
+  //     // debugger
+  //     // 提交后，执行刷新验证码操作
+  //     this.getVerficationCode()
+  //     if (res.success) {
+  //       this.$message({
+  //         showClose: true,
+  //         message: "登录成功", // res.message,
+  //         type: "success",
+  //         duration: 1000
+  //       })
+
+  //       // 检查用户是否能够开店
+  //       const storeInfo = await canCreateNewStore()
+  //       if (storeInfo.code === 200) {
+  //         console.log("storeInfo ---===>>>", storeInfo)
+  //         const stores = storeInfo.result
+  //         if (stores.length > 0) {
+  //           this.$router.push({
+  //             path: '/welcome' // 主程序路由
+  //             // path: '/web-main/helios/portal/portalDoor' // 子项目路由
+  //           })
+  //         } else {
+  //           // 如果门店数量为0，则跳转到创建门店页面
+  //           this.$router.push({
+  //             path: '/store/create'
+  //           })
+  //         }
+  //       }
+
+  //       // 重置表单信息
+  //       this.$refs["accountLoginForm"].resetFields()
+
+  //     } else {
+  //       this.accountLoginForm.verficationCode = ""
+  //       this.$message({
+  //         showClose: true,
+  //         message: res.message,
+  //         type: "error"
+  //       })
+  //     }
+  //   },
+  //   // 获取验证码
+  //   async getVerficationCode() {
+  //     this.timestamp = +new Date()
+  //     const res = await getVerificationData(this.timestamp)
+  //     let code = Buffer.from(res, "binary").toString("base64")
+  //     this.base64Code = code
+  //   },
+  //   // 操作重置密码
+  //   handleResetPassword() {}
+  // }
 }
 </script>
 

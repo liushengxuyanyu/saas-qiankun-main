@@ -21,6 +21,11 @@ async function start() {
       index: 'index.html',
     },
     proxy: {
+      '/tms/api': {
+        target: 'https://mryx.cloud.test.missfresh.net/',
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
       '/helios/api': {
         target: 'https://mryx.cloud.test.missfresh.net/',  //预发
         changeOrigin: true,

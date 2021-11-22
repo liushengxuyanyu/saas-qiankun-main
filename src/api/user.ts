@@ -5,7 +5,7 @@ import request from "@/common/http.service"
  * @param {*} data
  * @returns
  */
- export function login(data: any) {
+export function login(data: any) {
   return request({
     url: "/ccs/api/saas/login",
     method: "POST",
@@ -18,7 +18,7 @@ import request from "@/common/http.service"
  * TODO: 需要和后端对齐，目前暂未使用
  * @returns
  */
- export function logout() {
+export function logout() {
   return request({
     url: "",
     method: "POST"
@@ -30,7 +30,7 @@ import request from "@/common/http.service"
  * @param {*} timestamp
  * @returns
  */
- export function getVerificationData(timestamp: string) {
+export function getVerificationData(timestamp: string) {
   return request({
     url: `/ccs/api/saas/captcha/${timestamp}`,
     method: "GET",
@@ -42,9 +42,9 @@ import request from "@/common/http.service"
  * 判断用户是否开店
  * @returns boolean 开店 true ｜ 未开店 false
  */
- export function canCreateNewStore() {
+export function canCreateNewStore() {
   return request({
-    url: "/tms/api/tms/base/getUCanSeeStations",
+    url: "/tms/base/getUCanSeeStations",
     method: "POST"
   })
 }

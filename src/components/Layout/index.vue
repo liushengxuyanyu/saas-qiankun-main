@@ -143,7 +143,7 @@ export default {
       settingInfo.showHeader = store.state.settings.showHeader,
       settingInfo.showSidebar = store.state.settings.showSidebar,
       settingInfo.showTagsView = store.state.settings.showTagsView,
-      settingInfo.show
+      settingInfo.showDownloadIcon = store.state.settings.showDownload,
       settingInfo.showSubContainer = store.state.settings.showSubContainer
 
       console.log("🍉 get settingInfo status: --->", settingInfo)
@@ -174,7 +174,10 @@ export default {
         let index = menuPages.findIndex((item)=>{ return item.defId == event.state.closeDefId})
         index > -1 && menuTabPagesRef.value.closeTab({}, index)
       }
-      asideRef.value.getMenusTree(path)
+
+      if (asideRef.value) {
+        asideRef.value.getMenusTree(path)
+      }
     })
 
     return {
@@ -292,6 +295,7 @@ export default {
     .no-margin {
       margin: 0;
       overflow: hidden;
+      border-radius: 0;
     }
     #qiankun-sub-container {
       width: 100%;

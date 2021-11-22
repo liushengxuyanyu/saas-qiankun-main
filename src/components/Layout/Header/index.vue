@@ -1,8 +1,8 @@
 <template>
   <div class="header-container">
-    <div class="logo-img">
-      <img :src="userInfo.logo">
-    </div>
+    <router-link class="logo-img" to="/">
+      <img :src="userInfo.logo" />
+    </router-link>
     <div class="userinfo">
       <div v-if="userInfo.showDownloadIcon" class="async-download" @click="handleAsyncDownload">
         <img :src="userInfo.downloadIcon" />
@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { reactive, watch } from 'vue'
+import { onMounted, reactive, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import store from '@/store'
 import { router } from '@/router'
@@ -36,19 +36,19 @@ import Avatar from '@/assets/images/avatar.svg'
 import DownloadIcon from '@/assets/images/download.svg'
 import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
 import { removeToken } from "@/utils/auth"
+import { getLocalStorage, removeLocalStorage } from "@/utils/storage"
 
 export default {
   components: {
     AsyncDownload
   },
   setup() {
-
     let userInfo = reactive({
       logo: Logo,
       avatar: Avatar,
       downloadIcon: DownloadIcon, 
       showDownloadIcon: true,     // 是否展示下载按钮
-      userName: "假的用户名" // 用户名
+      userName: "" // 用户名
     })
 
     const asyncDownloadDialog = reactive({
@@ -61,6 +61,26 @@ export default {
         userInfo.showDownloadIcon = val
       }
     )
+
+    onMounted(() => {
+      userInfo.userName = setUserName()
+    })
+
+    const setUserName = () => {
+      let finalUserName = ""
+      const name = getLocalStorage('username')
+      if (store.state.user.name) {
+        finalUserName = store.state.user.name
+      } else {
+        if (name) {
+          finalUserName = name.slice(1, -1)
+        } else {
+          finalUserName = '-'
+        }
+      }
+
+      return finalUserName
+    }
 
     const userLogout = () => {
       ElMessageBox.confirm('确定退出登录?', '提示', {
@@ -75,6 +95,9 @@ export default {
         })
         // 删除对应的ccs-token
         removeToken()
+        // 删除localStorage中的信息
+        removeLocalStorage("username")
+        removeLocalStorage("isLogin")
       })
     }
 
@@ -122,6 +145,7 @@ export default {
     return {
       userInfo,
       asyncDownloadDialog,
+      setUserName,
       handleCommand,
       handleAsyncDownload,
       changePassword,

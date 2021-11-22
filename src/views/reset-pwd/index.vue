@@ -15,15 +15,19 @@
   </div>
 </template>
 <script>
-import LoginHeader from '@/components/Login/Header'
+import LoginHeader from "@/components/Login/Header"
 import LoginIntro from "@/components/Login/Intro"
 import ResetForm from "@/components/Login/ResetForm"
 
 export default {
+  name: "Reset",
   components: {
     LoginHeader,
     LoginIntro,
     ResetForm
+  },
+  setup() {
+    return {}
   }
 }
 </script>
