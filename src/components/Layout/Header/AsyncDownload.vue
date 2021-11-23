@@ -6,8 +6,8 @@
           <el-button type="primary" size="mini" icon="el-icon-search" @click="handleSearch">查询</el-button>
           <el-button type="default" size="mini" icon="el-icon-refresh" @click="handleReset">重置</el-button>
         </el-form-item>
-        <el-form-item label="系统名称" prop="systemName">
-          <el-select v-model="searchForm.systemName" placeholder="全部" clearable style="width: 150px">
+        <el-form-item label="系统名称" prop="businessLineCode">
+          <el-select v-model="searchForm.businessLineCode" placeholder="全部" clearable style="width: 150px">
             <el-option
               v-for="(item, index) in systemCodeList"
               :key="index"
@@ -17,8 +17,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="报表类型" prop="reportType">
-          <el-select v-model="searchForm.reportType" placeholder="全部" clearable style="width: 150px">
+        <el-form-item label="报表类型" prop="typeName">
+          <el-select v-model="searchForm.typeName" placeholder="全部" clearable style="width: 150px">
             <el-option
               v-for="(item, index) in reportTypeList.list"
               :key="index"
@@ -28,8 +28,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="报表名称" prop="reportName">
-          <el-input v-model="searchForm.reportName" style="width: 150px" placeholder="请输入报表名称"></el-input>
+        <el-form-item label="报表名称" prop="fileName">
+          <el-input v-model="searchForm.fileName" style="width: 150px" placeholder="请输入报表名称"></el-input>
         </el-form-item>
         <el-form-item label="任务状态" prop="taskStatus">
           <el-select v-model="searchForm.taskStatus" placeholder="全部" clearable style="width: 150px">
@@ -107,7 +107,6 @@
         <el-table-column
           prop="failureMessage"
           label="失败原因"
-          width="200"
         />
         <el-table-column label="操作" width="80" align="center" fixed="right">
           <template v-slot="scope">
@@ -117,7 +116,15 @@
       </el-table>
       <section class="pagination-section">
         <el-config-provider :locale="locale">
-          <el-pagination small layout="total, prev, pager, next, sizes, jumper" :total="50"></el-pagination>
+          <el-pagination 
+            small 
+            layout="total, prev, pager, next, sizes, jumper" 
+            :total="50"
+            :current-page="pagination.page"
+            :page-size="pagination.limit"
+            @size-change="onPageSizeChanged"
+            @current-change="onCurrentPageChanged"
+          />
         </el-config-provider>  
       </section>
       
@@ -172,9 +179,9 @@ export default {
     })
 
     let searchForm = reactive({
-      systemName: '', // 系统名称
-      reportType: '', // 报表类型
-      reportName: '', // 报表名称
+      businessLineCode: '', // 系统名称 systemName
+      typeName: '', // 报表类型 reportType
+      fileName: '', // 报表名称 reportName
       taskStatus: ''  // 任务状态
     })
 
@@ -209,6 +216,7 @@ export default {
     }
 
     const getDownloadList = async (params) => {
+      tableData.loading = true
       const res = await fetchDownloadList(params)
       if (res.code === 200) {
         tableData.list = res.result.list
@@ -233,6 +241,7 @@ export default {
           finalData.push(item)
         })
         tableData.list = finalData
+        tableData.loading = false
       }
     }
 
@@ -246,13 +255,34 @@ export default {
       return res
     }
 
-    const handleSearch = async (params) => {
-      getDownloadList(params)
+    const handleSearch = async () => {
+      let params = {}
+
+      Object.keys(searchForm).forEach((key) => {
+        if (searchForm[key]) {
+          params[key] = searchForm[key]
+        }
+      })
+
+      const query = Object.assign({}, params, pagination)
+      console.log("query --->", query)
+      getDownloadList(query)
     }
 
     const handleReset = () => {
       // console.log('reset search ...', searchFormRef.value.resetFields)
       searchFormRef.value.resetFields()
+      handleSearch()
+    }
+
+    const onPageSizeChanged = (size) => {
+      pagination.limit = size
+      handleSearch()
+    }
+
+    const onCurrentPageChanged = (page) => {
+      pagination.page = page
+      handleSearch()
     }
 
     const downloadFile = async (item) => {
@@ -300,6 +330,8 @@ export default {
       getReportTypes,
       handleSearch,
       handleReset,
+      onPageSizeChanged,
+      onCurrentPageChanged,
       downloadFile,
       handleDialogClose
     }
