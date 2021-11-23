@@ -145,6 +145,7 @@ export default {
 
         // 检查用户是否能够开店
         const storeInfo = await canCreateNewStore()
+        console.log("--->", storeInfo)
         if (storeInfo.code === 200) {
           const stores = storeInfo.result
           if (stores.length > 0) {
@@ -160,6 +161,13 @@ export default {
 
         // 重置表单
         console.log("--->", accountLoginFormRef.value)
+      } else {
+        ElMessage({
+          type: "error",
+          message: res.message,
+          showClose: true,
+          duration: 3000
+        })
       }
 
       // 最终刷新验证码
