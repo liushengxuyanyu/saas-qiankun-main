@@ -94,8 +94,8 @@
           <el-form-item style="margin-bottom: 20px; padding-top: 20px;">
             <button
               class="login-button"
-              @click.prevent="phoneNumberLogin()"
               style="margin-bottom: 30px;"
+              @click.prevent="phoneNumberLogin"
             >
               登录
             </button>
@@ -291,7 +291,10 @@ export default {
 
     // TODO: 执行手机号登录操作
     const phoneNumberLogin = () => {
-
+      onSubmit({
+        mobile: phoneLoginForm.mobile,
+        code: phoneLoginForm.code
+      })
     }
 
     return {
