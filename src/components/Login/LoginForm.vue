@@ -1,11 +1,11 @@
 <template>
   <div class="page-form-container">
-    <el-tabs v-model="activeName" @tab-click="handleLoginTabSwitch" stretch class="login-tabs">
+    <el-tabs v-model="activeName" stretch class="login-tabs">
       <el-tab-pane label="账号密码登录" name="first">
         <el-form
           ref="accountLoginFormRef"
           :model="accountLoginForm"
-          :rules="accountLoginRules"
+          :rules="accountLoginFormRules"
           label-width="0px"
           style="margin-top: 30px"
         >
@@ -53,26 +53,67 @@
             >
               登 录
             </button>
-            <span class="reset-password" @click="handleResetPassword">
+            <span class="reset-password">
               <router-link to="/reset">忘记密码</router-link>
             </span>
           </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="手机号码登录" name="second">
-        <!-- TODO -->
+        <el-form 
+          ref="phoneLoginFormRef"
+          :model="phoneLoginForm"
+          :rules="phoneLoginFormRules"
+          label-width="0px"
+          style="margin-top: 30px"
+        >
+          <el-form-item prop="mobile" style="margin-bottom: 20px">
+            <input
+              class="input"
+              type="text"
+              placeholder="请输入手机号码"
+              v-model.trim="phoneLoginForm.mobile"
+            />
+          </el-form-item>
+          <el-form-item prop="code" style="margin-bottom: 20px">
+            <input
+              class="input code-input"
+              placeholder="请输入6位短信验证码" 
+              v-model.trim="phoneLoginForm.code"
+              maxlength="6"
+              @keyup.enter="phoneNumberLogin"
+            />
+            <div class="vertical-line" />
+            <button
+              :class="sendingMobileCode ? 'send-code disable' : 'send-code'"
+              @click.prevent="sendSMSCode(phoneLoginForm.mobile)"
+            >
+              {{ phoneSendSMSBtnText }}
+            </button>
+          </el-form-item>
+          <el-form-item style="margin-bottom: 20px; padding-top: 20px;">
+            <button
+              class="login-button"
+              @click.prevent="phoneNumberLogin()"
+              style="margin-bottom: 30px;"
+            >
+              登录
+            </button>
+          </el-form-item> 
+        </el-form>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
+import { onBeforeMount, reactive, ref, watch } from "vue"
 import { ElMessage } from 'element-plus'
 import JSEncrypt from "encryptlong"
 import { Buffer } from "buffer"
+import { getVerificationData, canCreateNewStore, sendSMSVerificationCode } from "@/api/user"
 import store from "@/store"
 import { router } from "@/router"
-import { getVerificationData, canCreateNewStore } from "@/api/user"
-import { onBeforeMount, reactive, ref } from "vue"
+import { validatePhoneNumber } from "@/utils/validator"
 
 let jsEncrypt = new JSEncrypt()
 jsEncrypt.setPublicKey(
@@ -82,7 +123,11 @@ jsEncrypt.setPublicKey(
 export default {
   name: 'LoginForm',
   setup() {
-    const accountLoginRules = reactive({
+    let activeName = ref("first")
+    let timestamp = ref("")
+    let accountLoginFormRef = ref(null)
+
+    const accountLoginFormRules = reactive({
       account: [
         {
           required: true,
@@ -105,16 +150,73 @@ export default {
         }
       ]
     })
-
+    // 账号登录
     let accountLoginForm = reactive({
       account: "",
       password: "",
       verficationCode: "",
     })
 
-    let activeName = ref("first")
-    let timestamp = ref("")
-    let accountLoginFormRef = ref(null)
+    let phoneLoginForm = reactive({ mobile: "", code: ""})
+    let phoneLoginFormRef = ref(null)
+    let phoneSendSMSBtnText = ref("发送验证码")
+    let sendingMobileCode = ref(false)
+
+    // 电话号码登录
+    const phoneLoginFormRules = reactive({
+      mobile: [
+        { 
+          validator: (rule, value, callback) => {
+            const isMatch = validatePhoneNumber(value)
+            if (isMatch) {
+              // 执行发送SMS服务的操作
+              const query = {
+                mobile: phoneLoginForm.mobile,
+                msgType: 10 // 系统约定
+              }
+              sendSMSVerificationCode(query).then(res => {
+                if (res.success) {
+                  ElMessage({
+                    type: "success",
+                    message: res.result,
+                    showClose: true,
+                    duration: 3000
+                  })
+                  // SMS发送成功后开始读秒
+                  sendingMobileCode.value = true
+                  phoneSendSMSBtnText.value = 60
+
+                  let timer = setInterval(() => {
+                    phoneSendSMSBtnText.value--
+                    if (phoneSendSMSBtnText.value === 0) {
+                      sendingMobileCode.value = false
+                      phoneSendSMSBtnText.value = "发送验证码"
+                      clearInterval(timer)
+                    }
+                  }, 1000)
+
+                } else {
+                  ElMessage({
+                    type: "error",
+                    message: res.message,
+                    showClose: true,
+                    duration: 3000
+                  })
+                }
+              })
+
+            } else {
+              if (value === "") {
+                callback(new Error("手机号码不能为空，请重新输入!"))
+              } else {
+                callback(new Error("手机号码格式错误，请重新输入!"))
+              }
+            }
+          }, 
+          trigger: "blur" 
+        }
+      ]
+    })
 
     onBeforeMount(() => {
       getVerficationCode()
@@ -122,13 +224,15 @@ export default {
 
     const accountLogin = () => {
       accountLoginFormRef.value.validate(valid => {
-        console.log("[login from validate]--->", valid)
-        onSubmit({
-          account: accountLoginForm.account,
-          password: jsEncrypt.encrypt(accountLoginForm.password),
-          code: accountLoginForm.verficationCode,
-          randomStr: timestamp
-        })
+        console.log("[login form validate]--->", valid)
+        if (valid) {
+          onSubmit({
+            account: accountLoginForm.account,
+            password: jsEncrypt.encrypt(accountLoginForm.password),
+            code: accountLoginForm.verficationCode,
+            randomStr: timestamp
+          })
+        }
       })
     }
 
@@ -158,9 +262,6 @@ export default {
             })
           }
         }
-
-        // 重置表单
-        console.log("--->", accountLoginFormRef.value)
       } else {
         ElMessage({
           type: "error",
@@ -181,102 +282,35 @@ export default {
       accountLoginForm.base64Code = "data:image/png;base64," + code
     }
 
-    const handleLoginTabSwitch = (tab, event) => {
-      console.log("tab ---===>>>", tab, event)
-      console.log(activeName.value)
+    const sendSMSCode = (phoneNum) => {
+      console.log("Phone used to send SMS code: --->", phoneNum)
+      phoneLoginFormRef.value.validate((valid) => {
+        console.log('[phone number format:]', valid)
+      })
     }
 
-    const handleResetPassword = () => {
+    // TODO: 执行手机号登录操作
+    const phoneNumberLogin = () => {
 
     }
 
     return {
-      accountLoginRules,
+      accountLoginFormRules,
       accountLoginForm,
+      accountLoginFormRef,
       activeName,
       timestamp,
-      accountLoginFormRef,
-      accountLogin,
+      phoneLoginFormRules,
+      phoneLoginForm,
+      phoneLoginFormRef,
+      phoneSendSMSBtnText,
+      sendingMobileCode,
+      accountLogin, // 账号登录方法
       getVerficationCode,
-      handleLoginTabSwitch,
-      handleResetPassword
+      sendSMSCode,
+      phoneNumberLogin, // 手机号登录方法
     }
-  },
-  // mounted() {
-  //   this.getVerficationCode()
-  // },
-  // methods: {
-  //   // 登录方式切换
-  //   handleLoginTabSwitch() {},
-  //   // 账号登录
-  //   accountLogin() {
-  //     this.$refs.accountLoginForm.validate(valid => {
-  //       if (valid) {
-  //         this.onSubmit({
-  //           account: this.accountLoginForm.account,
-  //           password: jsEncrypt.encrypt(this.accountLoginForm.password),
-  //           code: this.accountLoginForm.verficationCode,
-  //           randomStr: this.timestamp
-  //         })
-  //       }
-  //     })
-  //   },
-  //   // 提交登录信息
-  //   async onSubmit(data) {
-  //     const res = await this.$store.dispatch("user/login", data)
-  //     console.log('onSubmit: --->', res)
-  //     /* eslint-disable no-debugger */
-  //     // debugger
-  //     // 提交后，执行刷新验证码操作
-  //     this.getVerficationCode()
-  //     if (res.success) {
-  //       this.$message({
-  //         showClose: true,
-  //         message: "登录成功", // res.message,
-  //         type: "success",
-  //         duration: 1000
-  //       })
-
-  //       // 检查用户是否能够开店
-  //       const storeInfo = await canCreateNewStore()
-  //       if (storeInfo.code === 200) {
-  //         console.log("storeInfo ---===>>>", storeInfo)
-  //         const stores = storeInfo.result
-  //         if (stores.length > 0) {
-  //           this.$router.push({
-  //             path: '/welcome' // 主程序路由
-  //             // path: '/web-main/helios/portal/portalDoor' // 子项目路由
-  //           })
-  //         } else {
-  //           // 如果门店数量为0，则跳转到创建门店页面
-  //           this.$router.push({
-  //             path: '/store/create'
-  //           })
-  //         }
-  //       }
-
-  //       // 重置表单信息
-  //       this.$refs["accountLoginForm"].resetFields()
-
-  //     } else {
-  //       this.accountLoginForm.verficationCode = ""
-  //       this.$message({
-  //         showClose: true,
-  //         message: res.message,
-  //         type: "error"
-  //       })
-  //     }
-  //   },
-  //   // 获取验证码
-  //   async getVerficationCode() {
-  //     this.timestamp = +new Date()
-  //     const res = await getVerificationData(this.timestamp)
-  //     let code = Buffer.from(res, "binary").toString("base64")
-  //     this.base64Code = code
-  //   },
-  //   // 操作重置密码
-  //   handleResetPassword() {}
-  // }
+  }
 }
 </script>
 
@@ -286,13 +320,12 @@ export default {
   padding-top: 51px; // 81px;
   width: 520px;
   .login-tabs {
-    // width: 420px;
-    // min-height: 500px;
+    height: 478px;
     background: #fff;
     box-shadow: 0px 2px 16px 2px rgba(239, 240, 244, 0.73);
     border-radius: 24px;
     margin-left: 100px;
-    padding: 50px 52px;
+    padding: 50px 52px 0 50px;
 
     .input {
       outline: none;
@@ -340,8 +373,37 @@ export default {
         color: #1f5afa;
       }
     }
+
     .reset-password:hover {
       cursor: pointer;
+    }
+
+    .vertical-line {
+      position: relative;
+      width: 1px;
+      height: 24px;
+      background-color: #e0e0e0;
+      left: 210px;
+      bottom: 35px;
+    }
+
+    .send-code {
+      position: relative;
+      left: 220px;
+      bottom: 56px;
+      color: #1f5afa;
+      border: none;
+      background-color: rgba(0, 0, 0, 0);
+      cursor: pointer;
+      width: 80px;
+      text-align: center;
+
+      &.disable {
+        color: #999;
+        background: #f5f5f5;
+        border: none;
+        cursor: not-allowed;
+      }
     }
   }
 }

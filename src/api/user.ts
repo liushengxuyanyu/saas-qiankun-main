@@ -38,6 +38,14 @@ export function getVerificationData(timestamp: string) {
   })
 }
 
+export function sendSMSVerificationCode(data: any) {
+  return request({
+    url: "/ccs/api/saas/sendVerifyCode",
+    method: "POST",
+    data
+  })
+}
+
 /**
  * 判断用户是否开店
  * @returns boolean 开店 true ｜ 未开店 false

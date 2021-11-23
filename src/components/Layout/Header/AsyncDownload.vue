@@ -46,7 +46,7 @@
     </section>
     <!-- 下载列表 -->
     <section class="list-container">
-      <el-table v-loading="tableData.loading" :data="tableData.list" size="mini" height="400px" style="width: 100%;">
+      <el-table v-loading="tableData.loading" :data="tableData.list" size="mini" height="400px" style="width: 100%;" :header-cell-style="{ background: '#f3f6fa'}">
         <el-table-column
           prop="id"
           label="任务ID"

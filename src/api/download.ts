@@ -19,6 +19,12 @@ export function fetchDownloadList(params: any) {
   })
 }
 
+/**
+ * 下载EXCEL文件接口
+ * @param url
+ * @param data
+ * @returns
+ */
 export function donwloadExcelFile(url: string, data: any) {
   return request({
     url: url,
