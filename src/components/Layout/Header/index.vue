@@ -93,7 +93,6 @@ export default {
         // 删除对应的ccs-token
         removeToken()
         removeAllCookies()
-        console.log("退出登录, 移除token")
 
         // 删除localStorage中的信息
         removeLocalStorage("username")

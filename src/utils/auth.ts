@@ -17,7 +17,7 @@ export const setToken = (token: string) => {
 
 export const removeToken = () => {
   // console.log("remove token in cookie")
-  return Cookies.remove(TOKEN_KEY, { path: "/", domain: ".missfresh.net" }) // ref: https://github.com/js-cookie/js-cookie
+  return Cookies.remove(TOKEN_KEY, { path: "/" }) // ref: https://github.com/js-cookie/js-cookie
 }
 
 // 验证菜单栏路径是否匹配
@@ -27,6 +27,12 @@ export const matchPath = (path: string, currentPath: string) => {
 }
 
 export const removeAllCookies = () => {
-  const cookies = Cookies.get()
-  console.log("cookies: --->", cookies)
+  const cookies = document.cookie.split(";")
+  console.log("Remove all cookies: --->", cookies)
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i]
+    let eqPos = cookie.indexOf("=")
+    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"
+  }
 }
