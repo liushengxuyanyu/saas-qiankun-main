@@ -59,6 +59,14 @@
 //   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
 //   border: none;
 // }
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #1f5afa;
+}
+
+.el-input__inner:focus,
+.el-select .el-input__inner:focus {
+  border-color: #1f5afa;
+}
 
 .el-dialog__title {
   font-size: 16px;
