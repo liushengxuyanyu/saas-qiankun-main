@@ -394,8 +394,8 @@ export default {
     .send-code {
       position: relative;
       left: 220px;
-      // bottom: 56px;
-      bottom: 66px;
+      // bottom: 56px; // TODO: 设置为56px，本地显示正常，但测试环境会出问题
+      bottom: 66px; // TODO: 设置为66px，本地显示正常，但测试环境会出问题
       color: #1f5afa;
       border: none;
       background-color: rgba(0, 0, 0, 0);
