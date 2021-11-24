@@ -108,6 +108,7 @@ export default {
     }
 
     .input {
+      box-sizing: border-box;
       outline: none;
       border: none;
       background-color: #f6f7fa;
