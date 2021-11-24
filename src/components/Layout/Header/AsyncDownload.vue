@@ -143,6 +143,7 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn"
 import { fetchReportTypes, fetchDownloadList, donwloadExcelFile } from "@/api/download"
 import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from "@/common/constants"
 import dayjs from "dayjs"
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'AsyncDownloadDialog',
@@ -189,8 +190,11 @@ export default {
     const systemCodeList = BUSINESS_LINE_CODES
 
     onMounted(() => {
-      getReportTypes()
-      getDownloadList()
+      const token = getToken()
+      if (token) {
+        getReportTypes()
+        getDownloadList()
+      }
     })
 
     const getReportTypes = async () => {

@@ -71,6 +71,7 @@ import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
+import { getToken } from '@/utils/auth'
 
 export default {
   props: {
@@ -132,61 +133,65 @@ export default {
       !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
-      // 获取栏目树
-      getmenus().then(res=>{
-        let info = {
-          user: {},
-          menus: {
-            tree: [],
-            hashIndexRole: true
+      console.log('getMenusTree testing ...')
+      const token = getToken()
+      if (token) {
+        // 获取栏目树
+        getmenus().then(res=>{
+          let info = {
+            user: {},
+            menus: {
+              tree: [],
+              hashIndexRole: true
+            }
           }
-        }
 
-        let nav = res.result.find((nav) => {
-          return nav.name == '首页'
-        })
-
-        console.log('Aside.vue - nav: --->', nav)
-
-        if(!nav){
-          res.result.unshift({
-            actionList: null,
-            authority: null,
-            children: [],
-            code: "",
-            component: "",
-            defId: 124475,
-            defParentId: 124474,
-            hide: 0,
-            icon: "home-index",
-            id: 0,
-            label: "首页",
-            localPath: "",
-            method: "",
-            name: "首页",
-            parentId: 124474,
-            path: "/web-main/helios/portal/portalDoor?wellcome",
-            pluginName: "首页",
-            redirect: null,
-            sort: 0,
-            spread: false,
-            type: "0",
-            url: "",
-            webPath: "",
+          let nav = res.result.find((nav) => {
+            return nav.name == '首页'
           })
-          info.menus.hashIndexRole = false
-        }
-        info.menus.tree = res.result
-        state.setGlobalState(info)
 
-        nextTick(()=>{
-          foreachMenus({ mainMenu: res.result, currentPath })
-          menu.mainMenu = res.result
-          // console.log('info: --->', info)
+          console.log('Aside.vue - nav: --->', nav)
+
+          if(!nav){
+            res.result.unshift({
+              actionList: null,
+              authority: null,
+              children: [],
+              code: "",
+              component: "",
+              defId: 124475,
+              defParentId: 124474,
+              hide: 0,
+              icon: "home-index",
+              id: 0,
+              label: "首页",
+              localPath: "",
+              method: "",
+              name: "首页",
+              parentId: 124474,
+              path: "/web-main/helios/portal/portalDoor?wellcome",
+              pluginName: "首页",
+              redirect: null,
+              sort: 0,
+              spread: false,
+              type: "0",
+              url: "",
+              webPath: "",
+            })
+            info.menus.hashIndexRole = false
+          }
+          info.menus.tree = res.result
+          state.setGlobalState(info)
+
+          nextTick(()=>{
+            foreachMenus({ mainMenu: res.result, currentPath })
+            menu.mainMenu = res.result
+            // console.log('info: --->', info)
+          })
+        }).catch(err=>{
+          console.log("err", err)
         })
-      }).catch(err=>{
-        console.log("err", err)
-      })
+      }
     }
     getMenusTree()
 
