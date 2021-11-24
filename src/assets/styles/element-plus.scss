@@ -2,7 +2,7 @@
 .el-pagination.is-background li {
   width: 28px;
   height: 28px;
-  background: #ffffff;
+  background: #fff;
   color: #707d96 !important;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05);
   border-radius: 50% !important;
@@ -16,7 +16,7 @@
 .el-pagination.is-background .btn-next,
 .el-pagination.is-background .btn-prev,
 .el-pagination.is-background .el-pager li {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .el-pagination .el-input .el-input__inner {
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05);
@@ -47,7 +47,7 @@
 .el-button--primary {
   background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
   border-color: #1f5afa;
-  color: #fff !important;
+  // color: #fff !important;
 }
 
 // .el-dialog {

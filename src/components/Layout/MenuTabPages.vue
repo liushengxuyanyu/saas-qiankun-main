@@ -115,7 +115,6 @@ export default {
   .el-button {
     background: #fff;
     border-radius: 4px;
-
     span {
       color: #606266;
     }
