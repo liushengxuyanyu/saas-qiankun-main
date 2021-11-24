@@ -92,14 +92,15 @@ export default {
       }).then(() => {
         // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
         console.log('退出登录')
-        router.replace({
-          path: '/login'
-        })
         // 删除对应的ccs-token
         removeToken()
         // 删除localStorage中的信息
         removeLocalStorage("username")
         removeLocalStorage("isLogin")
+        
+        router.replace({
+          path: '/login'
+        })
       }).catch (() => {
         ElMessage({
           type: 'info',
