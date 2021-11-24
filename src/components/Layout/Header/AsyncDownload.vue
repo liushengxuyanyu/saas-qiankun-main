@@ -131,7 +131,7 @@
     </section>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" size="small" @click="handleDialogClose">关闭</el-button>
+        <el-button type="primary" size="small" @click="handleDialogClose">关 闭</el-button>
       </span>
     </template>  
   </el-dialog>  
@@ -361,6 +361,9 @@ export default {
   :deep(.el-table__row) {
     font-size: 13px;
     color: #222c3d;
+  }
+  :deep(.el-button--text) {
+    color: #1378FF;
   }
 }
 </style>

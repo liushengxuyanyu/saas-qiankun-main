@@ -86,7 +86,9 @@ export default {
       ElMessageBox.confirm('确定退出登录?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        cancelButtonClass: 'cancel-btn',
+        confirmButtonClass: 'confirm-btn'
       }).then(() => {
         // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
         console.log('退出登录')
@@ -130,7 +132,9 @@ export default {
         {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          cancelButtonClass: 'cancel-btn',
+          confirmButtonClass: 'confirm-btn'
         }
       ).then(() => {
         // TODO: 跳转到修改密码页
@@ -186,9 +190,6 @@ export default {
         width: 20px;
         height: 20px;
         cursor: pointer;
-        // &:hover {
-        //   color: red;
-        // }
       }
     }
     .name {
@@ -213,4 +214,5 @@ export default {
     }
   }
 }
+
 </style>
