@@ -35,7 +35,6 @@
                 v-model.trim="accountLoginForm.verficationCode"
                 @keyup.enter="accountLogin"
               />
-              <!-- {{ accountLoginForm.base64Code }} -->
               <img
                 v-if="accountLoginForm.base64Code"
                 class="code-image"
@@ -94,11 +93,13 @@
           <el-form-item style="margin-bottom: 20px; padding-top: 20px;">
             <button
               class="login-button"
-              style="margin-bottom: 30px;"
               @click.prevent="phoneNumberLogin"
             >
               登录
             </button>
+            <span class="reset-password">
+              <router-link to="/reset">忘记密码</router-link>
+            </span>
           </el-form-item> 
         </el-form>
       </el-tab-pane>
@@ -106,7 +107,7 @@
   </div>
 </template>
 <script>
-import { onBeforeMount, reactive, ref, watch } from "vue"
+import { onBeforeMount, reactive, ref } from "vue"
 import { ElMessage } from 'element-plus'
 import JSEncrypt from "encryptlong"
 import { Buffer } from "buffer"
@@ -207,13 +208,28 @@ export default {
 
             } else {
               if (value === "") {
-                callback(new Error("手机号码不能为空，请重新输入!"))
+                callback(new Error("手机号码不能为空!"))
               } else {
-                callback(new Error("手机号码格式错误，请重新输入!"))
+                callback(new Error("手机号码格式错误!"))
               }
             }
           }, 
           trigger: "blur" 
+        }
+      ],
+      code: [
+        {
+          validator: (rule, value, callback) => {
+            console.log("code: --->", value)
+            if (value) {
+              if (value.length < 6) {
+                callback(new Error("请输入6位验证码!"))
+              }
+            } else {
+              callback(new Error("验证码不能为空!"))
+            }
+          },
+          trigger: 'blur',
         }
       ]
     })
@@ -290,9 +306,14 @@ export default {
 
     // TODO: 执行手机号登录操作
     const phoneNumberLogin = () => {
-      onSubmit({
-        mobile: phoneLoginForm.mobile,
-        code: phoneLoginForm.code
+      phoneLoginFormRef.value.validate((valid) => {
+        console.log("--->>", valid)
+        if (valid) {
+          onSubmit({
+            mobile: phoneLoginForm.mobile,
+            code: phoneLoginForm.code
+          })
+        }
       })
     }
 
@@ -382,19 +403,18 @@ export default {
     }
 
     .vertical-line {
-      position: relative;
+      position: absolute;
       width: 1px;
       height: 24px;
       background-color: #e0e0e0;
       left: 210px;
-      bottom: 35px;
+      bottom: 12px;
     }
 
     .send-code {
-      position: relative;
+      position: absolute;
       left: 220px;
-      // bottom: 56px; // TODO: 设置为56px，本地显示正常，但测试环境会出问题
-      bottom: 66px; // TODO: 设置为66px，本地显示正常，但测试环境会出问题
+      bottom: 14px; // TODO: 设置为66px，本地显示正常，但测试环境会出问题
       color: #1f5afa;
       border: none;
       background-color: rgba(0, 0, 0, 0);
