@@ -11,7 +11,9 @@ export const setToken = (token: string) => {
 }
 
 export const removeToken = () => {
-  return Cookies.remove(TOKEN_KEY, { path: "/" })
+  console.log("remove token in cookie")
+  // return Cookies.remove(TOKEN_KEY, { path: "/" })
+  return Cookies.remove(TOKEN_KEY)
 }
 
 // 验证菜单栏路径是否匹配

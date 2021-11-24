@@ -90,14 +90,14 @@ export default {
         cancelButtonClass: 'cancel-btn',
         confirmButtonClass: 'confirm-btn'
       }).then(() => {
-        // window.location.href = `${location.origin}/ccs/login?ret=${encodeURIComponent(window.location.href)}`
-        console.log('退出登录')
         // 删除对应的ccs-token
-        removeToken()
+        const res = removeToken()
+        console.log("退出登录, 移除token", res)
+
         // 删除localStorage中的信息
         removeLocalStorage("username")
         removeLocalStorage("isLogin")
-        
+
         router.replace({
           path: '/login'
         })
