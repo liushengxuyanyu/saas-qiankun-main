@@ -8,7 +8,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="theme-color" content="#333333">
     <meta name="msapplication-navbutton-color" content="#333333">
-    <link rel=icon href="https://j-image.missfresh.cn/img_20210807103734951.png" type=image/x-icon>
+    <link rel=icon href="https://static-as.missfresh.cn/frontend/cdn-images/3VpDL0bdGt9MDIc4hPxtz-S9.png" type=image/x-icon>
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script>
       (function(){
@@ -160,7 +160,7 @@
                 this.setRequestHeader('Authorization', token);
                 this.setRequestHeader('token', token);
                 if(
-                  !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save)/ig.test(url)
+                  !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save|importProductExcel)/ig.test(url)
                 ){
                   this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
                 }
@@ -170,7 +170,7 @@
               }
           }
           if(
-            /(tag\/exportTag|discount\/integralDownload|recharge\/downResult|downExcel|hotline\/export|exportEquityRecord|modelDownload|timereport\/exportExcel|user\/userModelDownload|scene\/exportTagScene|task\/exportAll|task\/download|downloadImportTemplate|downloadImportUpdateTemplate)/.test(url)
+            /(tag\/exportTag|discount\/integralDownload|recharge\/downResult|downExcel|hotline\/export|exportEquityRecord|modelDownload|timereport\/exportExcel|user\/userModelDownload|scene\/exportTagScene|task\/exportAll|task\/download|downloadImportTemplate|downloadImportUpdateTemplate|downloadImportRsvTemp|frontCategoryNew\/goodsExport|frontCategoryRelationExport)/.test(url)
           ){
             this.responseType = 'blob'
           }

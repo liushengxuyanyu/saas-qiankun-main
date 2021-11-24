@@ -96,7 +96,7 @@ module.exports = (env) => {
         chunkFilename: '[id].css'
       }),
       new HtmlWebpackPlugin({
-        title: "零售云中台管理系统",
+        title: "诸葛中台管理系统",
         template: './build/index.html'
       }),
       new VueLoaderPlugin()

@@ -26,27 +26,27 @@ async function start() {
         logLevel: 'debug'
       },
       '/helios/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/ccs/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',  //预发
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/heimdall/api': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/sobot': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/defender/api': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
