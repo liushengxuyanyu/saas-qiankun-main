@@ -12,7 +12,7 @@
         label-width="0px"
         style="margin-top: 30px"
       >
-        <el-form-item prop="mobile" style="margin-bottom: 20px">
+        <el-form-item prop="mobile" style="padding-top: 15px;">
           <input
             class="input"
             type="text"
@@ -20,7 +20,7 @@
             v-model.trim="pwdResetForm.mobile"
           />
         </el-form-item>
-        <el-form-item prop="verficationCode" style="margin-bottom: 20px">
+        <el-form-item prop="verficationCode">
           <input
             class="input"
             type="text"
@@ -36,7 +36,7 @@
             {{ phoneSendSMSBtnText }}
           </button> 
         </el-form-item>
-        <el-form-item prop="newPassowrd" style="margin-bottom: 20px">
+        <el-form-item prop="newPassowrd">
           <input
             class="input"
             type="password"
@@ -44,7 +44,7 @@
             v-model.trim="pwdResetForm.newPassowrd"
           />
         </el-form-item>
-        <el-form-item prop="confirmPassword" style="margin-bottom: 20px">
+        <el-form-item prop="confirmPassword">
           <input
             class="input"
             type="password"
@@ -244,9 +244,9 @@ export default {
       align-items: center;
       font-size: 20px;
       font-weight: 500;
-      padding: 9px 0 16px 0;
+      padding: 0 0 20px 0;
       cursor: pointer;
-      border-bottom: 2px solid #F2F3F7;
+      border-bottom: 2px solid #e4e7ed;
     }
 
     .input {
