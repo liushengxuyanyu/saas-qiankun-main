@@ -1,5 +1,5 @@
 import { login, logout } from "@/api/user"
-import { getToken, setToken, removeToken } from "@/utils/auth"
+import { getToken, setToken, removeToken, removeAllCookies } from "@/utils/auth"
 import { setLocalStorage, removeLocalStorage } from "@/utils/storage"
 
 const state = {
@@ -32,7 +32,7 @@ const actions = {
         .then((res: any) => {
           console.log("[vuex-login action]", res)
           if (res.result) {
-            const {token, username} = res.result
+            const { token, username } = res.result
 
             commit("SET_TOKEN", token)
             setToken(token)
@@ -46,26 +46,29 @@ const actions = {
           }
           resolve(res)
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err)
         })
     })
   },
   // logout action
-  logout({ commit, /* state, dispatch */ }: any) {
+  logout({ commit /* state, dispatch */ }: any) {
     return new Promise<void>((resolve, reject) => {
-      logout().then(() => {
-        commit("SET_TOKEN", "")
-        removeToken()
-        removeLocalStorage("username")
-        removeLocalStorage("islogin")
-        // reset visited views and cached views
-        // dispatch('tagsView/delAllViews', null, { root: true })
+      logout()
+        .then(() => {
+          commit("SET_TOKEN", "")
+          removeToken()
+          removeAllCookies()
+          removeLocalStorage("username")
+          removeLocalStorage("islogin")
+          // reset visited views and cached views
+          // dispatch('tagsView/delAllViews', null, { root: true })
 
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   }
 }
