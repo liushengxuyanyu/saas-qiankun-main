@@ -12,7 +12,7 @@
         label-width="0px"
         style="margin-top: 30px"
       >
-        <el-form-item prop="mobile" style="padding-top: 15px;">
+        <el-form-item prop="mobile" style="padding-top: 14px;">
           <input
             class="input"
             type="text"
@@ -198,7 +198,7 @@ export default {
 
     const sendSMSCode = (phoneNum) => {
       console.log("SMS code for reset password: --->", phoneNum)
-      pwdResetFormRef.value.validate((valid) => {
+      pwdResetFormRef.value.validateField("mobile", (valid) => {
         console.log('[phone number format:]', valid)
       })
     }

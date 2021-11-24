@@ -299,7 +299,7 @@ export default {
 
     const sendSMSCode = (phoneNum) => {
       console.log("Phone used to send SMS code: --->", phoneNum)
-      phoneLoginFormRef.value.validate((valid) => {
+      phoneLoginFormRef.value.validateField("mobile", (valid) => {
         console.log('[phone number format:]', valid)
       })
     }
