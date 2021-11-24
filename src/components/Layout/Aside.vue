@@ -475,6 +475,10 @@ export default {
     &.customer-service{
       background-image: url("@/assets/icons/116.svg");
     }
+    &.data-analysis{
+      background-image: url("@/assets/icons/data-analysis.svg");
+      vertical-align: -0.25em;
+    }
   }
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
