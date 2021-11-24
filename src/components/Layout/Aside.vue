@@ -286,7 +286,7 @@ export default {
   height: 100%;
   &>.el-menu{
     height: 100%;
-    z-index: 903;
+    // z-index: 903;
     width: 72px;
     flex: 1;
     :deep(.el-menu-item){
@@ -406,36 +406,36 @@ export default {
     transition-duration: .3s;
   }
 
-  .arrow-ctrol{
-    width: 10px;
-    height: 48px;
-    background: #C0CBE0;
-    border-radius: 0px 4px 4px 0px;
-    position: absolute;
-    right: -10px;
-    top: 30%;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    z-index: 903;
-    .arrow{
-      border: 4px solid #818EA9;
-      border-left: none;
-      border-top-color: transparent;
-      border-bottom-color:transparent;
-      width: 0px;
-      height: 0px;
-      &.arrow-close{
-        border: 4px solid #818EA9;
-        border-right: none;
-        border-top-color: transparent;
-        border-bottom-color:transparent;
-      }
-    }
-  }
+  // .arrow-ctrol{
+  //   width: 10px;
+  //   height: 48px;
+  //   background: #C0CBE0;
+  //   border-radius: 0px 4px 4px 0px;
+  //   position: absolute;
+  //   right: -10px;
+  //   top: 30%;
+  //   cursor: pointer;
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center;
+  //   align-content: center;
+  //   flex-wrap: wrap;
+  //   // z-index: 903;
+  //   .arrow{
+  //     border: 4px solid #818EA9;
+  //     border-left: none;
+  //     border-top-color: transparent;
+  //     border-bottom-color:transparent;
+  //     width: 0px;
+  //     height: 0px;
+  //     &.arrow-close{
+  //       border: 4px solid #818EA9;
+  //       border-right: none;
+  //       border-top-color: transparent;
+  //       border-bottom-color:transparent;
+  //     }
+  //   }
+  // }
   .svg-icon {
     font-size: 15px;
     width: 1em;
