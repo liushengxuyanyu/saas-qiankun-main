@@ -228,7 +228,7 @@ export default {
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
       // debugger
-      console.log('changeSubMenus testing ...', children, index)
+      // console.log('changeSubMenus testing ...', children, index)
       // emit("mainMenusClick", index)
       fixedMenu(children)
       // activeMenu.value = "";
