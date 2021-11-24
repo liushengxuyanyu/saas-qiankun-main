@@ -331,6 +331,7 @@ export default {
     padding: 50px 52px 0 50px;
 
     .input {
+      box-sizing: border-box;
       outline: none;
       border: none;
       background-color: #f6f7fa;

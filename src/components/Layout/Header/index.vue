@@ -35,7 +35,7 @@ import Logo from '@/assets/images/logo.svg'
 import Avatar from '@/assets/images/avatar.svg'
 import DownloadIcon from '@/assets/images/download.svg'
 import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
-import { removeToken } from "@/utils/auth"
+import { removeToken, removeAllCookies } from "@/utils/auth"
 import { getLocalStorage, removeLocalStorage } from "@/utils/storage"
 
 export default {
@@ -91,8 +91,9 @@ export default {
         confirmButtonClass: 'confirm-btn'
       }).then(() => {
         // 删除对应的ccs-token
-        const res = removeToken()
-        console.log("退出登录, 移除token", res)
+        removeToken()
+        removeAllCookies()
+        console.log("退出登录, 移除token")
 
         // 删除localStorage中的信息
         removeLocalStorage("username")

@@ -16,7 +16,7 @@ export const setToken = (token: string) => {
 }
 
 export const removeToken = () => {
-  console.log("remove token in cookie")
+  // console.log("remove token in cookie")
   // return Cookies.remove(TOKEN_KEY, { path: "/" })
   Cookies.remove(TOKEN_KEY)
 }
