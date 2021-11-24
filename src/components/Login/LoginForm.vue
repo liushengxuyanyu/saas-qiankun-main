@@ -90,7 +90,7 @@
               {{ phoneSendSMSBtnText }}
             </button>
           </el-form-item>
-          <el-form-item style="margin-bottom: 20px; padding-top: 90px;">
+          <el-form-item style="margin-bottom: 20px; padding-top: 88px;">
             <button
               class="login-button"
               @click.prevent="phoneNumberLogin"
