@@ -27,7 +27,7 @@
               @keyup.enter="accountLogin"
             />
           </el-form-item>
-          <el-form-item prop="verficationCode">
+          <el-form-item prop="verficationCode" style="margin-bottom: 20px">
             <div class="verfication-container">
               <input
                 class="input"
@@ -90,12 +90,12 @@
               {{ phoneSendSMSBtnText }}
             </button>
           </el-form-item>
-          <el-form-item style="margin-bottom: 20px; padding-top: 20px;">
+          <el-form-item style="margin-bottom: 20px; padding-top: 90px;">
             <button
               class="login-button"
               @click.prevent="phoneNumberLogin"
             >
-              登录
+              登 录
             </button>
             <span class="reset-password">
               <router-link to="/reset">忘记密码</router-link>
