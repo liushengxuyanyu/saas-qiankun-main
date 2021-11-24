@@ -16,7 +16,7 @@ router.beforeEach((to, from, next) => {
   // start progress bar
   NProgress.start()
   const token = getToken()
-  console.log("[🐒 token]: --->", token, token === undefined, to.path)
+  console.log("[🐒 token]: --->", token, to.path)
   if (!WHITELIST_ROUTERS.includes(to.path) && token === undefined) {
     console.log("[token: ❌ ]", to.path)
     next({
