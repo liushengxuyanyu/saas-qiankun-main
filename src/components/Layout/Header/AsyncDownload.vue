@@ -363,7 +363,7 @@ export default {
     color: #222c3d;
   }
   :deep(.el-button--text) {
-    color: #1378FF;
+    color: #1f5afa;
   }
 }
 </style>
