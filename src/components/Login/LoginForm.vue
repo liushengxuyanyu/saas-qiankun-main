@@ -394,7 +394,8 @@ export default {
     .send-code {
       position: relative;
       left: 220px;
-      bottom: 56px;
+      // bottom: 56px;
+      bottom: 66px;
       color: #1f5afa;
       border: none;
       background-color: rgba(0, 0, 0, 0);
