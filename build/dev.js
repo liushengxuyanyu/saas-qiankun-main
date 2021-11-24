@@ -1,17 +1,11 @@
 const webpackDevServer = require('webpack-dev-server')
 const webpack = require('webpack')
 const path = require('path')
-const fs = require('fs')
+const config = require('./webpack.config')('development')
+
+const PORT = 3001
 
 async function start() {
-  let port = 0
-  try {
-    port = fs.readFileSync(path.resolve('.port'), 'utf8')
-  } catch (e) {
-    throw 'not found .port'
-  }
-
-  const config = require('./webpack.config')('development')
   const options = {
     contentBase: path.resolve('dist'),
     contentBasePublicPath: "/web-main",
@@ -66,10 +60,10 @@ async function start() {
   webpackDevServer.addDevServerEntrypoints(config, options)
   const compiler = webpack(config)
   const server = new webpackDevServer(compiler, options)
-  server.listen(port, 'localhost', () => {
+  server.listen(PORT, 'localhost', () => {
   })
   server.invalidate(() => {
-    console.log(`Project is running at http://${options.host}:${port}`)
+    console.log(`Project is running at http://${options.host}:${PORT}`)
   })
 }
 
