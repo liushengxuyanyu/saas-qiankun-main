@@ -23,7 +23,8 @@
       </div>
     </div>
     <!-- 对话框部分 -->
-    <AsyncDownload ref="asyncDownloadRef" v-model:visible="asyncDownloadDialog.visible" :title="asyncDownloadDialog.title"/>
+    <AsyncDownloadDialog ref="asyncDownloadRef" v-model:visible="asyncDownloadDialog.visible" :title="asyncDownloadDialog.title" />
+    <PasswordResetDialog ref="passwordResetRef" v-model:visible="passwordResetDialog.visible" :title="passwordResetDialog.title" />
   </div>
 </template>
 <script>
@@ -34,13 +35,15 @@ import { router } from '@/router'
 import Logo from '@/assets/images/logo.svg'
 import Avatar from '@/assets/images/avatar.svg'
 import DownloadIcon from '@/assets/images/download.svg'
-import AsyncDownload from '@/components/Layout/Header/AsyncDownload.vue'
+import AsyncDownloadDialog from '@/components/Layout/Header/AsyncDownload.vue'
+import PasswordResetDialog from '@/components/Layout/Header/PasswordReset.vue'
 import { removeToken, removeAllCookies } from "@/utils/auth"
 import { getLocalStorage, removeLocalStorage } from "@/utils/storage"
 
 export default {
   components: {
-    AsyncDownload
+    AsyncDownloadDialog,
+    PasswordResetDialog
   },
   setup() {
     let userInfo = reactive({
@@ -53,6 +56,11 @@ export default {
 
     const asyncDownloadDialog = reactive({
       title: "下载中心",
+      visible: false
+    })
+
+    const passwordResetDialog = reactive({
+      title: "修改密码",
       visible: false
     })
 
@@ -131,34 +139,35 @@ export default {
     }
 
     const changePassword = () => {
-      ElMessageBox.confirm(
-        `确认修改密码？`,
-        '修改密码',
-        {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning',
-          cancelButtonClass: 'cancel-btn',
-          confirmButtonClass: 'confirm-btn'
-        }
-      ).then(() => {
-        // TODO: 跳转到修改密码页
-        console.log('修改密码--->')
-        router.push({
-          path: '/reset'
-        })
-
-      }).catch(() => {
-        ElMessage({
-          type: 'info',
-          message: `修改密码操作已取消`
-        })
-      })
+      passwordResetDialog.visible = !passwordResetDialog.visible
+      // ElMessageBox.confirm(
+      //   `确认修改密码？`,
+      //   '修改密码',
+      //   {
+      //     confirmButtonText: '确认',
+      //     cancelButtonText: '取消',
+      //     type: 'warning',
+      //     cancelButtonClass: 'cancel-btn',
+      //     confirmButtonClass: 'confirm-btn'
+      //   }
+      // ).then(() => {
+      //   // TODO: 跳转到修改密码页
+      //   console.log('修改密码--->')
+      //   router.push({
+      //     path: '/reset'
+      //   })
+      // }).catch(() => {
+      //   ElMessage({
+      //     type: 'info',
+      //     message: `修改密码操作已取消`
+      //   })
+      // })
     }
 
     return {
       userInfo,
       asyncDownloadDialog,
+      passwordResetDialog,
       setUserName,
       handleCommand,
       handleAsyncDownload,
