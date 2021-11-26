@@ -24,6 +24,12 @@
   overflow: hidden;
   border: none;
 }
+.el-pagination .btn-prev,
+.el-pagination .btn-next {
+  &:hover {
+    color: #1f5afa;
+  }
+}
 
 .el-form-item__label {
   font-weight: 400;
