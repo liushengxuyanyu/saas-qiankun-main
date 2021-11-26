@@ -24,7 +24,7 @@
           <input
             class="input"
             type="text"
-            autocomplete="new-password"
+            maxlength="6"
             placeholder="请输入6位短信验证码"
             v-model.trim="pwdResetForm.verficationCode"
           />
@@ -82,7 +82,7 @@ export default {
   setup() {
     let pwdResetFormRef = ref(null)
     let sendingMobileCode = ref(false)
-    let phoneSendSMSBtnText = ref("发送验证码")
+    let phoneSendSMSBtnText = ref("获取验证码")
     
     let pwdResetForm = reactive({
       mobile: '',
@@ -96,50 +96,14 @@ export default {
         {
           validator: (rule, value, callback) => {
             const isMatch = validatePhoneNumber(value)
-            console.log("isMatch: --->", isMatch)
-            if (isMatch) {
-              // 执行发送SMS服务的操作
-              const query = {
-                mobile: pwdResetForm.mobile,
-                msgType: 40 // 修改密码时 msgType = 40 ｜ 系统约定
-              }
-              sendSMSVerificationCode(query).then(res => {
-                if (res.success) {
-                  ElMessage({
-                    type: "success",
-                    message: res.result,
-                    showClose: true,
-                    duration: 3000
-                  })
-
-                  // SMS发送成功后开始读秒
-                  sendingMobileCode.value = true
-                  phoneSendSMSBtnText.value = 60
-
-                  let timer = setInterval(() => {
-                    phoneSendSMSBtnText.value--
-                    if (phoneSendSMSBtnText.value === 0) {
-                      sendingMobileCode.value = false
-                      phoneSendSMSBtnText.value = "发送验证码"
-                      clearInterval(timer)
-                    }
-                  }, 1000)
-
-                } else {
-                  ElMessage({
-                    type: "error",
-                    message: res.message,
-                    showClose: true,
-                    duration: 3000
-                  })
-                }
-              })
-            } else {
+            if (!isMatch) {
               if (value === "") {
                 callback(new Error("手机号码不能为空!"))
               } else {
                 callback(new Error("手机号码格式错误!"))
               }
+            } else {
+              // do nothing
             }
           },
           trigger: "blur"
@@ -148,7 +112,6 @@ export default {
       verficationCode: [
         {
           validator: (rule, value, callback) => {
-            console.log("code: --->", value)
             if (value) {
               if (value.length < 6) {
                 callback(new Error("请输入6位验证码!"))
@@ -163,7 +126,6 @@ export default {
       newPassowrd: [
         {
           validator: (rule, value, callback) => {
-            console.log("newPassowrd: --->", value)
             if (value) {
               // if (value.length < 6) {
               //   callback(new Error("新密码强度不够!"))
@@ -178,9 +140,11 @@ export default {
       confirmPassword: [
         {
           validator: (rule, value, callback) => {
-            console.log("code: --->", value)
             if (value) {
               // TODO: add validation
+              if (value !== pwdResetForm.newPassowrd) {
+                callback(new Error('两次输入密码不一致!'));
+              }
             } else {
               callback(new Error("确认密码不能为空!"))
             }
@@ -197,10 +161,47 @@ export default {
     }
 
     const sendSMSCode = (phoneNum) => {
-      console.log("SMS code for reset password: --->", phoneNum)
       pwdResetFormRef.value.validateField("mobile", (valid) => {
         console.log('[phone number format:]', valid)
       })
+      const isPhoneNum = validatePhoneNumber(phoneNum)
+      if (isPhoneNum) {
+        // 执行发送SMS服务的操作
+        const query = {
+          mobile: pwdResetForm.mobile,
+          msgType: 40 // 修改密码时 msgType = 40 ｜ 系统约定
+        }
+        sendSMSVerificationCode(query).then(res => {
+          if (res.success) {
+            ElMessage({
+              type: "success",
+              message: res.result,
+              showClose: true,
+              duration: 3000
+            })
+
+            // SMS发送成功后开始读秒
+            sendingMobileCode.value = true
+            phoneSendSMSBtnText.value = 60
+
+            let timer = setInterval(() => {
+              phoneSendSMSBtnText.value--
+              if (phoneSendSMSBtnText.value == 0) {
+                sendingMobileCode.value = false
+                phoneSendSMSBtnText.value = "获取验证码"
+                clearInterval(timer)
+              }
+            }, 1000)
+          } else {
+            ElMessage({
+              type: "error",
+              message: res.message,
+              showClose: true,
+              duration: 3000
+            })
+          }
+        })
+      }
     }
 
     const resetPassword = () => {
