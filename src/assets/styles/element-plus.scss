@@ -48,6 +48,18 @@
   background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
   border-color: #1f5afa;
   // color: #fff !important;
+  &:hover {
+    border: 1px solid #1f5afa;
+    background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
+  }
+}
+
+.el-button--default {
+  &:hover {
+    border: 1px solid #1f5afa;
+    color: #1f5afa;
+    background: #fff;
+  }
 }
 
 .el-select .el-input.is-focus .el-input__inner {
@@ -106,6 +118,11 @@
 .el-select__popper.el-popper[role="tooltip"] {
   .el-select-dropdown__item {
     font-size: 13px;
+  }
+}
+.el-pager li {
+  &:hover {
+    color: #1f5afa;
   }
 }
 
