@@ -14,7 +14,7 @@
         <el-dropdown trigger="click" @command="handleCommand">
           <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
           <template #dropdown>
-            <el-dropdown-menu>
+            <el-dropdown-menu class="avatar-dropdown">
               <el-dropdown-item icon="el-icon-lock" command="changePassword">修改密码</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" command="userLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
@@ -155,7 +155,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .header-container{
   display: flex;
   align-items: center;
@@ -199,11 +199,11 @@ export default {
       line-height: 36px;
       cursor: pointer;
     }
-    .action-list, li{
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
+    // .action-list, li{
+    //   padding: 0;
+    //   margin: 0;
+    //   list-style: none;
+    // }
   }
 }
 
