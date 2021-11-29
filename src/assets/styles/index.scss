@@ -87,10 +87,8 @@ html {
 .el-overlay.is-message-box {
   .el-message-box__btns {
     .confirm-btn {
-      background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
-    }
-    .confirm-btn:hover {
       color: #fff;
+      background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
     }
   }
 }
