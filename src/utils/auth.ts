@@ -23,7 +23,6 @@ export const removeToken = () => {
 
 export const removeAllCookies = () => {
   const cookies = document.cookie.split(";")
-  console.log("Remove all cookies: --->", cookies)
   for (let i = 0; i < cookies.length; i++) {
     let cookie = cookies[i]
     let eqPos = cookie.indexOf("=")

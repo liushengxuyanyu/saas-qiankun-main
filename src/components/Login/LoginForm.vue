@@ -1,6 +1,6 @@
 <template>
   <div class="page-form-container">
-    <el-tabs v-model="activeName" stretch class="login-tabs">
+    <el-tabs v-model="activeName" stretch class="login-tabs" @tab-click="handleTabSwitch">
       <el-tab-pane label="账号密码登录" name="first">
         <el-form
           ref="accountLoginFormRef"
@@ -52,9 +52,6 @@
             >
               登 录
             </button>
-            <span class="reset-password">
-              <router-link to="/reset">忘记密码</router-link>
-            </span>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -97,9 +94,9 @@
             >
               登 录
             </button>
-            <span class="reset-password">
+            <!-- <span class="reset-password">
               <router-link to="/reset">忘记密码</router-link>
-            </span>
+            </span> -->
           </el-form-item> 
         </el-form>
       </el-tab-pane>
@@ -115,15 +112,17 @@ import { getVerificationData, canCreateNewStore, sendSMSVerificationCode } from 
 import store from "@/store"
 import { router } from "@/router"
 import { validatePhoneNumber } from "@/utils/validator"
+import { ENCRYPTION_KEY } from "@/common/constants" 
 
 let jsEncrypt = new JSEncrypt()
-jsEncrypt.setPublicKey(
-  `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjnBV+yMC1R31wxb6dNiFWDw53zwRC5bkfna/WUGPcurq8/zJ1rfXk71zggGAslxoZ02d/d/lYFYDCAj2gaWW2CV8hQy82TQNo7ukm3kAfcTDahhZKmm8sdTxxok4xvMYa9tee692FHj23eeIIms0dzsXLxX7X18qhhNvBoezGxn7nPSr3HEc9Pylvoi2x3CjPb1DkIik7wbwBN3eY7oOJn/RSVvpeF/MbdDu+ThwB2mgInVkFeWRpWiSnrfjTk7dFoJdJLwN+JhYkEa4JqLiKRWxt7Vc4o11JHHpMveVwtzzcggCcXSMeOoEjudQDWk5xTl+kiAq7MZ+c4p6p7Kt2QIDAQAB`
-)
+jsEncrypt.setPublicKey(ENCRYPTION_KEY)
 
 export default {
   name: 'LoginForm',
   setup() {
+    // 设置短信接收时间
+    const SMS_COUNTDOWN_DURATION = 60
+
     let activeName = ref("first")
     let timestamp = ref("")
     let accountLoginFormRef = ref(null)
@@ -169,43 +168,8 @@ export default {
         { 
           validator: (rule, value, callback) => {
             const isMatch = validatePhoneNumber(value)
-            if (isMatch) {
-              // 执行发送SMS服务的操作
-              const query = {
-                mobile: phoneLoginForm.mobile,
-                msgType: 10 // 系统约定
-              }
-              sendSMSVerificationCode(query).then(res => {
-                if (res.success) {
-                  ElMessage({
-                    type: "success",
-                    message: res.result,
-                    showClose: true,
-                    duration: 3000
-                  })
-                  // SMS发送成功后开始读秒
-                  sendingMobileCode.value = true
-                  phoneSendSMSBtnText.value = 60
-
-                  let timer = setInterval(() => {
-                    phoneSendSMSBtnText.value--
-                    if (phoneSendSMSBtnText.value === 0) {
-                      sendingMobileCode.value = false
-                      phoneSendSMSBtnText.value = "发送验证码"
-                      clearInterval(timer)
-                    }
-                  }, 1000)
-
-                } else {
-                  ElMessage({
-                    type: "error",
-                    message: res.message,
-                    showClose: true,
-                    duration: 3000
-                  })
-                }
-              })
-
+            if (isMatch) {    
+              callback()
             } else {
               if (value === "") {
                 callback(new Error("手机号码不能为空!"))
@@ -220,13 +184,12 @@ export default {
       code: [
         {
           validator: (rule, value, callback) => {
-            console.log("code: --->", value)
-            if (value) {
-              if (value.length < 6) {
-                callback(new Error("请输入6位验证码!"))
-              }
-            } else {
+            if (value === "") {
               callback(new Error("验证码不能为空!"))
+            } else if (value && value.length === 6) {
+              callback()
+            } else {
+              callback(new Error("请输入6位验证码!"))
             }
           },
           trigger: 'blur',
@@ -238,9 +201,13 @@ export default {
       getVerficationCode()
     })
 
+    // 切换 tab pane
+    const handleTabSwitch = (tabName) => {
+      activeName = tabName.paneName
+    }
+
     const accountLogin = () => {
       accountLoginFormRef.value.validate(valid => {
-        console.log("[login form validate]--->", valid)
         if (valid) {
           onSubmit({
             account: accountLoginForm.account,
@@ -254,7 +221,6 @@ export default {
 
     const onSubmit = async (data) => {
       const res = await store.dispatch("user/login", data)
-      console.log('onSubmit: --->', res)
       if (res.success) {
         ElMessage({
           type: "success",
@@ -286,28 +252,63 @@ export default {
         })
       }
 
-      // 最终刷新验证码
       getVerficationCode()
     }
 
+    /**
+     * 查询图片验证码
+     */
     const getVerficationCode = async () => {
       timestamp = +new Date()
       const res = await getVerificationData(timestamp)
       let code = Buffer.from(res, "binary").toString("base64")
       accountLoginForm.base64Code = "data:image/png;base64," + code
     }
-
+    
+    /**
+     * 发送短信验证码
+     */
     const sendSMSCode = (phoneNum) => {
-      console.log("Phone used to send SMS code: --->", phoneNum)
-      phoneLoginFormRef.value.validateField("mobile", (valid) => {
-        console.log('[phone number format:]', valid)
-      })
+      if (validatePhoneNumber(phoneNum)) {
+        sendSMSVerificationCode({
+          mobile: phoneLoginForm.mobile,
+          msgType: 10 // 系统约定 = 发送短信验证码
+        }).then(res => {
+          if (res.success) {
+            ElMessage({
+              type: "success",
+              message: res.result,
+              showClose: true,
+              duration: 3000
+            })
+            // SMS发送成功后开始读秒
+            sendingMobileCode.value = true
+            phoneSendSMSBtnText.value = SMS_COUNTDOWN_DURATION
+
+            let timer = setInterval(() => {
+              phoneSendSMSBtnText.value--
+              if (phoneSendSMSBtnText.value === 0) {
+                sendingMobileCode.value = false
+                phoneSendSMSBtnText.value = "发送验证码"
+                clearInterval(timer)
+              }
+            }, 1000)
+          } else {
+            ElMessage({
+              type: "error",
+              message: res.message,
+              showClose: true,
+              duration: 3000
+            })
+          }
+        })
+      }
     }
 
     // TODO: 执行手机号登录操作
     const phoneNumberLogin = () => {
-      phoneLoginFormRef.value.validate((valid) => {
-        console.log("--->>", valid)
+      phoneLoginFormRef.value.validate(valid => {
+        console.log("phoneNumberLogin --->>", valid, activeName)
         if (valid) {
           onSubmit({
             mobile: phoneLoginForm.mobile,
@@ -327,6 +328,7 @@ export default {
       phoneLoginForm,
       phoneLoginFormRef,
       phoneSendSMSBtnText,
+      handleTabSwitch,
       sendingMobileCode,
       accountLogin, // 账号登录方法
       getVerficationCode,

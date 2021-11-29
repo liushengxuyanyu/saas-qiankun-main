@@ -105,10 +105,11 @@ export default {
 
         // 旧代码
         removeLocalStorage("navMenus")
-
+        removeLocalStorage("menuPages")
         // 删除localStorage中的信息
         removeLocalStorage("username")
         removeLocalStorage("isLogin")
+        removeLocalStorage("userAccount")
 
         router.replace({
           path: '/login'

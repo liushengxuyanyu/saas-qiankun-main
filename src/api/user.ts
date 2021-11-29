@@ -38,9 +38,23 @@ export function getVerificationData(timestamp: string) {
   })
 }
 
+/**
+ * 发送短信验证码
+ * @param data
+ * @returns
+ */
 export function sendSMSVerificationCode(data: any) {
   return request({
     url: "/ccs/api/saas/sendVerifyCode",
+    method: "POST",
+    data
+  })
+}
+
+export function resetUserPassword(data: any) {
+  console.log("request: --->", data)
+  return request({
+    url: "/ccs/api/saas/resetPassword",
     method: "POST",
     data
   })

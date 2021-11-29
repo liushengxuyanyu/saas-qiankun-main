@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" v-model="visible" width="80%" :before-close="handleDialogClose">
+  <el-dialog :title="title" v-model="visible" width="80%" :before-close="handleDialogClose" :close-on-click-modal="false">
     <section class="search-container">
       <el-form :inline="true" ref="searchFormRef" :model="searchForm" size="mini">
         <el-form-item>
@@ -119,7 +119,7 @@
           <el-pagination 
             small 
             layout="total, prev, pager, next, sizes, jumper" 
-            :total="50"
+            :total="pagination.total"
             :current-page="pagination.page"
             :page-size="pagination.limit"
             @size-change="onPageSizeChanged"
@@ -176,7 +176,8 @@ export default {
 
     let pagination = reactive({
       page: 1,
-      limit: 10
+      limit: 10,
+      total: 0
     })
 
     let searchForm = reactive({
@@ -224,6 +225,7 @@ export default {
       const res = await fetchDownloadList(params)
       if (res.code === 200) {
         tableData.list = res.result.list
+        pagination.total = res.result.total
         let rawData = res.result.list
         let finalData = []
         let item = Object.assign({})

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" v-model="visible" width="25%" :before-close="handleDialogClose">
+  <el-dialog :title="title" v-model="visible" width="375px" :before-close="handleDialogClose" :close-on-click-modal="false">
     <el-form ref="passwordResetFormRef" :model="passwordResetForm" :rules="passwordResetFormRules" size="small" class="password-reset-form">
       <el-form-item prop="mobile">
         <input placeholder="请输入手机号" v-model.trim="passwordResetForm.mobile" class="input" />
@@ -41,9 +41,15 @@
 </template>
 <script>
 import { reactive, ref } from "vue"
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus"
+import JSEncrypt from "encryptlong"
 import { validatePhoneNumber } from "@/utils/validator"
-import { sendSMSVerificationCode } from '@/api/user'
+import { sendSMSVerificationCode, resetUserPassword } from "@/api/user"
+import { getLocalStorage } from "@/utils/storage"
+import { ENCRYPTION_KEY } from "@/common/constants" 
+
+let jsEncrypt = new JSEncrypt()
+jsEncrypt.setPublicKey(ENCRYPTION_KEY)
 
 export default {
   name: 'PasswordResetDialog',
@@ -76,6 +82,8 @@ export default {
             if (value) {
               if (value !== passwordResetForm.confirmPassword) {
                 callback(new Error('两次输入密码不一致!'));
+              } else {
+                callback()
               }
             } else {
               callback(new Error("新密码不能为空!"))
@@ -88,9 +96,10 @@ export default {
         {
           validator: (rule, value, callback) => {
             if (value) {
-              // TODO: add validation
               if (value !== passwordResetForm.newPassowrd) {
                 callback(new Error('两次输入密码不一致!'));
+              } else {
+                callback()
               }
             } else {
               callback(new Error("确认密码不能为空!"))
@@ -103,14 +112,14 @@ export default {
         {
           validator: (rule, value, callback) => {
             const isMatch = validatePhoneNumber(value)
-            if (!isMatch) {
+            if (isMatch) {    
+              callback()
+            } else {
               if (value === "") {
                 callback(new Error("手机号码不能为空!"))
               } else {
                 callback(new Error("手机号码格式错误!"))
               }
-            } else {
-              // do nothing
             }
           }
         }
@@ -118,12 +127,12 @@ export default {
       code: [
         {
           validator: (rule, value, callback) => {
-            if (value) {
-              if (value.length < 6) {
-                callback(new Error("请输入6位验证码!"))
-              }
-            } else {
+            if (value === "") {
               callback(new Error("验证码不能为空!"))
+            } else if (value && value.length === 6) {
+              callback()
+            } else {
+              callback(new Error("请输入6位验证码!"))
             }
           },
           trigger: 'blur',
@@ -181,11 +190,39 @@ export default {
     }
 
     const resetPassword = () => {
-      console.log("点击重置密码按钮")
+      let userAccount = getLocalStorage("userAccount").slice(1, -1)
       passwordResetFormRef.value.validate(valid => {
         if (valid) {
           // 点击重置密码
           console.log("valid: --->", valid)
+          const data = {
+            account: userAccount,
+            mobile: passwordResetForm.mobile,
+            verifyCode: passwordResetForm.code,
+            newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
+          }
+
+          console.log("data: --->", data)
+          resetUserPassword(data).then(res => {
+            console.log("reset password: --->", res)
+            if (res.success) {
+              ElMessage({
+                type: "success",
+                message: "密码重置成功!", // res.message,
+                showClose: true,
+                duration: 1000
+              })  
+              // 关闭对话框
+              handleDialogClose()
+            } else {
+              ElMessage({
+                type: "error",
+                message: res.message,
+                showClose: true,
+                duration: 3000
+              })
+            }
+          })
         }
       })
     }

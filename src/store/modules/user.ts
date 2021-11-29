@@ -1,10 +1,11 @@
 import { login, logout } from "@/api/user"
 import { getToken, setToken, removeToken, removeAllCookies } from "@/utils/auth"
-import { setLocalStorage, removeLocalStorage } from "@/utils/storage"
+import { setLocalStorage, removeLocalStorage, getLocalStorage } from "@/utils/storage"
 
 const state = {
   token: getToken(),
   name: "",
+  account: "",
   isLogin: false, // 默认未登录
   appList: Array
 }
@@ -16,6 +17,10 @@ const mutations = {
 
   SET_NAME: (state: any, name: string) => {
     state.name = name
+  },
+
+  SET_ACCOUNT: (state: any, account: string) => {
+    state.account = account
   },
 
   SET_LOGIN_STATUS: (state: any, isLogin: boolean) => {
@@ -32,13 +37,16 @@ const actions = {
         .then((res: any) => {
           console.log("[vuex-login action]", res)
           if (res.result) {
-            const { token, username } = res.result
+            const { token, username, userAccount } = res.result
 
             commit("SET_TOKEN", token)
             setToken(token)
 
             commit("SET_NAME", username)
             setLocalStorage("username", username)
+
+            commit("SET_ACCOUNT", userAccount)
+            setLocalStorage("userAccount", userAccount)
 
             // 根据token确认登录状态
             commit("SET_LOGIN_STATUS", !!token)
@@ -60,7 +68,8 @@ const actions = {
           removeToken()
           removeAllCookies()
           removeLocalStorage("username")
-          removeLocalStorage("islogin")
+          removeLocalStorage("isLogin")
+          removeLocalStorage("userAccount")
           // reset visited views and cached views
           // dispatch('tagsView/delAllViews', null, { root: true })
 

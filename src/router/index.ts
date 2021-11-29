@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 import Home from "@/components/Home.vue"
 import Login from "@/views/login/index.vue"
-import Reset from "@/views/reset-pwd/index.vue"
 import OpenStore from "@/views/open-store/index.vue"
 
 // 特殊页面设置
@@ -34,11 +33,6 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/login",
     component: Login,
-    meta: SPECIAL_MAIN_PAGE_META_INFO
-  },
-  {
-    path: "/reset",
-    component: Reset,
     meta: SPECIAL_MAIN_PAGE_META_INFO
   },
   {

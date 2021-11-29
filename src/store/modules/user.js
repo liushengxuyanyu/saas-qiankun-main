@@ -1,19 +1,16 @@
-import {
-  loginByUsername,
-  getUserName
-} from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { loginByUsername, getUserName } from "@/api/login"
+import { getToken, setToken, removeToken } from "@/utils/auth"
 
 const user = {
   state: {
-    user: '',
-    status: '',
-    code: '',
-    token: getToken(),
-    name: '',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    roles: [],
-    userName: ''
+    // user: '',
+    // status: '',
+    // code: '',
+    // token: getToken(),
+    // name: '',
+    // avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    // roles: [],
+    // userName: ''
   },
 
   mutations: {
@@ -75,7 +72,6 @@ const user = {
     //       })
     //   })
     // },
-
     // 获取用户信息
     // GetUserInfo() {},
     // 获取用户有权限访问的ccs项目列表
@@ -88,7 +84,6 @@ const user = {
     //     }
     //   })
     // },
-
     // 登出
     // LogOut({ commit }) {
     //   return new Promise((resolve, reject) => {
@@ -102,7 +97,6 @@ const user = {
     //     }
     //   })
     // },
-
     // 前端 登出
     // FedLogOut({ commit }) {
     //   return new Promise(resolve => {
@@ -112,6 +106,6 @@ const user = {
     //   })
     // },
   }
-};
+}
 
 export default user
