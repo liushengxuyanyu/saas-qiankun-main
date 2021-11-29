@@ -140,28 +140,6 @@ export default {
 
     const changePassword = () => {
       passwordResetDialog.visible = !passwordResetDialog.visible
-      // ElMessageBox.confirm(
-      //   `确认修改密码？`,
-      //   '修改密码',
-      //   {
-      //     confirmButtonText: '确认',
-      //     cancelButtonText: '取消',
-      //     type: 'warning',
-      //     cancelButtonClass: 'cancel-btn',
-      //     confirmButtonClass: 'confirm-btn'
-      //   }
-      // ).then(() => {
-      //   // TODO: 跳转到修改密码页
-      //   console.log('修改密码--->')
-      //   router.push({
-      //     path: '/reset'
-      //   })
-      // }).catch(() => {
-      //   ElMessage({
-      //     type: 'info',
-      //     message: `修改密码操作已取消`
-      //   })
-      // })
     }
 
     return {
