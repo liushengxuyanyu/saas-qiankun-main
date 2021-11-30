@@ -228,6 +228,8 @@ export default {
       cursor: pointer;
 
       &__dropdown-list {
+        display: flex;
+        align-items: center;
         position: absolute;
         background: #fff;
         top: 52px;
