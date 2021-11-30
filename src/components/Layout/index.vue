@@ -296,6 +296,7 @@ export default {
       margin: 0;
       overflow: hidden;
       border-radius: 0;
+      // background: #f2f3f6;
     }
     #qiankun-sub-container {
       width: 100%;

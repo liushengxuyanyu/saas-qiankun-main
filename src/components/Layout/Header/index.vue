@@ -1,6 +1,6 @@
 <template>
   <div class="header-container">
-    <router-link class="logo-img" to="/">
+    <router-link class="logo-img" to="/home">
       <img :src="userInfo.logo" />
     </router-link>
     <div class="userinfo">
@@ -10,8 +10,8 @@
       <div class="name">
         {{ userInfo.userName }}
       </div>
-      <div class="avatar">
-        <el-dropdown trigger="click" @command="handleCommand">
+      <div class="avatar" @click="handleAvatarClick">
+        <!-- <el-dropdown trigger="click" @command="handleCommand">
           <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu class="avatar-dropdown">
@@ -19,7 +19,24 @@
               <el-dropdown-item icon="el-icon-switch-button" command="userLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
-        </el-dropdown>
+        </el-dropdown> -->
+        <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
+        <div v-if="userInfo.showDropdownlist" class="avatar__dropdown-list">
+          <ul>
+            <li @click="changePassword">
+              <el-icon :size="14">
+                <key />
+              </el-icon>
+              <span>修改密码</span>
+            </li>
+            <li @click="userLogout">
+              <el-icon :size="14">
+                <unlock />
+              </el-icon>
+              <span>退出登录</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <!-- 对话框部分 -->
@@ -28,8 +45,9 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Key, Unlock } from '@element-plus/icons'
 import store from '@/store'
 import { router } from '@/router'
 import Logo from '@/assets/images/logo.svg'
@@ -42,6 +60,8 @@ import { getLocalStorage, removeLocalStorage } from "@/utils/storage"
 
 export default {
   components: {
+    Key,
+    Unlock,
     AsyncDownloadDialog,
     PasswordResetDialog
   },
@@ -51,7 +71,8 @@ export default {
       avatar: Avatar,
       downloadIcon: DownloadIcon, 
       showDownloadIcon: true,     // 是否展示下载按钮
-      userName: "" // 用户名
+      userName: "", // 用户名
+      showDropdownlist: false
     })
 
     const asyncDownloadDialog = reactive({
@@ -135,6 +156,12 @@ export default {
       }
     }
 
+    // 点击头像
+    const handleAvatarClick = () => {
+      console.log("点击用户头像", userInfo.showDropdownlist)
+      userInfo.showDropdownlist = !userInfo.showDropdownlist
+    }
+
     const handleAsyncDownload = () => {
       asyncDownloadDialog.visible = !asyncDownloadDialog.visible
     }
@@ -149,6 +176,7 @@ export default {
       passwordResetDialog,
       setUserName,
       handleCommand,
+      handleAvatarClick,
       handleAsyncDownload,
       changePassword,
       userLogout
@@ -199,12 +227,35 @@ export default {
       height: 36px;
       line-height: 36px;
       cursor: pointer;
+
+      &__dropdown-list {
+        position: absolute;
+        background: #fff;
+        top: 52px;
+        right: 2px;
+        padding: 0 8px 0 15px;
+        width: 100px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        color: #606266;
+        ul {
+          padding-inline-start: 0;
+          li {
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+            margin: 0;
+            font-size: 14px;
+            line-height: 32px;
+            span {
+              padding-left: 10px;
+            }
+            &:hover {
+              color: #1f5afa;
+            }
+          }
+        }
+      }
     }
-    // .action-list, li{
-    //   padding: 0;
-    //   margin: 0;
-    //   list-style: none;
-    // }
   }
 }
 
