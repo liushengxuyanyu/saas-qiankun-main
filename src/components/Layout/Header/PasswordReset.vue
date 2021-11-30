@@ -194,15 +194,12 @@ export default {
       passwordResetFormRef.value.validate(valid => {
         if (valid) {
           // 点击重置密码
-          console.log("valid: --->", valid)
           const data = {
             account: userAccount,
             mobile: passwordResetForm.mobile,
             verifyCode: passwordResetForm.code,
             newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
           }
-
-          console.log("data: --->", data)
           resetUserPassword(data).then(res => {
             console.log("reset password: --->", res)
             if (res.success) {
