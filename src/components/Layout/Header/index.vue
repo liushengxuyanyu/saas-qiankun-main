@@ -158,7 +158,6 @@ export default {
 
     // 点击头像
     const handleAvatarClick = () => {
-      console.log("点击用户头像", userInfo.showDropdownlist)
       userInfo.showDropdownlist = !userInfo.showDropdownlist
     }
 
@@ -234,7 +233,7 @@ export default {
         top: 52px;
         right: 2px;
         padding: 0 15px;
-        width: 100px;
+        width: 120px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
         color: #606266;
         ul {
