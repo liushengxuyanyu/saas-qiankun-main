@@ -27,13 +27,13 @@
               <el-icon :size="14">
                 <key />
               </el-icon>
-              <span>修改密码</span>
+              <span style="width: 100px; min-width: 100px">修改密码</span>
             </li>
             <li @click="userLogout">
               <el-icon :size="14">
                 <unlock />
               </el-icon>
-              <span>退出登录</span>
+              <span style="width: 100px; min-width: 100px">退出登录</span>
             </li>
           </ul>
         </div>
