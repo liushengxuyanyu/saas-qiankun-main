@@ -42,7 +42,7 @@ export const getMicroApps = () => {
       name: "saasdds",
       entry: "/wuliu/dds-qiankun/index.html",
       container,
-      activeRule: getActiveRule("/web-main/wuliu/dds-qiankun")
+      activeRule: "/web-main/wuliu/dds-qiankun" // getActiveRule("/web-main/wuliu/dds-qiankun")
     },
     // 物流-系统管理(系统配置)
     {
@@ -89,7 +89,7 @@ export const getMicroApps = () => {
   return apps
 }
 
-const getActiveRule = (url: string) => {
-  console.log("saas-dds URL: --->", url)
-  return location.pathname
-}
+// const getActiveRule = (url: string) => {
+//   console.log("saas-dds URL: --->", url)
+//   return location.pathname
+// }

@@ -20,8 +20,8 @@ export default {
       qiankunStart({
         prefetch: false,
         sandbox: false,
-        // singular: true,
-        singular: false,
+        singular: true,
+        // singular: false,
         excludeAssetFilter: (assetUrl) => {
           return /(?=map.*.com)/.test(assetUrl)
         }
