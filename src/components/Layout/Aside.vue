@@ -133,7 +133,7 @@ export default {
       !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
-      console.log('getMenusTree testing ...')
+      // console.log('getMenusTree testing ...')
       const token = getToken()
       if (token) {
         // 获取栏目树

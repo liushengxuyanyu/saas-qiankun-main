@@ -90,10 +90,6 @@ export const getMicroApps = () => {
 }
 
 const getActiveRule = (url: string) => {
-  console.log(url)
-  if (url || url.includes("/web-main/wuliu/dds-qiankun")) {
-    return true
-  } else {
-    return false
-  }
+  console.log("saas-dds URL: --->", url)
+  return location.pathname
 }
