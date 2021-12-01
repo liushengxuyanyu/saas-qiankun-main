@@ -29,3 +29,24 @@ export function removeLocalStorage(key: string) {
 export function clearLocalStorage() {
   window.localStorage.clear()
 }
+
+/**
+ * 获取session数据
+ * @param key
+ * @returns
+ */
+export function getSessionStorage(key: string) {
+  return window.sessionStorage.getItem(key)
+}
+
+export function setSessionStorage(key: string, data: any) {
+  return window.sessionStorage.setItem(key, JSON.stringify(data))
+}
+
+export function removeSessionStorage(key: string) {
+  window.sessionStorage.removeItem(key)
+}
+
+export function clearSessionStorage() {
+  window.sessionStorage.clear()
+}
