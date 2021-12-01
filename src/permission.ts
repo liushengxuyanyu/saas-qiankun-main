@@ -12,11 +12,19 @@ const WHITELIST_ROUTERS: string[] = [
   "/reset" // 密码重置页
 ]
 
+// 处理子框架的规则白名单
+const SUB_SCRM_URL_LIST: string[] = [
+  "/ms-admin/business/private/scrm" // NOTE: 营销项目的SRCM页面配置需要隐藏侧边栏和menuTabs
+]
+
+// 获取当前token信息
+const token = getToken()
+
 router.beforeEach((to, from, next) => {
   // start progress bar
   NProgress.start()
-  const token = getToken()
   console.log("[🐒 token]: --->", token, to.path)
+
   if (!WHITELIST_ROUTERS.includes(to.path) && token === undefined) {
     console.log("[token: ❌ ]", to.path)
     next({
@@ -32,6 +40,7 @@ router.beforeEach((to, from, next) => {
 
 // 全局守卫
 router.beforeResolve(async (to) => {
+  console.log("to: --->>>", to)
   // 当meta中的belongTo不为'main'时，表示路由来自子应用
   if (to.meta && to.meta.belongTo === "main") {
     // store.dispatch("settings/updateSetting", to.meta)
@@ -45,15 +54,25 @@ router.beforeResolve(async (to) => {
       // return true
     }
   } else {
-    store.dispatch("settings/updateSetting", {
-      belongTo: "", // 设置路由地址是否属于主框架, 默认不属于
-      showHeader: true, // 显示 ｜ 隐藏顶部导航栏
-      showDownload: true, // 显示 ｜ 隐藏顶部右侧下载按钮
-      showSidebar: true, // 显示 ｜ 隐藏侧边栏
-      showTagsView: true, // 显示 ｜ 隐藏标签列表
-      showSubContainer: true // 显示 ｜ 隐藏子容器
-    })
-    // return true
+    if (SUB_SCRM_URL_LIST.includes(to.path) && token !== undefined) {
+      store.dispatch("settings/updateSetting", {
+        belongTo: "", // 设置路由地址是否属于主框架, 默认不属于
+        showHeader: true, // 显示 ｜ 隐藏顶部导航栏
+        showDownload: true, // 显示 ｜ 隐藏顶部右侧下载按钮
+        showSidebar: false, // 显示 ｜ 隐藏侧边栏
+        showTagsView: false, // 显示 ｜ 隐藏标签列表
+        showSubContainer: true // 显示 ｜ 隐藏子容器
+      })
+    } else {
+      store.dispatch("settings/updateSetting", {
+        belongTo: "", // 设置路由地址是否属于主框架, 默认不属于
+        showHeader: true, // 显示 ｜ 隐藏顶部导航栏
+        showDownload: true, // 显示 ｜ 隐藏顶部右侧下载按钮
+        showSidebar: true, // 显示 ｜ 隐藏侧边栏
+        showTagsView: true, // 显示 ｜ 隐藏标签列表
+        showSubContainer: true // 显示 ｜ 隐藏子容器
+      })
+    }
   }
 })
 
