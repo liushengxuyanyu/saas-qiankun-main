@@ -239,8 +239,8 @@ export default {
             fileName: data.fileName,
             downloadUrl: data.downloadUrl,
             dataCount: data.dataCount,
-            taskBeginTime: dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss"),
-            taskEndTime: dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss"),
+            taskBeginTime: data.taskBeginTime ? dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss") : "-",
+            taskEndTime: data.taskEndTime ? dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-",
             taskStatus: _parseTaskStatus(data.taskStatus),
             failureMessage: data.failureMessage || '-' // 失败原因
           }
