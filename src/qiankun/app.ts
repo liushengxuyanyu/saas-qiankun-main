@@ -1,5 +1,5 @@
 export const getMicroApps = () => {
-  const container = document.getElementById('qiankun-sub-container')
+  const container = document.getElementById("qiankun-sub-container")
   const apps = [
     // 客服系统
     {
@@ -42,7 +42,7 @@ export const getMicroApps = () => {
       name: "saasdds",
       entry: "/wuliu/dds-qiankun/index.html",
       container,
-      activeRule: "/web-main/wuliu/dds-qiankun"
+      activeRule: getActiveRule("/web-main/wuliu/dds-qiankun")
     },
     // 物流-系统管理(系统配置)
     {
@@ -84,7 +84,16 @@ export const getMicroApps = () => {
       entry: "/act-admin/index.html",
       container,
       activeRule: "/web-main/act-admin"
-    },
+    }
   ]
   return apps
+}
+
+const getActiveRule = (url: string) => {
+  console.log(url)
+  if (url || url.includes("/web-main/wuliu/dds-qiankun")) {
+    return true
+  } else {
+    return false
+  }
 }

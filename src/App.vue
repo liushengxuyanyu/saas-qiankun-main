@@ -14,11 +14,14 @@ export default {
   },
   setup() {
     onMounted(() => {
+      // 如何同时激活两个微应用: 
+      // https://qiankun.umijs.org/zh/faq#%E5%A6%82%E4%BD%95%E5%90%8C%E6%97%B6%E6%BF%80%E6%B4%BB%E4%B8%A4%E4%B8%AA%E5%BE%AE%E5%BA%94%E7%94%A8
       qiankunRegister()
       qiankunStart({
         prefetch: false,
         sandbox: false,
-        singular: true,
+        // singular: true,
+        singular: false,
         excludeAssetFilter: (assetUrl) => {
           return /(?=map.*.com)/.test(assetUrl)
         }
