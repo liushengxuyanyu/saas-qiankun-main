@@ -1,16 +1,16 @@
 <template>
-  <div class="header-container">
-    <router-link class="logo-img" to="/home">
+  <div class="main-header-container">
+    <router-link class="main-header-container__logo-img" to="/home">
       <img :src="userInfo.logo" />
     </router-link>
-    <div class="userinfo">
-      <div v-if="userInfo.showDownloadIcon" class="async-download" @click="handleAsyncDownload">
+    <div class="main-header-container__userinfo">
+      <div v-if="userInfo.showDownloadIcon" class="main-header-container__userinfo__async-download" @click="handleAsyncDownload">
         <img :src="userInfo.downloadIcon" />
       </div>
-      <div class="name">
+      <div class="main-header-container__userinfo__name">
         {{ userInfo.userName }}
       </div>
-      <div ref="dropdownlistRef" class="avatar" @click="handleAvatarClick">
+      <div ref="dropdownlistRef" class="main-header-container__userinfo--avatar" @click="handleAvatarClick">
         <!-- <el-dropdown trigger="click" @command="handleCommand">
           <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
           <template #dropdown>
@@ -21,7 +21,7 @@
           </template>
         </el-dropdown> -->
         <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
-        <div v-show="userInfo.showDropdownlist" class="avatar__dropdown-list">
+        <div v-show="userInfo.showDropdownlist" class="main-header-container__userinfo--avatar__dropdown-list">
           <ul>
             <li @click="changePassword">
               <el-icon :size="14">
@@ -199,12 +199,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.header-container{
+.main-header-container{
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
-  .logo-img {
+  &__logo-img {
     display: flex;
     align-items: center;
     img {
@@ -212,14 +212,14 @@ export default {
       height: 30px;
     }
   }
-  .userinfo{
+  &__userinfo{
     flex: 1;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
     margin-right: 20px;
-    .async-download {
+    &__async-download {
       margin-right: 10px;
       img {
         width: 20px;
@@ -227,7 +227,7 @@ export default {
         cursor: pointer;
       }
     }
-    .name {
+    &__name {
       padding-right: 15px;
       color: #606266;
       font-size: 14px;
@@ -237,7 +237,7 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
-    .avatar{
+    &--avatar{
       height: 36px;
       line-height: 36px;
       cursor: pointer;
