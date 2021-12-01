@@ -250,7 +250,8 @@ export default {
         top: 52px;
         right: 2px;
         padding: 0 15px;
-        width: 120px;
+        width: 150px;
+        min-width: 150px;
         height: 96px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
         color: #606266;
