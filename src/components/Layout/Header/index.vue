@@ -10,7 +10,7 @@
       <div class="name">
         {{ userInfo.userName }}
       </div>
-      <div class="avatar" @click="handleAvatarClick">
+      <div ref="dropdownlistRef" class="avatar" @click="handleAvatarClick">
         <!-- <el-dropdown trigger="click" @command="handleCommand">
           <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
           <template #dropdown>
@@ -21,7 +21,7 @@
           </template>
         </el-dropdown> -->
         <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
-        <div v-if="userInfo.showDropdownlist" class="avatar__dropdown-list">
+        <div v-show="userInfo.showDropdownlist" class="avatar__dropdown-list">
           <ul>
             <li @click="changePassword">
               <el-icon :size="14">
@@ -66,6 +66,8 @@ export default {
     PasswordResetDialog
   },
   setup() {
+    let dropdownlistRef = ref(null)
+
     let userInfo = reactive({
       logo: Logo,
       avatar: Avatar,
@@ -93,8 +95,10 @@ export default {
 
     onMounted(() => {
       userInfo.userName = setUserName()
+      document.addEventListener("click", toggleDropdownlist)
     })
-
+    
+    // 设置用户名称
     const setUserName = () => {
       let finalUserName = ""
       const name = getLocalStorage('username')
@@ -109,6 +113,16 @@ export default {
       }
 
       return finalUserName
+    }
+
+    // click other region 方法，点击其它区域关闭下拉菜单
+    const toggleDropdownlist = (e) => {
+      const data = dropdownlistRef.value
+      if (data) {
+        if (!data.contains(e.target)) {
+          userInfo.showDropdownlist = false
+        }
+      }
     }
 
     const userLogout = () => {
@@ -170,6 +184,7 @@ export default {
     }
 
     return {
+      dropdownlistRef,
       userInfo,
       asyncDownloadDialog,
       passwordResetDialog,
