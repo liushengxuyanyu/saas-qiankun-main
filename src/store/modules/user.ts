@@ -1,6 +1,6 @@
 import { login, logout } from "@/api/user"
 import { getToken, setToken, removeToken, removeAllCookies } from "@/utils/auth"
-import { setLocalStorage, removeLocalStorage, getLocalStorage } from "@/utils/storage"
+import { setLocalStorage, removeLocalStorage, clearLocalStorage } from "@/utils/storage"
 
 const state = {
   token: getToken(),
@@ -70,6 +70,7 @@ const actions = {
           removeLocalStorage("username")
           removeLocalStorage("isLogin")
           removeLocalStorage("userAccount")
+          clearLocalStorage()
           // reset visited views and cached views
           // dispatch('tagsView/delAllViews', null, { root: true })
 

@@ -251,7 +251,7 @@ export default {
           duration: 3000
         })
       }
-      
+
       if (activeName.value === 'first') {
         getVerficationCode()
       }

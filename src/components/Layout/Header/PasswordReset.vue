@@ -190,36 +190,46 @@ export default {
     }
 
     const resetPassword = () => {
-      let userAccount = getLocalStorage("userAccount").slice(1, -1)
       passwordResetFormRef.value.validate(valid => {
         if (valid) {
-          // 点击重置密码
-          const data = {
-            account: userAccount,
-            mobile: passwordResetForm.mobile,
-            verifyCode: passwordResetForm.code,
-            newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
-          }
-          resetUserPassword(data).then(res => {
-            console.log("reset password: --->", res)
-            if (res.success) {
-              ElMessage({
-                type: "success",
-                message: "密码重置成功!", // res.message,
-                showClose: true,
-                duration: 1000
-              })  
-              // 关闭对话框
-              handleDialogClose()
-            } else {
-              ElMessage({
-                type: "error",
-                message: res.message,
-                showClose: true,
-                duration: 3000
-              })
+          let userAccount = getLocalStorage("userAccount")
+          if (userAccount) {
+            userAccount.slice(1, -1)
+            // 点击重置密码
+            const data = {
+              account: userAccount,
+              mobile: passwordResetForm.mobile,
+              verifyCode: passwordResetForm.code,
+              newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
             }
-          })
+            resetUserPassword(data).then(res => {
+              console.log("reset password: --->", res)
+              if (res.success) {
+                ElMessage({
+                  type: "success",
+                  message: "密码重置成功!", // res.message,
+                  showClose: true,
+                  duration: 1000
+                })  
+                // 关闭对话框
+                handleDialogClose()
+              } else {
+                ElMessage({
+                  type: "error",
+                  message: res.message,
+                  showClose: true,
+                  duration: 3000
+                })
+              }
+            })
+          } else {
+            ElMessage({
+              type: "error",
+              message: "User Account信息为空，请重新登录",
+              showClose: true,
+              duration: 3000
+            })
+          }
         }
       })
     }
