@@ -423,7 +423,7 @@ export default {
       border: none;
       background-color: rgba(0, 0, 0, 0);
       cursor: pointer;
-      width: 80px;
+      width: 90px;
       text-align: center;
 
       &.disable {
