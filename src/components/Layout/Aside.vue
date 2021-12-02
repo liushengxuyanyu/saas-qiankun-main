@@ -453,6 +453,10 @@ export default {
       background-image: url("@/assets/icons/data-analysis.svg");
       vertical-align: -0.25em;
     }
+    &.business-manage {
+      background-image: url("@/assets/icons/business-manage.svg");
+      vertical-align: -0.25em;
+    }
   }
   :deep(.el-icon-arrow-down:before){content:""}
   :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
