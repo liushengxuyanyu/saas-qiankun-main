@@ -14,7 +14,8 @@ const WHITELIST_ROUTERS: string[] = [
 
 // 处理子框架的规则白名单
 const SUB_SCRM_URL_LIST: string[] = [
-  "/ms-admin/business/private/scrm" // NOTE: 营销项目的SRCM页面配置需要隐藏侧边栏和menuTabs
+  "/ms-admin/business/private/scrm", // NOTE: 营销项目的SCRM页面配置需要隐藏侧边栏和menuTabs
+  "/ms-admin/business/private/app", // NOTE: 营销项目的SCRM,打开应用页面需要隐藏侧边栏和menuTabs
 ]
 
 router.beforeEach((to, from, next) => {
