@@ -235,7 +235,8 @@ export default {
           const stores = storeInfo.result
           if (stores.length > 0) {
             router.push({
-              path: '/home' // 主程序路由
+              // path: '/home' // 主程序路由
+              path: '/helios/portal/portalDoor'
             })
           } else {
             router.push({
