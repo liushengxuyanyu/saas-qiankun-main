@@ -212,7 +212,6 @@ export default {
                 })  
                 // 关闭对话框
                 handleDialogClose()
-                passwordResetFormRef.value.resetFields()
               } else {
                 ElMessage({
                   type: "error",
@@ -221,6 +220,7 @@ export default {
                   duration: 3000
                 })
               }
+              passwordResetFormRef.value.resetFields()
             })
           } else {
             ElMessage({
