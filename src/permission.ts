@@ -17,10 +17,9 @@ const SUB_SCRM_URL_LIST: string[] = [
   "/ms-admin/business/private/scrm" // NOTE: 营销项目的SRCM页面配置需要隐藏侧边栏和menuTabs
 ]
 
-// 获取当前token信息
-const token = getToken()
-
 router.beforeEach((to, from, next) => {
+  // 获取当前token信息
+  const token = getToken()
   // start progress bar
   NProgress.start()
   console.log("[🐒 token]: --->", token, to.path)
@@ -40,6 +39,8 @@ router.beforeEach((to, from, next) => {
 
 // 全局守卫
 router.beforeResolve(async (to) => {
+  // 获取当前token信息
+  const token = getToken()
   console.log("to: --->>>", to)
   // 当meta中的belongTo不为'main'时，表示路由来自子应用
   if (to.meta && to.meta.belongTo === "main") {
