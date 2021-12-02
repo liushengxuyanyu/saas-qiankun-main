@@ -250,6 +250,7 @@ export default {
           showClose: true,
           duration: 3000
         })
+        getVerficationCode()
       }
 
       if (activeName.value === 'first') {
