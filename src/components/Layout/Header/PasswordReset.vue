@@ -194,10 +194,9 @@ export default {
         if (valid) {
           let userAccount = getLocalStorage("userAccount")
           if (userAccount) {
-            userAccount.slice(1, -1)
             // 点击重置密码
             const data = {
-              account: userAccount,
+              account: userAccount.slice(1, -1), // 去掉引号
               mobile: passwordResetForm.mobile,
               verifyCode: passwordResetForm.code,
               newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
