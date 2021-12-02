@@ -29,12 +29,13 @@
               </el-icon>
               <span style="width: 100px; min-width: 100px">修改密码</span>
             </li>
-            <li @click="userLogout">
+            <!-- TODO: 暂时隐藏, 等所有/ccs/login改为/login后开启 -->
+            <!-- <li @click="userLogout">
               <el-icon :size="14">
                 <unlock />
               </el-icon>
               <span style="width: 100px; min-width: 100px">退出登录</span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -252,7 +253,7 @@ export default {
         padding: 0 15px;
         width: 120px;
         min-width: 120px;
-        height: 96px;
+        // height: 96px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
         color: #606266;
         ul {

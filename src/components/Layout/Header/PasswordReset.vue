@@ -212,6 +212,7 @@ export default {
                 })  
                 // 关闭对话框
                 handleDialogClose()
+                passwordResetFormRef.value.resetFields()
               } else {
                 ElMessage({
                   type: "error",
