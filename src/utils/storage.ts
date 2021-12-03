@@ -26,7 +26,7 @@ export function removeLocalStorage(key: string) {
 /**
  * 移除localSotrage中的所有数据信息
  */
-export function clearLocalStorage() {
+export function clearAllLocalStorage() {
   window.localStorage.clear()
 }
 
