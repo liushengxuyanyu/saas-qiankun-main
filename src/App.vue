@@ -6,6 +6,8 @@
 import { onMounted } from 'vue'
 import { qiankunRegister, qiankunStart } from './qiankun/index'
 import Layout from '@/components/Layout/index.vue'
+import { clearLocalStorage } from './utils/storage'
+import { removeToken } from './utils/auth'
 
 export default {
   name: 'App',
@@ -14,6 +16,12 @@ export default {
   },
   setup() {
     onMounted(() => {
+      window.addEventListener("beforeunload", (e) => {
+        e.preventDefault()
+        // 如果页面关闭，则清除所有信息(cookies + localstorage)
+        removeToken("ccs-token")
+        clearLocalStorage()
+      })
       // 如何同时激活两个微应用: 
       // https://qiankun.umijs.org/zh/faq#%E5%A6%82%E4%BD%95%E5%90%8C%E6%97%B6%E6%BF%80%E6%B4%BB%E4%B8%A4%E4%B8%AA%E5%BE%AE%E5%BA%94%E7%94%A8
       qiankunRegister()
@@ -28,7 +36,9 @@ export default {
       })
     })
 
-    return {}
+    return {
+
+    }
   }
 }
 </script>
