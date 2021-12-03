@@ -223,12 +223,12 @@ export default {
               passwordResetFormRef.value.resetFields()
             })
           } else {
-            ElMessage({
-              type: "error",
-              message: "User Account信息为空，请重新登录",
-              showClose: true,
-              duration: 3000
-            })
+            // ElMessage({
+            //   type: "error",
+            //   message: "User Account信息为空，请重新登录",
+            //   showClose: true,
+            //   duration: 3000
+            // })
           }
         }
       })
@@ -276,7 +276,7 @@ export default {
       border: 1px solid #dcdfe6;
       cursor: pointer;
       color: #606266;
-      background-color: #fff;
+      background-color: #F2F3F7;
       font-size: 13px;
       border-radius: 4px;
       
@@ -306,6 +306,6 @@ export default {
 // 设置input的属性
 input::placeholder {
   font-size: 13px;
-  color: #c0c4cc;
+  color: #95A2B9;
 }
 </style>

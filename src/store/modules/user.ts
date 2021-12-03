@@ -67,9 +67,9 @@ const actions = {
           commit("SET_TOKEN", "")
           removeToken()
           removeAllCookies()
-          removeLocalStorage("username")
-          removeLocalStorage("isLogin")
-          removeLocalStorage("userAccount")
+          // removeLocalStorage("username")
+          // removeLocalStorage("isLogin")
+          // removeLocalStorage("userAccount")
           clearAllLocalStorage()
           // reset visited views and cached views
           // dispatch('tagsView/delAllViews', null, { root: true })

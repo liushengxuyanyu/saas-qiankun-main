@@ -145,7 +145,7 @@ export default {
         // 删除localStorage中的信息
         removeLocalStorage("username")
         removeLocalStorage("isLogin")
-        removeLocalStorage("userAccount")
+        // removeLocalStorage("userAccount")
 
         router.replace({
           path: '/login'
@@ -254,6 +254,7 @@ export default {
         width: 120px;
         min-width: 120px;
         // height: 96px;
+        height: 50px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
         color: #606266;
         ul {
