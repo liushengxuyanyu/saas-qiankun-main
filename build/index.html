@@ -154,20 +154,21 @@
 
           let ccsToken = document.cookie.split(/\s*;\s*/).find(function(item){ return /^ccs-token=/.test(item)} )
           if(ccsToken){
-              let token = ccsToken.replace(/^ccs-token=(.*)$/, '$1')
-              if (!/(?=map.*.com)|(?=map*.*.cn)/.test(url)) {
-                this.setRequestHeader('Authorization', token);
-                this.setRequestHeader('token', token);
-                if(
-                  !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save|importProductExcel|downloadFailData)/ig.test(url)
-                ){
-                  this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-                }
-                if(/(uploadImg)/ig.test(url)) {
-                  // this.setRequestHeader('Content-Type', 'multipart/form-data')
-                }
+            let token = ccsToken.replace(/^ccs-token=(.*)$/, '$1')
+            if (!/(?=map.*.com)|(?=map*.*.cn)/.test(url)) {
+              this.setRequestHeader('Authorization', token);
+              this.setRequestHeader('token', token);
+              if(
+                !/(uploadImg|uploadUsers|importProducts|uploadImageUtil|uploadSku|sendTask\/uploadTxt|importExcel|uploadVoucherExcel|uploadList|checkFile|uploadImageUti|uploadManualPlan|uploadExcelFile|uploadExcel|batchImportThirdCdk|imageUpload|import|reConstruct|parseExcelInfo|saveSendTask|upload|defLabel\/save|importProductExcel|downloadFailData)/ig.test(url)
+              ){
+                this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
               }
+              if(/(uploadImg)/ig.test(url)) {
+                  // this.setRequestHeader('Content-Type', 'multipart/form-data')
+              }
+            }
           } else {
+            console.log("❌ ccsToken index.html: 到这里...")
             this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
           }
           if(
@@ -175,8 +176,11 @@
           ){
             if(!/(inviteGiftV3\/export\/check)/.test(url)) {
               this.responseType = 'blob'
+              console.log("❌ blob: 到这里...")
             }  
           } 
+
+          console.log("❌ headers: --->", headers)
         }
         XMLHttpRequest.intercept = true;
       }
