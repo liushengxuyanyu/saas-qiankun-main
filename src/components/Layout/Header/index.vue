@@ -151,6 +151,8 @@ export default {
         router.push({
           path: '/login'
         })
+
+        location.reload()
         
       }).catch (() => {
         ElMessage({

@@ -1,5 +1,5 @@
 import request from "@/common/http.service"
-const axios = require("axios")
+// const axios = require("axios")
 
 /**
  * 登录
@@ -32,16 +32,16 @@ export function logout() {
  * @returns
  */
 export function getVerificationData(timestamp: string) {
-  // return request({
-  //   url: `/ccs/api/saas/captcha/${timestamp}`,
-  //   method: "GET",
-  //   responseType: "arraybuffer"
-  // })
-  return axios({
+  return request({
     url: `/ccs/api/saas/captcha/${timestamp}`,
-    method: "get",
+    method: "GET",
     responseType: "arraybuffer"
   })
+  // return axios({
+  //   url: `/ccs/api/saas/captcha/${timestamp}`,
+  //   method: "get",
+  //   responseType: "arraybuffer"
+  // })
 }
 
 /**
@@ -58,7 +58,6 @@ export function sendSMSVerificationCode(data: any) {
 }
 
 export function resetUserPassword(data: any) {
-  console.log("request: --->", data)
   return request({
     url: "/ccs/api/saas/resetPassword",
     method: "POST",
