@@ -150,10 +150,10 @@ export default {
 
         router.push({
           path: '/login'
+        }).then(() => {
+          // 重新刷新页面
+          location.reload()
         })
-
-        location.reload()
-        
       }).catch (() => {
         ElMessage({
           type: 'info',
