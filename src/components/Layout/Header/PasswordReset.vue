@@ -22,7 +22,7 @@
         </div>
       </el-form-item>
       <el-form-item prop="newPassowrd">
-        <input placeholder="请输入新密码" type="password" v-model.trim="passwordResetForm.newPassowrd" class="input"  />
+        <input placeholder="请输入新密码" type="password" v-model.trim="passwordResetForm.newPassowrd" class="input" />
       </el-form-item>
       <el-form-item prop="confirmPassword">
         <input placeholder="请确认新密码" type="password" v-model.trim="passwordResetForm.confirmPassword" class="input" />
