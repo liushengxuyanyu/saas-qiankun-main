@@ -128,34 +128,52 @@ export default {
     }
 
     const userLogout = () => {
-      ElMessageBox.confirm('确定退出登录?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        cancelButtonClass: 'cancel-btn',
-        confirmButtonClass: 'confirm-btn'
-      }).then(() => {
-        // 删除对应的ccs-token
-        removeToken()
-        // 最后保险: 移除所有cookies
-        removeAllCookies()
+      // ElMessageBox.confirm('确定退出登录?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning',
+      //   cancelButtonClass: 'cancel-btn',
+      //   confirmButtonClass: 'confirm-btn'
+      // }).then(() => {
+      //   // 删除对应的ccs-token
+      //   removeToken()
+      //   // 最后保险: 移除所有cookies
+      //   removeAllCookies()
 
-        // 旧代码
-        removeLocalStorage("navMenus")
-        removeLocalStorage("menuPages")
-        // 删除localStorage中的信息
-        removeLocalStorage("username")
-        removeLocalStorage("isLogin")
-        // removeLocalStorage("userAccount")
+      //   // 旧代码
+      //   removeLocalStorage("navMenus")
+      //   removeLocalStorage("menuPages")
+      //   // 删除localStorage中的信息
+      //   removeLocalStorage("username")
+      //   removeLocalStorage("isLogin")
+      //   // removeLocalStorage("userAccount")
 
-        router.push({
-          path: '/web-main/login'
-        })
-      }).catch (() => {
-        ElMessage({
-          type: 'info',
-          message: `退出登录操作已取消`
-        })
+      //   router.push({
+      //     path: '/web-main/login'
+      //   })
+      // }).catch (() => {
+      //   ElMessage({
+      //     type: 'info',
+      //     message: `退出登录操作已取消`
+      //   })
+      // })
+
+      /** 操作 */
+      // 删除对应的ccs-token
+      removeToken()
+      // 最后保险: 移除所有cookies
+      removeAllCookies()
+
+      // 旧代码
+      removeLocalStorage("navMenus")
+      removeLocalStorage("menuPages")
+      // 删除localStorage中的信息
+      removeLocalStorage("username")
+      removeLocalStorage("isLogin")
+      // removeLocalStorage("userAccount")
+
+      router.push({
+        path: '/web-main/login'
       })
     }
 
