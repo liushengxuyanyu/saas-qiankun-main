@@ -20,7 +20,7 @@ service.interceptors.request.use(
       // redirectToPage()
       console.log("[❌ request]: no token or toekn expired.")
     }
-
+    console.log("[❗️ request config]: ", config)
     return config
   },
   (err) => {
@@ -33,7 +33,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res: AxiosResponse<any>) => {
     if (res.status === 200) {
-      console.log("http.service response: -->", res, res.data)
+      console.log("[✅ http.service response] -->", res, res.data)
       return res.data
     } else {
       return Promise.reject(new Error("请求失败!"))
