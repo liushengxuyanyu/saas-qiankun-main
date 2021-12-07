@@ -149,7 +149,7 @@ export default {
         // removeLocalStorage("userAccount")
 
         router.push({
-          path: '/web-main/login'
+          path: '/login'
         })
         
       }).catch (() => {
