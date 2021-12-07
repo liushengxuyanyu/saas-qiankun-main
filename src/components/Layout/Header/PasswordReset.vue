@@ -221,6 +221,11 @@ export default {
                 })
               }
               passwordResetFormRef.value.resetFields()
+              // 由于短信验证码和输入新密码无法清除，需手动重置表单数据
+              passwordResetForm.mobile = ''
+              passwordResetForm.code = ''
+              passwordResetForm.newPassowrd = ''
+              passwordResetForm.confirmPassword = ''
             })
           } else {
             // ElMessage({
