@@ -32,6 +32,9 @@ export function logout() {
  */
 export function getVerificationData(timestamp: string) {
   return request({
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8"
+    },
     url: `/ccs/api/saas/captcha/${timestamp}`,
     method: "GET",
     responseType: "arraybuffer"
