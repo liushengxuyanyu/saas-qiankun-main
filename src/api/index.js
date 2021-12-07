@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ElMessageBox as MessageBox } from "element-plus"
+// import { ElMessageBox as MessageBox } from "element-plus"
 import store from "@/store"
 import { getToken } from "@/utils/auth"
 import { BASE_API, TIMEOUT } from "@/config"
