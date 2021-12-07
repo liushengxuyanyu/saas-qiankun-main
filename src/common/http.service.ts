@@ -1,7 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
-import store from "@/store"
+// import store from "@/store"
 import { config } from "@/config"
 import { getToken } from "@/utils/auth"
+
+const token = getToken()
 
 const service: AxiosInstance = axios.create({
   baseURL: config.BASE_URL,
@@ -10,7 +12,7 @@ const service: AxiosInstance = axios.create({
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    if (store.getters.token) {
+    if (token) {
       config.headers["Authorization"] = getToken()
     } else {
       // 如果没有token或token失效，跳转登录页
@@ -20,7 +22,7 @@ service.interceptors.request.use(
 
     return config
   },
-  err => {
+  (err) => {
     console.error("[❌ axios response]", err)
     return Promise.reject(err)
   }
@@ -36,7 +38,7 @@ service.interceptors.response.use(
     }
   },
 
-  err => {
+  (err) => {
     console.error("[❌ axios response]", err)
     return Promise.reject(err)
   }
