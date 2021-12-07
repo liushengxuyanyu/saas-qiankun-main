@@ -1,4 +1,5 @@
 import request from "@/common/http.service"
+const axios = require("axios")
 
 /**
  * 登录
@@ -31,9 +32,14 @@ export function logout() {
  * @returns
  */
 export function getVerificationData(timestamp: string) {
-  return request({
+  // return request({
+  //   url: `/ccs/api/saas/captcha/${timestamp}`,
+  //   method: "GET",
+  //   responseType: "arraybuffer"
+  // })
+  return axios({
     url: `/ccs/api/saas/captcha/${timestamp}`,
-    method: "GET",
+    method: "get",
     responseType: "arraybuffer"
   })
 }

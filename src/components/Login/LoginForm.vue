@@ -264,11 +264,17 @@ export default {
      */
     const getVerficationCode = async () => {
       timestamp = +new Date()
-      const res = await getVerificationData(timestamp)
-      console.log("res: ---->>>", res)
-      let code = Buffer.from(res, "binary").toString("base64")
-      console.log("[base64 code]: --->", "data:image/png;base64," + code)
-      accountLoginForm.base64Code = "data:image/png;base64," + code
+      // const res = getVerificationData(timestamp)
+      getVerificationData(timestamp).then((res) => {
+        console.log("11 res: ---->>>", res.data)
+        let code = Buffer.from(res.data, "binary").toString("base64")
+        console.log("[base64 code]: --->", "data:image/png;base64," + code)
+        accountLoginForm.base64Code = "data:image/png;base64," + code
+      })
+      // console.log("res: ---->>>", res)
+      // let code = Buffer.from(res, "binary").toString("base64")
+      // console.log("[base64 code]: --->", "data:image/png;base64," + code)
+      // accountLoginForm.base64Code = "data:image/png;base64," + code
     }
     
     /**
