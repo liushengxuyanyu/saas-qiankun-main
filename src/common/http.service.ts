@@ -13,6 +13,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     if (token) {
+      console.log("http.service - token: --->", token)
       config.headers["Authorization"] = getToken()
     } else {
       // 如果没有token或token失效，跳转登录页
