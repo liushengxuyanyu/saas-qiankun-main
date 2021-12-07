@@ -148,9 +148,10 @@ export default {
         removeLocalStorage("isLogin")
         // removeLocalStorage("userAccount")
 
-        router.replace({
+        router.push({
           path: '/web-main/login'
         })
+        
       }).catch (() => {
         ElMessage({
           type: 'info',

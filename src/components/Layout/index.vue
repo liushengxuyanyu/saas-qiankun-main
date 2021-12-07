@@ -159,7 +159,7 @@ export default {
     }
 
     window.addEventListener('popstate', (event) => {
-      console.log('触发popstate')
+      // console.log('触发popstate')
       let path = event.currentTarget.location.pathname + event.currentTarget.location.search
       if (event.state.isHistoryPush) {
         let { name, defId } = event.state
