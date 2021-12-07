@@ -266,8 +266,8 @@ export default {
       timestamp = +new Date()
       const res = await getVerificationData(timestamp)
       let code = Buffer.from(res, "binary").toString("base64")
-      accountLoginForm.base64Code = "data:image/png;base64," + code
-      console.log("base64: --->>", accountLoginForm.base64Code)
+      console.log("[base64 code]: --->", "data:image/png;base64," + code.replace(/[\r\n]/g, ""))
+      accountLoginForm.base64Code = "data:image/png;base64," + code.replace(/[\r\n]/g, "")
     }
     
     /**
