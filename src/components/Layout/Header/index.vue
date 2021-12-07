@@ -152,6 +152,7 @@ export default {
           path: '/login'
         }).then(() => {
           // 重新刷新页面
+          console.log("⏳ reload Login page ...")
           location.reload()
         })
       }).catch (() => {
