@@ -1,5 +1,4 @@
 import request from "@/common/http.service"
-// const axios = require("axios")
 
 /**
  * 登录
@@ -37,11 +36,6 @@ export function getVerificationData(timestamp: string) {
     method: "GET",
     responseType: "arraybuffer"
   })
-  // return axios({
-  //   url: `/ccs/api/saas/captcha/${timestamp}`,
-  //   method: "get",
-  //   responseType: "arraybuffer"
-  // })
 }
 
 /**
