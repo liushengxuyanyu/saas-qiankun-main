@@ -149,7 +149,7 @@ export default {
         // removeLocalStorage("userAccount")
 
         router.push({
-          path: '/login'
+          path: '/web-main/login'
         })
       }).catch (() => {
         ElMessage({
