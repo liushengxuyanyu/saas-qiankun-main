@@ -244,11 +244,6 @@ export default {
             })
           }
         }
-
-        if (activeName.value === 'first') {
-          getVerficationCode()
-        }
-        
       } else {
         ElMessage({
           type: "error",
@@ -256,6 +251,10 @@ export default {
           showClose: true,
           duration: 3000
         })
+        getVerficationCode()
+      }
+
+      if (activeName.value === 'first') {
         getVerficationCode()
       }
     }
