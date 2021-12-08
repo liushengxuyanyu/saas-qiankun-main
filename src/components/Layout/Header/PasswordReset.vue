@@ -49,7 +49,7 @@
   </el-dialog>
 </template>
 <script>
-import { reactive, ref } from "vue"
+import { onMounted, reactive, ref } from "vue"
 import { ElMessage } from "element-plus"
 import JSEncrypt from "encryptlong"
 import { validatePhoneNumber } from "@/utils/validator"
@@ -151,6 +151,15 @@ export default {
           trigger: 'blur',
         }
       ]
+    })
+
+    onMounted(() => {
+      passwordResetForm = {
+        mobile: '',
+        code: '',
+        newPassowrd: '',
+        confirmPassword: '' 
+      }
     })
 
     const handleDialogClose = () => {
