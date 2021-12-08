@@ -304,7 +304,7 @@ export default {
           countDown.timer = setInterval(() => {
             phoneSendSMSBtnNum.value--
             if (phoneSendSMSBtnNum.value === 0) {
-              sendingSMSCode.value = false
+              sendingMobileCode.value = false
               phoneSendSMSBtnText.value = "获取验证码"
               clearInterval(countDown.timer)
             }
