@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="web-main-page-container">
     <section class="page-contents">
       <Header />
       <div class="info">
@@ -33,11 +33,11 @@ export default {
 </script>
 <style lang="scss">
 // @import '../../assets/styles/page' 
-.page-container {
+.web-main-page-container {
   position: relative;
   background-color: #f5f8fa;
   height: 100%;
-  overflow-y: hidden;
+  // overflow-y: hidden;
   .page-contents {
     display: flex;
     flex-direction: column;

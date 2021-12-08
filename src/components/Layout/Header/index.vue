@@ -151,6 +151,8 @@ export default {
         router.push({
           path: '/login'
         }).then(() => {
+          // TODO: 发送给SRCM postMessage消息
+
           // 重新刷新页面
           console.log("⏳ reload Login page ...")
           location.reload()
