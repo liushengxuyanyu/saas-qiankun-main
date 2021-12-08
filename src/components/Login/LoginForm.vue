@@ -158,7 +158,7 @@ export default {
     let phoneLoginForm = reactive({ mobile: "", code: ""})
     let phoneLoginFormRef = ref(null)
     let phoneSendSMSBtnNum = ref(SMS_COUNTDOWN_SECOUNDS) // 默认的倒计时记数
-    let phoneSendSMSBtnText = ref("发送验证码")
+    let phoneSendSMSBtnText = ref("获取验证码")
     let sendingMobileCode = ref(false)
     let countDown = reactive({
       timer: null | undefined
@@ -304,7 +304,7 @@ export default {
           countDown.timer = setInterval(() => {
             phoneSendSMSBtnNum.value--
             if (phoneSendSMSBtnNum.value === 0) {
-              sendingSMSCode.value = false
+              sendingMobileCode.value = false
               phoneSendSMSBtnText.value = "获取验证码"
               clearInterval(countDown.timer)
             }
@@ -442,7 +442,7 @@ export default {
 
       &.disable {
         color: #999;
-        background: #f5f5f5;
+        // background: #f5f5f5;
         border: none;
         cursor: not-allowed;
       }
