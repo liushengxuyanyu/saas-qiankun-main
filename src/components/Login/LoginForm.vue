@@ -82,9 +82,10 @@
             <div class="vertical-line" />
             <button
               :class="sendingMobileCode ? 'send-code disable' : 'send-code'"
+              :disabled="sendingMobileCode"
               @click.prevent="sendSMSCode(phoneLoginForm.mobile)"
             >
-              {{ phoneSendSMSBtnText }}
+              {{ sendingMobileCode ? phoneSendSMSBtnNum : phoneSendSMSBtnText }}
             </button>
           </el-form-item>
           <el-form-item style="margin-bottom: 20px; padding-top: 88px;">
@@ -112,7 +113,7 @@ import { getVerificationData, canCreateNewStore, sendSMSVerificationCode } from 
 import store from "@/store"
 import { router } from "@/router"
 import { validatePhoneNumber } from "@/utils/validator"
-import { ENCRYPTION_KEY } from "@/common/constants" 
+import { ENCRYPTION_KEY, SMS_COUNTDOWN_SECOUNDS } from "@/common/constants" 
 
 let jsEncrypt = new JSEncrypt()
 jsEncrypt.setPublicKey(ENCRYPTION_KEY)
@@ -120,9 +121,6 @@ jsEncrypt.setPublicKey(ENCRYPTION_KEY)
 export default {
   name: 'LoginForm',
   setup() {
-    // 设置短信接收时间
-    const SMS_COUNTDOWN_DURATION = 60
-
     let activeName = ref("first")
     let timestamp = ref("")
     let accountLoginFormRef = ref(null)
@@ -159,8 +157,12 @@ export default {
 
     let phoneLoginForm = reactive({ mobile: "", code: ""})
     let phoneLoginFormRef = ref(null)
+    let phoneSendSMSBtnNum = ref(SMS_COUNTDOWN_SECOUNDS) // 默认的倒计时记数
     let phoneSendSMSBtnText = ref("发送验证码")
     let sendingMobileCode = ref(false)
+    let countDown = reactive({
+      timer: null | undefined
+    })
 
     // 电话号码登录
     const phoneLoginFormRules = reactive({
@@ -278,40 +280,43 @@ export default {
     /**
      * 发送短信验证码
      */
-    const sendSMSCode = (phoneNum) => {
+    const sendSMSCode = async (phoneNum) => {
+      phoneLoginFormRef.value.validateField("mobile", valid => {
+        console.log('[phone number format:]', valid)
+      })
+
       if (validatePhoneNumber(phoneNum)) {
-        sendSMSVerificationCode({
+        const res = await sendSMSVerificationCode({
           mobile: phoneLoginForm.mobile,
           msgType: 10 // 系统约定 = 发送短信验证码
-        }).then(res => {
-          if (res.success) {
-            ElMessage({
-              type: "success",
-              message: res.result,
-              showClose: true,
-              duration: 3000
-            })
-            // SMS发送成功后开始读秒
-            sendingMobileCode.value = true
-            phoneSendSMSBtnText.value = SMS_COUNTDOWN_DURATION
-
-            let timer = setInterval(() => {
-              phoneSendSMSBtnText.value--
-              if (phoneSendSMSBtnText.value === 0) {
-                sendingMobileCode.value = false
-                phoneSendSMSBtnText.value = "发送验证码"
-                clearInterval(timer)
-              }
-            }, 1000)
-          } else {
-            ElMessage({
-              type: "error",
-              message: res.message,
-              showClose: true,
-              duration: 3000
-            })
-          }
         })
+
+        if (res.success) {
+          ElMessage({
+            type: "success",
+            message: res.result,
+            showClose: true,
+            duration: 3000
+          })
+          // SMS发送成功后开始读秒
+          sendingMobileCode.value = true
+          phoneSendSMSBtnNum.value = SMS_COUNTDOWN_SECOUNDS
+          countDown.timer = setInterval(() => {
+            phoneSendSMSBtnNum.value--
+            if (phoneSendSMSBtnNum.value === 0) {
+              sendingSMSCode.value = false
+              phoneSendSMSBtnText.value = "获取验证码"
+              clearInterval(countDown.timer)
+            }
+          }, 1000)
+        } else {
+          ElMessage({
+            type: "error",
+            message: res.message,
+            showClose: true,
+            duration: 3000
+          })
+        }
       }
     }
 
@@ -337,6 +342,7 @@ export default {
       phoneLoginFormRules,
       phoneLoginForm,
       phoneLoginFormRef,
+      phoneSendSMSBtnNum,
       phoneSendSMSBtnText,
       handleTabSwitch,
       sendingMobileCode,
