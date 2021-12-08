@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
   // console.log("[🐒 token]: --->", token, to.path)
 
   if (!WHITELIST_ROUTERS.includes(to.path) && token === undefined) {
-    // console.log("[token: ❌ ]", to.path)
+    console.log("[token: ❌ ]", to.path)
     next({
       path: "/login"
     })
@@ -45,7 +45,6 @@ router.beforeResolve(async (to) => {
   // console.log("to: --->>>", to)
   // 当meta中的belongTo不为'main'时，表示路由来自子应用
   if (to.meta && to.meta.belongTo === "main") {
-    // store.dispatch("settings/updateSetting", to.meta)
     if (to.path === "/login" && getToken()) {
       router.replace({
         // path: "/home"

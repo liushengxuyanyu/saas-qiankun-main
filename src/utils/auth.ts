@@ -18,7 +18,10 @@ export const setToken = (token: string) => {
 export const removeToken = () => {
   // console.log("remove token in cookie")
   Cookies.remove(TOKEN_KEY, { path: "/" })
+  // 开发、测试 ｜ 预发环境移除cookie
   Cookies.remove(TOKEN_KEY, { path: "/", domain: ".missfresh.net" }) // ref: https://github.com/js-cookie/js-cookie
+  // 正式环境移除cookie
+  Cookies.remove(TOKEN_KEY, { path: "/", domain: ".missfresh.cn" })
 }
 
 export const removeAllCookies = () => {
