@@ -148,7 +148,7 @@ export default {
         removeLocalStorage("isLogin")
         // removeLocalStorage("userAccount")
 
-        router.push({
+        router.replace({
           path: '/login'
         }).then(() => {
           // TODO: 发送给SRCM postMessage消息
