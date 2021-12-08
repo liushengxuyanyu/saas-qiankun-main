@@ -349,7 +349,7 @@ export default {
       accountLogin, // 账号登录方法
       getVerficationCode,
       sendSMSCode,
-      phoneNumberLogin, // 手机号登录方法
+      phoneNumberLogin // 手机号登录方法
     }
   }
 }
