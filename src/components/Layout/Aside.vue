@@ -1,101 +1,84 @@
 <template>
-  <div class="aside-tmpl" ref="asideRef" :class="{'aside-close': isCloseAside }" >
-    <!-- <div class="arrow-ctrol"
-      @click=" isCloseAside = !isCloseAside ">
-      <div class="arrow"  :class="{'arrow-close': isCloseAside }" ></div>
-    </div> -->
+  <div class="aside-container" ref="asideRef" :class="{'aside-close': isCloseAside }" >
     <el-menu
       class="main-menus"
       :default-active="mainMenuActive"
-      @open="handleOpen"
-      @close="handleClose"
-      @select="handleSelect"
       :collapse="isCollapse"
-      :unique-opened="uniqueOpend">
-      <template v-for="(menu, index) in menu.mainMenu"  :key=" 'key-' + index">
-        <!-- @mouseover="changeSubMenus(menu)" -->
-        <el-menu-item :index="'main-menu-' + index "
-          style="padding-left:5px"
-          v-if="!menu.children.length  && !menu.hide" @click="changeSubMenus(menu, 'index-page')">
+      :unique-opened="true">
+      <template v-for="(menu, index) in menu.mainMenu" :key="'key-' + index">
+        <el-menu-item
+          :index="'main-menu-' + index"
+          style="padding-left: 5px"
+          v-if="!menu.children.length && !menu.hide"
+          @click="changeSubMenus(menu, 'index-page')"
+        >
           <template #title>
-            <i class="svg-icon" :class="[ 'icon-' + menu.icon]"></i>
-            <span v-html="menu.pluginName.substring(0,2)"></span>
+            <i class="svg-icon" :class="['icon-' + menu.icon]"></i>
+            <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
         <el-menu-item
           :index="'main-menu-' + index"
           v-if="menu.children.length && !menu.hide"
-          style="padding-left:5px"
-          @click="changeSubMenus(menu, 'main-menu-' + index)">
+          style="padding-left: 5px"
+          @click="changeSubMenus(menu, 'main-menu-' + index)"
+        >
           <template #title>
             <i class="svg-icon" :class="[menu.icon]"></i>
-            <span v-html="menu.pluginName.substring(0,2)"></span>
+            <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
       </template>
     </el-menu>
-    <div class="aside-sub-tmpl"
-      v-if="menu.subMenus.children && menu.subMenus.children.length"
-      :class="{'isShowSubMenus': menu.subMenus.children && menu.subMenus.children.length}">
+
+    <div v-show="menu.subMenus.children && menu.subMenus.children.length" class="aside-sub-container" :class="[menu.subMenus.children && menu.subMenus.children.length ? 'show' : '']">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
       <el-menu
-        @open="handleOpen"
-        @close="handleClose"
-        collapse-transition="true"
-        :default-openeds="defaultOpeneds"
+        :collapse-transition="true"
         :default-active="activeMenu"
-        @select="handleSelect"
         menu-trigger="hover"
-        >
-      <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-        <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
-          <template #title>
-            <span v-html="submenu.name"></span>
-          </template>
-        </el-menu-item>
-        <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
-          <template #title>
-            <span v-html="submenu.name"></span>
-          </template>
-          <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-            <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
-              <template #title>
-                <i class="svg-icon-q"></i>
-                <span v-html="submenuChild.name"></span>
-              </template>
-            </el-menu-item>
-          </template>
-        </el-submenu>
-      </template>
+      >
+        <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
+          <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
+            <template #title>
+              <span v-html="submenu.name"></span>
+            </template>
+          </el-menu-item>
+          <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
+            <template #title>
+              <span v-html="submenu.name"></span>
+            </template>
+            <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
+              <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
+                <template #title>
+                  <i class="svg-icon-q"></i>
+                  <span v-html="submenuChild.name"></span>
+                </template>
+              </el-menu-item>
+            </template>
+          </el-submenu>
+        </template>
       </el-menu>
     </div>
   </div>
 </template>
 <script>
-import { ref, toRefs, reactive, watchEffect, watch, onMounted, nextTick } from 'vue'
+import { ref, toRefs, reactive, watch, nextTick } from 'vue'
+import { getMenuList, recordRouteAccess } from '@/api/_index'
 import { menus as getmenus } from '@/api/menu'
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
+import { getToken } from '@/utils/auth'
 
 export default {
-  methods: {
-    handleOpen(key, keyPath) {
-    },
-    handleClose(key, keyPath) {
-    },
-    handleSelect(key, keyPath){
-    }
-  },
-  props:{
+  props: {
     emits: ['triggerCloseAside'],
     menuPages: Array,
   },
   setup(props, { emit, attrs, slots }) {
-
-
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
@@ -103,114 +86,118 @@ export default {
         children: []
       }
     })
-
-    let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
-
-    let setMenusDefult = (
-        mainMenuActive,
-        subMenus, activeMenu1,
-        tabPanes, activePane
-      ) => {
-        menu.subMenus = subMenus || {}
-        activeMenu.value = activeMenu1 || {}
-        emit("updateTabPanes", tabPanes || [], activePane || "", false)
-    };
+    // let defaultOpeneds =  ref(['index-0', 'index-1', 'index-2', 'index-3', 'index-4'])
+    let setMenusDefult = (mainMenuActive, subMenus, activeMenu1, tabPanes, activePane) => {
+      menu.subMenus = subMenus || {}
+      activeMenu.value = activeMenu1 || {}
+      // 更新tab信息
+      emit("updateTabPanes", tabPanes || [], activePane || "", false)
+    }
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
-      return  path == currentPath || path &&(new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
+      return path === currentPath || path && (new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
     }
-    let foreachMenus = (menu) => {
 
+    let foreachMenus = (menu) => {
       let currentPath = menu.currentPath || router.currentRoute.value.href
-      let findMnus = menu.mainMenu.some((leve1, leve1Index)=>{
-          let mainMenu = `main-menu-${leve1Index}`
-          if( matchPath(leve1.path ,currentPath) ){
-            setMenusDefult(mainMenu, null, null, null, null)
+      let findMnus = menu.mainMenu.some((leve1, leve1Index) => {
+        // console.log('leve1 --->', leve1Index)
+        let mainMenu = `main-menu-${leve1Index}`
+        if( matchPath(leve1.path ,currentPath) ){
+          setMenusDefult(mainMenu, null, null, null, null)
+          return true
+        }
+        return leve1.children.some((leve2, leve2Index)=>{
+          let level2Menu = `index-${leve2Index}`
+          if( matchPath(leve2.path, currentPath) ){
+            setMenusDefult(mainMenu, leve1, level2Menu, null, null)
             return true
           }
-          return leve1.children.some((leve2, leve2Index)=>{
-            let level2Menu = `index-${leve2Index}`
-            if( matchPath(leve2.path, currentPath) ){
-              setMenusDefult(mainMenu, leve1, level2Menu, null, null)
+          return leve2.children.some((level3, leve3Index)=>{
+            let level3Menu = `${level2Menu}-${leve3Index}`
+            if( matchPath(level3.path, currentPath) ){
+              setMenusDefult(mainMenu, leve1, level3Menu, null, null)
               return true
             }
-            return leve2.children.some((level3, leve3Index)=>{
-              let level3Menu = `${level2Menu}-${leve3Index}`
-              if( matchPath(level3.path, currentPath) ){
-                setMenusDefult(mainMenu, leve1, level3Menu, null, null)
+            return level3.children.some((level4, leve4Index)=>{
+              if( matchPath(level4.path, currentPath) ){
+                let level4Menu = `tab-${level4.defId}`
+                setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
                 return true
               }
-              return level3.children.some((level4, leve4Index)=>{
-                if( matchPath(level4.path, currentPath) ){
-                  let level4Menu = `tab-${level4.defId}`
-                  setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
-                  return true
-                }
-              })
             })
           })
         })
-        // 如果匹配不到路由则选择到一级
-
-        !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
+      })
+      // 如果匹配不到路由则选择到一级
+      !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
-      // 获取栏目树
-      getmenus().then(res=>{
-        let info = {
-          user: {},
-          menus: {
-            tree: [],
-            hashIndexRole: true
+      // console.log('getMenusTree testing ...')
+      const token = getToken()
+      if (token) {
+        // 获取栏目树
+        getmenus().then(res=>{
+          let info = {
+            user: {},
+            menus: {
+              tree: [],
+              hashIndexRole: true
+            }
           }
-        }
 
-        let nav = res.result.find((nav)=>{
-          return nav.name == '首页'
-        })
-
-        if(!nav){
-          res.result.unshift({
-            actionList: null,
-            authority: null,
-            children: [],
-            code: "",
-            component: "",
-            defId: 124475,
-            defParentId: 124474,
-            hide: 0,
-            icon: "home-index",
-            id: 0,
-            label: "首页",
-            localPath: "",
-            method: "",
-            name: "首页",
-            parentId: 124474,
-            path: "/web-main/helios/portal/portalDoor?wellcome",
-            pluginName: "首页",
-            redirect: null,
-            sort: 0,
-            spread: false,
-            type: "0",
-            url: "",
-            webPath: "",
+          let nav = res.result.find((nav) => {
+            return nav.name == '首页'
           })
-          info.menus.hashIndexRole = false
-        }
-        info.menus.tree = res.result
-        state.setGlobalState(info)
-        nextTick(()=>{
-          foreachMenus({ mainMenu: res.result, currentPath })
-          menu.mainMenu = res.result
+
+          console.log('Aside.vue - nav: --->', nav)
+
+          if(!nav){
+            res.result.unshift({
+              actionList: null,
+              authority: null,
+              children: [],
+              code: "",
+              component: "",
+              defId: 124475,
+              defParentId: 124474,
+              hide: 0,
+              icon: "home-index",
+              id: 0,
+              label: "首页",
+              localPath: "",
+              method: "",
+              name: "首页",
+              parentId: 124474,
+              path: "/web-main/helios/portal/portalDoor?wellcome",
+              pluginName: "首页",
+              redirect: null,
+              sort: 0,
+              spread: false,
+              type: "0",
+              url: "",
+              webPath: "",
+            })
+            info.menus.hashIndexRole = false
+          }
+          info.menus.tree = res.result
+          state.setGlobalState(info)
+
+          nextTick(()=>{
+            foreachMenus({ mainMenu: res.result, currentPath })
+            menu.mainMenu = res.result
+            // console.log('info: --->', info)
+          })
+        }).catch(err=>{
+          console.log("err", err)
         })
-      }).catch(err=>{
-        console.log("err", err)
-      })
+      }
     }
-    getMenusTree();
+    getMenusTree()
 
     const fixedMenu = (children, level) => {
-      if(children.path && children.path != router.currentRoute.value.path ){
+      console.log('fixed menu: --->', children, level, router)
+      if(children.path && children.path != router.currentRoute.value.path){
         router.push(children.path.replace(/^\/web-main/i, ''))
         pageVisit({
           href: children.path,
@@ -233,12 +220,11 @@ export default {
 
     }
     const updateMenuPages = (children) => {
-
-      if( children.children && !children.children.length && !menuPages.value.find(item=>{ return item.defId == children.defId }) ) {
+      if(children.children && !children.children.length && !menuPages.value.find(item => { return item.defId == children.defId })) {
         // 为当前按钮添加先跟
         children.type = 'primary'
         menuPages.value.unshift(children)
-        if(menuPages.value.length > 10){
+        if(menuPages.value.length > 10) {
           menuPages.value.pop()
         }
         localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
@@ -246,59 +232,53 @@ export default {
     }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
-      emit("mainMenusClick", index)
+      // debugger
+      // console.log('changeSubMenus testing ...', children, index)
+      // emit("mainMenusClick", index)
       fixedMenu(children)
-      activeMenu.value = "";
+      // activeMenu.value = "";
       menu.subMenus = children
     }
 
     // 收起导航
     const asideRef = ref(null);
-    onMounted(()=>{
-    })
+    // onMounted(()=>{
+    // })
 
     // 监听关闭按钮
     let isCloseAside = ref(0);
     watch(isCloseAside, (val, preVal)=>{
+      console.log('isCloseAside testing ....')
       emit('triggerCloseAside', isCloseAside.value ? '0' : '152px')
     })
-
     //  子菜单的状态
-    let activeMenu = ref('');
-
+    let activeMenu = ref('')
     // 主导航的选中状态
-    let mainMenuActive = ref('');
+    let mainMenuActive = ref('')
 
     return {
       getMenusTree,
       isCollapse: false,
-      uniqueOpend: true,
+      // uniqueOpend: true,
       menu,
-
       asideRef,
       // 子导航
       changeSubMenus,
-      defaultOpeneds,
-
+      // defaultOpeneds,s
       // 关闭左侧导航
       isCloseAside,
-
       // 打开新tab页
       fixedMenu,
-
       activeMenu,
-
       // 主菜单的选中状态
-      mainMenuActive,
-
-      updateMenuPages,
-
+      mainMenuActive
+      // updateMenuPages,
     }
-   },
+  }
 }
 </script>
 <style lang="less" scoped>
-.aside-tmpl{
+.aside-container{
   border: none;
   flex: 1;
   left: 0;
@@ -306,7 +286,7 @@ export default {
   height: 100%;
   &>.el-menu{
     height: 100%;
-    z-index: 903;
+    // z-index: 903;
     width: 72px;
     flex: 1;
     :deep(.el-menu-item){
@@ -334,8 +314,9 @@ export default {
     line-height: 50px;
   }
 
-  .aside-sub-tmpl{
-    width: 152px;
+  .aside-sub-container {
+    // width: 152px;
+    width: 0;
     height: 100%;
     background: #fff;
     overflow-y: auto;
@@ -419,35 +400,10 @@ export default {
       right: 132px;
     }
   }
-  .arrow-ctrol{
-    width: 10px;
-    height: 48px;
-    background: #C0CBE0;
-    border-radius: 0px 4px 4px 0px;
-    position: absolute;
-    right: -10px;
-    top: 30%;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    z-index: 903;
-    .arrow{
-      border: 4px solid #818EA9;
-      border-left: none;
-      border-top-color: transparent;
-      border-bottom-color:transparent;
-      width: 0px;
-      height: 0px;
-      &.arrow-close{
-        border: 4px solid #818EA9;
-        border-right: none;
-        border-top-color: transparent;
-        border-bottom-color:transparent;
-      }
-    }
+
+  .show {
+    width: 152px;
+    transition-duration: .3s;
   }
   .svg-icon {
     font-size: 15px;
@@ -495,6 +451,10 @@ export default {
     }
     &.data-analysis{
       background-image: url("@/assets/icons/data-analysis.svg");
+      vertical-align: -0.25em;
+    }
+    &.business-manage {
+      background-image: url("@/assets/icons/business-manage.svg");
       vertical-align: -0.25em;
     }
   }

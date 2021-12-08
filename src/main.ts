@@ -1,22 +1,14 @@
-import { createApp } from 'vue'
-import { router } from './router/index'
-import ElementPlus from 'element-plus'
-import 'element-plus/lib/theme-chalk/index.css'
-import store from './store'
+import { createApp } from "vue"
+import ElementPlus from "element-plus"
+import store from "./store"
+import { router } from "./router/index"
+import "element-plus/lib/theme-chalk/index.css"
+import "./assets/styles/index.scss"
+import "./assets/styles/element-plus.scss"
+import "normalize.css/normalize.css"
+import App from "./App.vue"
+import "./permission" // permission control
+import EventBus from "./utils/EventBus" // TODO: 这个EventBus就是为MenuTabPages准备的，可以用store替代
+;(window as any).eventBus = new EventBus()
 
-import App from './App.vue'
-import './index.css'
-import EventBus from './utils/EventBus'
-// import './assets/element.css'
-(window as any).eventBus = new EventBus;
-
-let app = createApp(App)
-// 注入路由
-app.use(router)
-// 注入状态管理
-app.use(store)
-// 注入 ElementPlus
-app.use(ElementPlus)
-app.mount('#app');
-
-
+createApp(App).use(ElementPlus).use(router).use(store).mount("#app")

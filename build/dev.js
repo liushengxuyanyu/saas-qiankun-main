@@ -1,19 +1,11 @@
-const webpackDevServer = require('webpack-dev-server');
-const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
-const VUE_APP_URL = 'https://mryxb12.cloud.dev.missfresh.net'
-// const VUE_APP_URL = 'https://mryx.cloud.test.missfresh.net'
+const webpackDevServer = require('webpack-dev-server')
+const webpack = require('webpack')
+const path = require('path')
+const config = require('./webpack.config')('development')
+
+const PORT = 3001
 
 async function start() {
-  let port = 0;
-  try {
-    port = fs.readFileSync(path.resolve('.port'), 'utf8');
-  } catch (e) {
-    throw 'not found .port';
-  }
-
-  const config = require('./webpack.config')('development');
   const options = {
     contentBase: path.resolve('dist'),
     contentBasePublicPath: "/web-main",
@@ -23,41 +15,56 @@ async function start() {
       index: 'index.html',
     },
     proxy: {
+      '/download/api': {
+        target: 'https://mryx.cloud.test.missfresh.net/',
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
+      '/tms/api': {
+        target: 'https://mryx.cloud.test.missfresh.net/',
+        changeOrigin: true,
+        logLevel: 'debug'
+      },
       '/helios/api': {
-        target: VUE_APP_URL,
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/ccs/api': {
-        target: VUE_APP_URL,
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/heimdall/api': {
-        target: VUE_APP_URL,
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/sobot': {
-        target: VUE_APP_URL,
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/defender/api': {
-        target: VUE_APP_URL,
+        target: 'https://mryx.cloud.test.missfresh.net/',
         changeOrigin: true,
         logLevel: 'debug'
       },
+      '/retail-portal/api': {
+        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        changeOrigin: true,
+        logLevel: 'debug'
+      }
     }
-  };
-  webpackDevServer.addDevServerEntrypoints(config, options);
-  const compiler = webpack(config);
-  const server = new webpackDevServer(compiler, options);
-  server.listen(port, 'localhost', () => {
-  });
+  }
+  webpackDevServer.addDevServerEntrypoints(config, options)
+  const compiler = webpack(config)
+  const server = new webpackDevServer(compiler, options)
+  server.listen(PORT, 'localhost', () => {
+  })
   server.invalidate(() => {
-    console.log(`Project is running at http://${options.host}:${port}`);
-  });
+    console.log(`Project is running at http://${options.host}:${PORT}`)
+  })
 }
 
-start().then();
+start().then()

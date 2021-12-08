@@ -14,3 +14,17 @@ yarn
 ```shell
 yarn run dev:all
 ```
+
+## 修正问题
+- 合并登录项目至主框架
+- login登入后阻止回退
+- 禁用EventBus处理数据流转
+- 完善Vuex的数据处理逻辑
+- 增加header部分的用户信息 & 支持顶部导航文件下载
+- 更新路由逻辑，增加路由页面的meta信息用于支持公共组件复用
+- 增加permission权限控制
+- 将代码以typescript形式编写 & 组织
+- 增加huksy及commit-lint规范
+- 增加样式的全局修改（TOOD）
+
+## 新增与SCRM交互功能
