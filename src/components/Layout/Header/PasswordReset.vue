@@ -13,12 +13,21 @@
             placeholder="请输入6位短信验证码" 
             v-model.trim="passwordResetForm.code"
           />
-          <button 
+          <!-- <button 
             :class="sendingSMSCode ? 'sms-btn disable' : 'sms-btn'" 
             @click.prevent="handleSendSMSCode(passwordResetForm.mobile)"
           >
-            {{ phoneSendSMSBtnText }}
-          </button>
+            {{ sendingSMSCode ? phoneSendSMSBtnNum : phoneSendSMSBtnText }}
+          </button> -->
+          <el-button 
+            size="mini" 
+            plain
+            :class="sendingSMSCode ? 'sms-btn disable' : 'sms-btn'"
+            :disabled="sendingSMSCode"
+            @click.prevent="handleSendSMSCode(passwordResetForm.mobile)"
+          >
+            {{ sendingSMSCode ? phoneSendSMSBtnNum : phoneSendSMSBtnText }}
+          </el-button>
         </div>
       </el-form-item>
       <el-form-item prop="newPassowrd">
@@ -46,7 +55,7 @@ import JSEncrypt from "encryptlong"
 import { validatePhoneNumber } from "@/utils/validator"
 import { sendSMSVerificationCode, resetUserPassword } from "@/api/user"
 import { getLocalStorage } from "@/utils/storage"
-import { ENCRYPTION_KEY } from "@/common/constants" 
+import { ENCRYPTION_KEY, SMS_COUNTDOWN_SECOUNDS } from "@/common/constants" 
 
 let jsEncrypt = new JSEncrypt()
 jsEncrypt.setPublicKey(ENCRYPTION_KEY)
@@ -67,12 +76,16 @@ export default {
   setup(props, context) {
     let passwordResetFormRef = ref(null)
     let sendingSMSCode = ref(false)
-    let phoneSendSMSBtnText = ref("获取验证码")
+    let phoneSendSMSBtnNum = ref(SMS_COUNTDOWN_SECOUNDS) // 默认的倒计时记数
+    let phoneSendSMSBtnText = ref("获取验证码") // 默认倒计时记数结束后文案
     let passwordResetForm = reactive({
       mobile: '',
       code: '',
       newPassowrd: '',
       confirmPassword: ''
+    })
+    let countDown = reactive({
+      timer: null | undefined
     })
 
     const passwordResetFormRules = reactive({
@@ -143,9 +156,15 @@ export default {
     const handleDialogClose = () => {
       passwordResetFormRef.value.resetFields()
       context.emit("update:visible", false)
+      // 关闭窗口后重置按钮显示
+      sendingSMSCode.value = false
+      phoneSendSMSBtnNum.value = SMS_COUNTDOWN_SECOUNDS
+      phoneSendSMSBtnText.value = "获取验证码"
+      clearInterval(countDown.timer) // 清除计时器
+      console.log("sendingSMSCode: -->", sendingSMSCode, phoneSendSMSBtnNum)
     }
 
-    const handleSendSMSCode = (phoneNum) => {
+    const handleSendSMSCode = async (phoneNum) => {
       passwordResetFormRef.value.validateField("mobile", valid => {
         console.log('[phone number format:]', valid)
       })
@@ -156,36 +175,35 @@ export default {
           mobile: passwordResetForm.mobile,
           msgType: 40 // 修改密码时 msgType = 40 ｜ 系统约定
         }
-        sendSMSVerificationCode(query).then(res => {
-          if (res.success) {
-            ElMessage({
-              type: "success",
-              message: res.result,
-              showClose: true,
-              duration: 3000
-            })
+        const res = await sendSMSVerificationCode(query)
+        console.log("res: --->", res)
+        if (res.success) {
+          ElMessage({
+            type: "success",
+            message: res.result,
+            showClose: true,
+            duration: 3000
+          })
 
-            // SMS发送成功后开始读秒
-            sendingSMSCode.value = true
-            phoneSendSMSBtnText.value = 60
-
-            let timer = setInterval(() => {
-              phoneSendSMSBtnText.value--
-              if (phoneSendSMSBtnText.value == 0) {
-                sendingSMSCode.value = false
-                phoneSendSMSBtnText.value = "获取验证码"
-                clearInterval(timer)
-              }
-            }, 1000)
-          } else {
-            ElMessage({
-              type: "error",
-              message: res.message,
-              showClose: true,
-              duration: 3000
-            })
-          }
-        })
+          // SMS发送成功后开始读秒
+          sendingSMSCode.value = true
+          phoneSendSMSBtnNum.value = SMS_COUNTDOWN_SECOUNDS
+          countDown.timer = setInterval(() => {
+            phoneSendSMSBtnNum.value--
+            if (phoneSendSMSBtnNum.value === 0) {
+              sendingSMSCode.value = false
+              phoneSendSMSBtnText.value = "获取验证码"
+              clearInterval(countDown.timer)
+            }
+          }, 1000)
+        } else {
+          ElMessage({
+            type: "error",
+            message: res.message,
+            showClose: true,
+            duration: 3000
+          })
+        }
       }
     }
 
@@ -241,6 +259,7 @@ export default {
 
     return {
       sendingSMSCode,
+      phoneSendSMSBtnNum,
       phoneSendSMSBtnText,
       passwordResetForm,
       passwordResetFormRef,
