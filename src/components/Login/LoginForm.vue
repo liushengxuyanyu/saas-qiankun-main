@@ -238,15 +238,25 @@ export default {
         // 检查用户是否能够开店
         const storeInfo = await canCreateNewStore()
         if (storeInfo.code === 200) {
-          const stores = storeInfo.result
-          if (stores.length > 0) {
+          // 需要判断是否返回result，容错
+          if (storeInfo.result) {
+            const stores = storeInfo.result
+            if (stores.length > 0) {
             router.push({
               // path: '/home' // 主程序路由
               path: '/helios/portal/portalDoor'
             })
+            } else {
+              router.push({
+                path: '/store/create'
+              })
+            }
           } else {
-            router.push({
-              path: '/store/create'
+            ElMessage({
+              type: "error",
+              message: res.message,
+              showClose: true,
+              duration: 3000
             })
           }
         }
