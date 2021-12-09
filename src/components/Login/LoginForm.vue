@@ -256,7 +256,7 @@ export default {
               type: "error",
               message: res.message,
               showClose: true,
-              duration: 3000
+              duration: 5000
             })
           }
         }
@@ -265,7 +265,7 @@ export default {
           type: "error",
           message: res.message,
           showClose: true,
-          duration: 3000
+          duration: 5000
         })
         getVerficationCode()
       }
@@ -306,7 +306,7 @@ export default {
             type: "success",
             message: res.result,
             showClose: true,
-            duration: 3000
+            duration: 5000
           })
           // SMS发送成功后开始读秒
           sendingMobileCode.value = true
@@ -324,7 +324,7 @@ export default {
             type: "error",
             message: res.message,
             showClose: true,
-            duration: 3000
+            duration: 5000
           })
         }
       }
@@ -333,7 +333,6 @@ export default {
     // TODO: 执行手机号登录操作
     const phoneNumberLogin = () => {
       phoneLoginFormRef.value.validate(valid => {
-        console.log("phoneNumberLogin --->>", valid, activeName)
         if (valid) {
           onSubmit({
             mobile: phoneLoginForm.mobile,

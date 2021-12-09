@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
 // import store from "@/store"
 import { config } from "@/config"
 import { getToken } from "@/utils/auth"
@@ -24,7 +24,7 @@ service.interceptors.request.use(
     return config
   },
   (err) => {
-    console.error("[❌ axios response]", err)
+    console.error("[❌ axios request]", err)
     return Promise.reject(err)
   }
 )
@@ -40,7 +40,7 @@ service.interceptors.response.use(
     }
   },
 
-  (err) => {
+  (err: AxiosError<any>) => {
     console.error("[❌ axios response]", err)
     return Promise.reject(err)
   }
