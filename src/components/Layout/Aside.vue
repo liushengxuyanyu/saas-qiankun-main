@@ -67,7 +67,7 @@
 <script>
 import { ref, toRefs, reactive, watch, nextTick } from 'vue'
 import { getMenuList, recordRouteAccess } from '@/api/_index'
-import { menus as getmenus } from '@/api/menu'
+import { menus as getmenus } from '@/api/menu' // TODO: 旧有逻辑，目前暂未替换成  @/api/_index，后续需修改
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
@@ -146,6 +146,8 @@ export default {
             }
           }
 
+          console.log("res.result: --->", res, res.result)
+
           let nav = res.result.find((nav) => {
             return nav.name == '首页'
           })
@@ -193,6 +195,7 @@ export default {
         })
       }
     }
+
     getMenusTree()
 
     const fixedMenu = (children, level) => {

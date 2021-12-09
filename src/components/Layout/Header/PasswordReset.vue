@@ -1,16 +1,18 @@
 <template>
-  <el-dialog :title="title" v-model="visible" width="375px" :before-close="handleDialogClose" :close-on-click-modal="false">
+  <el-dialog :title="title" v-model="visible" width="400px" :before-close="handleDialogClose" :close-on-click-modal="false">
     <el-form ref="passwordResetFormRef" :model="passwordResetForm" :rules="passwordResetFormRules" size="small" class="password-reset-form">
       <el-form-item prop="mobile">
+        {{ passwordResetForm.mobile }}
         <input placeholder="请输入手机号" v-model.trim="passwordResetForm.mobile" class="input" />
       </el-form-item>
       <el-form-item prop="code">
         <div class="input-sms-container">
+          {{ passwordResetForm.code }}
           <input 
             class="input"
             type="text" 
             maxlength="6"
-            placeholder="请输入6位短信验证码" 
+            placeholder="请输入6位短信验证码"
             v-model.trim="passwordResetForm.code"
           />
           <!-- <button 
@@ -31,9 +33,11 @@
         </div>
       </el-form-item>
       <el-form-item prop="newPassowrd">
+        {{ passwordResetForm.newPassowrd }}
         <input placeholder="请输入新密码" type="password" v-model.trim="passwordResetForm.newPassowrd" class="input" />
       </el-form-item>
       <el-form-item prop="confirmPassword">
+        {{ passwordResetForm.confirmPassword }}
         <input placeholder="请确认新密码" type="password" v-model.trim="passwordResetForm.confirmPassword" class="input" />
       </el-form-item>
       <el-form-item style="margin-bottom: 10px; padding-top: 30px">
@@ -88,15 +92,21 @@ export default {
       timer: null | undefined
     })
 
+    const PWD_REGEX_RULES = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9~!@#$%^&*]{8,20}$/
+
     const passwordResetFormRules = reactive({
       newPassowrd: [
         {
           validator: (rule, value, callback) => {
-            if (value) {
-              if (value !== passwordResetForm.confirmPassword) {
-                callback(new Error('两次输入密码不一致!'));
+            if (value.length > 0) {
+              if (PWD_REGEX_RULES.test(value)) {
+                if (passwordResetForm.newPassowrd === passwordResetForm.confirmPassword) {
+                  callback()
+                } else {
+                  callback(new Error('两次输入密码不一致!'));
+                }
               } else {
-                callback()
+                callback(new Error("密码长度8-20，必须包含大小写字母、数字和特殊字符中的三种"))
               }
             } else {
               callback(new Error("新密码不能为空!"))
@@ -108,11 +118,15 @@ export default {
       confirmPassword: [
         {
           validator: (rule, value, callback) => {
-            if (value) {
-              if (value !== passwordResetForm.newPassowrd) {
-                callback(new Error('两次输入密码不一致!'));
+            if (value.length > 0) {
+              if (PWD_REGEX_RULES.test(value)) {
+                if (passwordResetForm.newPassowrd === passwordResetForm.confirmPassword) {
+                  callback()
+                } else {
+                  callback(new Error('两次输入密码不一致!'));
+                }
               } else {
-                callback()
+                callback(new Error("密码长度8-20，必须包含大小写字母、数字和特殊字符中的三种"))
               }
             } else {
               callback(new Error("确认密码不能为空!"))
@@ -154,12 +168,7 @@ export default {
     })
 
     onMounted(() => {
-      passwordResetForm = {
-        mobile: '',
-        code: '',
-        newPassowrd: '',
-        confirmPassword: '' 
-      }
+     
     })
 
     const handleDialogClose = () => {
@@ -170,7 +179,6 @@ export default {
       phoneSendSMSBtnNum.value = SMS_COUNTDOWN_SECOUNDS
       phoneSendSMSBtnText.value = "获取验证码"
       clearInterval(countDown.timer) // 清除计时器
-      console.log("sendingSMSCode: -->", sendingSMSCode, phoneSendSMSBtnNum)
     }
 
     const handleSendSMSCode = async (phoneNum) => {
@@ -191,7 +199,7 @@ export default {
             type: "success",
             message: res.result,
             showClose: true,
-            duration: 3000
+            duration: 5000
           })
 
           // SMS发送成功后开始读秒
@@ -210,7 +218,7 @@ export default {
             type: "error",
             message: res.message,
             showClose: true,
-            duration: 3000
+            duration: 5000
           })
         }
       }
@@ -228,6 +236,8 @@ export default {
               verifyCode: passwordResetForm.code,
               newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
             }
+            console.log("data: --->", data, passwordResetForm)
+
             resetUserPassword(data).then(res => {
               console.log("reset password: --->", res)
               if (res.success) {
@@ -244,7 +254,7 @@ export default {
                   type: "error",
                   message: res.message,
                   showClose: true,
-                  duration: 3000
+                  duration: 5000
                 })
               }
               passwordResetFormRef.value.resetFields()
@@ -259,7 +269,7 @@ export default {
             //   type: "error",
             //   message: "User Account信息为空，请重新登录",
             //   showClose: true,
-            //   duration: 3000
+            //   duration: 5000
             // })
           }
         }

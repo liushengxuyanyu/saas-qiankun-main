@@ -313,7 +313,7 @@ export default {
           type: "error",
           message: "导出文件失败！",
           showClose: true,
-          duration: 3000
+          duration: 5000
         })
       }
     }
