@@ -82,7 +82,7 @@ export default {
       timer: null | undefined
     })
     // 密码强度校验规则
-    const PWD_REGEX_RULES =  /^(?=.*([a-zA-Z].*))[a-zA-Z0-9-*/+.~!@#$%^&*()]{8,20}$/
+    const PWD_REGEX_RULES = /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]{8,20}$/
 
     const passwordResetFormRules = reactive({
       newPassowrd: [
