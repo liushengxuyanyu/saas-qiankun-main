@@ -235,11 +235,10 @@ export default {
     }
     // 将子菜单更新到subMenus中
     const changeSubMenus = (children, index) => {
-      // debugger
       // console.log('changeSubMenus testing ...', children, index)
-      // emit("mainMenusClick", index)
+      emit("mainMenusClick", index)
       fixedMenu(children)
-      // activeMenu.value = "";
+      activeMenu.value = "";
       menu.subMenus = children
     }
 
@@ -262,7 +261,6 @@ export default {
     return {
       getMenusTree,
       isCollapse: false,
-      // uniqueOpend: true,
       menu,
       asideRef,
       // 子导航
