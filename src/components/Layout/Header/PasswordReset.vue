@@ -2,7 +2,6 @@
   <el-dialog :title="title" v-model="visible" width="400px" :before-close="handleDialogClose" :close-on-click-modal="false">
     <el-form ref="passwordResetFormRef" :model="passwordResetForm" :rules="passwordResetFormRules" size="small" class="password-reset-form">
       <el-form-item prop="mobile">
-        {{ passwordResetForm.mobile }}
         <input placeholder="请输入手机号" v-model.trim="passwordResetForm.mobile" class="input" />
       </el-form-item>
       <el-form-item prop="code">
@@ -33,11 +32,9 @@
         </div>
       </el-form-item>
       <el-form-item prop="newPassowrd">
-        {{ passwordResetForm.newPassowrd }}
         <input placeholder="请输入新密码" type="password" v-model.trim="passwordResetForm.newPassowrd" class="input" />
       </el-form-item>
       <el-form-item prop="confirmPassword">
-        {{ passwordResetForm.confirmPassword }}
         <input placeholder="请确认新密码" type="password" v-model.trim="passwordResetForm.confirmPassword" class="input" />
       </el-form-item>
       <el-form-item style="margin-bottom: 10px; padding-top: 30px">
