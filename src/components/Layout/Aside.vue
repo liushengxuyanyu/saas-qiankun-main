@@ -274,8 +274,8 @@ export default {
       fixedMenu,
       activeMenu,
       // 主菜单的选中状态
-      mainMenuActive
-      // updateMenuPages,
+      mainMenuActive,
+      updateMenuPages,
     }
   }
 }
