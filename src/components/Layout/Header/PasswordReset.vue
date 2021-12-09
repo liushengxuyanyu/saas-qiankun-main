@@ -6,7 +6,6 @@
       </el-form-item>
       <el-form-item prop="code">
         <div class="input-sms-container">
-          {{ passwordResetForm.code }}
           <input 
             class="input"
             type="text" 
@@ -14,12 +13,6 @@
             placeholder="请输入6位短信验证码"
             v-model.trim="passwordResetForm.code"
           />
-          <!-- <button 
-            :class="sendingSMSCode ? 'sms-btn disable' : 'sms-btn'" 
-            @click.prevent="handleSendSMSCode(passwordResetForm.mobile)"
-          >
-            {{ sendingSMSCode ? phoneSendSMSBtnNum : phoneSendSMSBtnText }}
-          </button> -->
           <el-button 
             size="mini" 
             plain
@@ -88,7 +81,7 @@ export default {
     let countDown = reactive({
       timer: null | undefined
     })
-
+    // 密码强度校验规则
     const PWD_REGEX_RULES = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9~!@#$%^&*]{8,20}$/
 
     const passwordResetFormRules = reactive({
