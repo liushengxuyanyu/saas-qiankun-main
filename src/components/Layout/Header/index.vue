@@ -69,6 +69,7 @@ export default {
   setup() {
     let dropdownlistRef = ref(null)
     let passwordResetRef = ref(null)
+    let asyncDownloadRef = ref(null)
 
     let userInfo = reactive({
       logo: Logo,
@@ -185,6 +186,8 @@ export default {
 
     const handleAsyncDownload = () => {
       asyncDownloadDialog.visible = !asyncDownloadDialog.visible
+      // 打开对话框时，触发查询
+      asyncDownloadRef.value.handleSearch()
     }
 
     const changePassword = () => {
@@ -192,8 +195,9 @@ export default {
     }
 
     return {
-      dropdownlistRef,
-      passwordResetRef,
+      dropdownlistRef, // 下来菜单ref
+      passwordResetRef, // 重置password ref
+      asyncDownloadRef, // 下载列表ref
       userInfo,
       asyncDownloadDialog,
       passwordResetDialog,
