@@ -194,7 +194,8 @@ export default {
       const token = getToken()
       if (token) {
         getReportTypes()
-        getDownloadList()
+        // 打开下载中心触发查询
+        handleSearch() // getDownloadList()
       }
     })
 
@@ -271,7 +272,7 @@ export default {
       })
 
       const query = Object.assign({}, params, pagination)
-      console.log("query --->", query)
+      console.log("async download query --->", query)
       getDownloadList(query)
     }
 
