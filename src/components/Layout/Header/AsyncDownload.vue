@@ -88,14 +88,14 @@
         <el-table-column
           prop="taskBeginTime"
           label="任务创建时间"
-          width="160"
+          width="180"
           align="center"
         >
         </el-table-column>
         <el-table-column
           prop="taskEndTime"
           label="任务完成时间"
-          width="160"
+          width="180"
           align="center"
         />
         <el-table-column
@@ -241,7 +241,7 @@ export default {
             downloadUrl: data.downloadUrl,
             dataCount: data.dataCount,
             taskBeginTime: data.taskBeginTime ? moment(data.taskBeginTime).format('YYYY-MM-DD HH:mm:ss') : "-", // dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss") : "-",
-            taskEndTime: data.taskEndTime ? moment(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-", // dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-",
+            taskEndTime: data.taskEndTime ? moment(data.taskEndTime).format("YYYY-MM-DD HH:mm:ss") : "-", // dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-",
             taskStatus: _parseTaskStatus(data.taskStatus),
             failureMessage: data.failureMessage || '-' // 失败原因
           }
@@ -299,7 +299,7 @@ export default {
         let blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(blob);
-        link.download = item.fileName + dayjs().format("YYYYMMDDHHmmss") + ".xls"
+        link.download = item.fileName + moment().format("YYYYMMDDHHmmss") + ".xls"
         document.body.appendChild(link)
         link.click()
         link.remove()
