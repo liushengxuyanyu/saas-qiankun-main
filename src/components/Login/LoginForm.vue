@@ -238,26 +238,47 @@ export default {
         // 检查用户是否能够开店
         const storeInfo = await canCreateNewStore()
         if (storeInfo.code === 200) {
+          // NOTE: 当用户使用admin账号登录时，没有返回result信息
           // 需要判断是否返回result，容错
           if (storeInfo.result) {
             const stores = storeInfo.result
             if (stores.length > 0) {
-            router.push({
-              // path: '/home' // 主程序路由
-              path: '/helios/portal/portalDoor'
-            })
+              router.push({
+                // path: '/home' // 主程序路由
+                path: '/helios/portal/portalDoor'
+              })
             } else {
               router.push({
                 path: '/store/create'
               })
             }
           } else {
+            // 跳转到开店页
+            router.push({
+              path: '/store/create'
+            })
+            // 弹出相应警告
             ElMessage({
-              type: "error",
+              type: "warning",
               message: res.message,
               showClose: true,
               duration: 5000
             })
+          }
+          if (storeInfo.result) {
+            const stores = storeInfo.result
+            if (stores.length > 0) {
+              router.push({
+                // path: '/home' // 主程序路由
+                path: '/helios/portal/portalDoor'
+              })
+            } else {
+              router.push({
+                path: '/store/create'
+              })
+            }
+          } else {
+
           }
         }
       } else {
