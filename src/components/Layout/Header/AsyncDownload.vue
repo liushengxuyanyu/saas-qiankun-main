@@ -142,7 +142,7 @@ import { ElConfigProvider, ElMessage } from "element-plus"
 import zhCn from "element-plus/lib/locale/lang/zh-cn"
 import { fetchReportTypes, fetchDownloadList, donwloadExcelFile } from "@/api/download"
 import { BUSINESS_LINE_CODES, TASK_STATUS_LIST } from "@/common/constants"
-import dayjs from "dayjs"
+import * as moment from "moment"
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -240,8 +240,8 @@ export default {
             fileName: data.fileName,
             downloadUrl: data.downloadUrl,
             dataCount: data.dataCount,
-            taskBeginTime: data.taskBeginTime ? dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss") : "-",
-            taskEndTime: data.taskEndTime ? dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-",
+            taskBeginTime: data.taskBeginTime ? moment(data.taskBeginTime).format('YYYY-MM-DD HH:mm:ss') : "-", // dayjs(data.taskBeginTime).format("YYYY-MM-DD hh:mm:ss") : "-",
+            taskEndTime: data.taskEndTime ? moment(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-", // dayjs(data.taskEndTime).format("YYYY-MM-DD hh:mm:ss") : "-",
             taskStatus: _parseTaskStatus(data.taskStatus),
             failureMessage: data.failureMessage || '-' // 失败原因
           }
