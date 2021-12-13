@@ -257,13 +257,13 @@ export default {
             router.push({
               path: '/store/create'
             })
-            // 弹出相应警告
-            ElMessage({
-              type: "warning",
-              message: res.message,
-              showClose: true,
-              duration: 5000
-            })
+            // // 弹出相应警告
+            // ElMessage({
+            //   type: "warning",
+            //   message: res.message,
+            //   showClose: true,
+            //   duration: 5000
+            // })
           }
           if (storeInfo.result) {
             const stores = storeInfo.result
