@@ -90,7 +90,7 @@ export default {
   setup(props, { emit, attrs, slots }) {
     // 新窗口打开
     let newWindow = [
-      "/dds/new-dashboard" // NOTE: 门店项目的实时看板, 从新窗口打开应用页面
+      "/web-main/wuliu/dds-qiankun/dds/new-dashboard?newWindow=true&noBrainNav=true" // NOTE: 门店项目的实时看板, 从新窗口打开应用页面
     ]
     let { menuPages } = toRefs(props)
     let menu = reactive({
