@@ -88,6 +88,10 @@ export default {
     menuPages: Array
   },
   setup(props, { emit, attrs, slots }) {
+    // 新窗口打开
+    let newWindow = [
+      "/dds/new-dashboard" // NOTE: 门店项目的实时看板, 从新窗口打开应用页面
+    ]
     let { menuPages } = toRefs(props)
     let menu = reactive({
       mainMenu: [],
@@ -296,11 +300,7 @@ export default {
       activeMenu,
       // 主菜单的选中状态
       mainMenuActive,
-      updateMenuPages,
-      // 新窗口打开
-      newWindow: [
-        "/dds/new-dashboard" // NOTE: 门店项目的实时看板, 从新窗口打开应用页面
-      ]
+      updateMenuPages
     }
   }
 }
