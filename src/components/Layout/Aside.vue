@@ -1,57 +1,66 @@
 <template>
-  <div class="aside-container" ref="asideRef" :class="{'aside-close': isCloseAside }" >
-    <el-menu
-      class="main-menus"
-      :default-active="mainMenuActive"
-      :collapse="isCollapse"
-      :unique-opened="true">
-      <template v-for="(menu, index) in menu.mainMenu" :key="'key-' + index">
-        <el-menu-item
-          :index="'main-menu-' + index"
-          style="padding-left: 5px"
-          v-if="!menu.children.length && !menu.hide"
-          @click="changeSubMenus(menu, 'index-page')"
-        >
+  <div class="aside-container"
+       ref="asideRef"
+       :class="{'aside-close': isCloseAside }">
+    <el-menu class="main-menus"
+             :default-active="mainMenuActive"
+             :collapse="isCollapse"
+             :unique-opened="true">
+      <template v-for="(menu, index) in menu.mainMenu"
+                :key="'key-' + index">
+        <el-menu-item :index="'main-menu-' + index"
+                      style="padding-left: 5px"
+                      v-if="!menu.children.length && !menu.hide"
+                      @click="changeSubMenus(menu, 'index-page')">
           <template #title>
-            <i class="svg-icon" :class="['icon-' + menu.icon]"></i>
+            <i class="svg-icon"
+               :class="['icon-' + menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
-        <el-menu-item
-          :index="'main-menu-' + index"
-          v-if="menu.children.length && !menu.hide"
-          style="padding-left: 5px"
-          @click="changeSubMenus(menu, 'main-menu-' + index)"
-        >
+        <el-menu-item :index="'main-menu-' + index"
+                      v-if="menu.children.length && !menu.hide"
+                      style="padding-left: 5px"
+                      @click="changeSubMenus(menu, 'main-menu-' + index)">
           <template #title>
-            <i class="svg-icon" :class="[menu.icon]"></i>
+            <i class="svg-icon"
+               :class="[menu.icon]"></i>
             <span v-html="menu.pluginName.substring(0, 2)"></span>
           </template>
         </el-menu-item>
       </template>
     </el-menu>
 
-    <div v-show="menu.subMenus.children && menu.subMenus.children.length" class="aside-sub-container" :class="[menu.subMenus.children && menu.subMenus.children.length ? 'show' : '']">
+    <div v-show="menu.subMenus.children && menu.subMenus.children.length"
+         class="aside-sub-container"
+         :class="[menu.subMenus.children && menu.subMenus.children.length ? 'show' : '']">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
-      <el-menu
-        :collapse-transition="true"
-        :default-active="activeMenu"
-        menu-trigger="hover"
-      >
-        <template v-for="(submenu, index) in menu.subMenus.children" :key="'key-' + index ">
-          <el-menu-item class="menu-item-list menu-item-level1" :index="'index-' + index " v-if="!submenu.children.length && !submenu.hide" @click="fixedMenu(submenu)">
+      <el-menu :collapse-transition="true"
+               :default-active="activeMenu"
+               menu-trigger="hover">
+        <template v-for="(submenu, index) in menu.subMenus.children"
+                  :key="'key-' + index ">
+          <el-menu-item class="menu-item-list menu-item-level1"
+                        :index="'index-' + index "
+                        v-if="!submenu.children.length && !submenu.hide"
+                        @click="fixedMenu(submenu)">
             <template #title>
               <span v-html="submenu.name"></span>
             </template>
           </el-menu-item>
-          <el-submenu :index="'index-' + index"  v-if="submenu.children.length && !submenu.hide">
+          <el-submenu :index="'index-' + index"
+                      v-if="submenu.children.length && !submenu.hide">
             <template #title>
               <span v-html="submenu.name"></span>
             </template>
-            <template v-for="(submenuChild, i) in submenu.children" :key="'key-' + index  + '-' + i">
-              <el-menu-item class="menu-item-list menu-item-level2" :index="'index-' + index  + '-' + i" v-if="!submenuChild.hide"  @click="fixedMenu(submenuChild, 4)">
+            <template v-for="(submenuChild, i) in submenu.children"
+                      :key="'key-' + index  + '-' + i">
+              <el-menu-item class="menu-item-list menu-item-level2"
+                            :index="'index-' + index  + '-' + i"
+                            v-if="!submenuChild.hide"
+                            @click="fixedMenu(submenuChild, 4)">
                 <template #title>
                   <i class="svg-icon-q"></i>
                   <span v-html="submenuChild.name"></span>
@@ -65,18 +74,18 @@
   </div>
 </template>
 <script>
-import { ref, toRefs, reactive, watch, nextTick } from 'vue'
-import { getMenuList, recordRouteAccess } from '@/api/_index'
-import { menus as getmenus } from '@/api/menu' // TODO: 旧有逻辑，目前暂未替换成  @/api/_index，后续需修改
+import { ref, toRefs, reactive, watch, nextTick } from "vue"
+import { getMenuList, recordRouteAccess } from "@/api/_index"
+import { menus as getmenus } from "@/api/menu" // TODO: 旧有逻辑，目前暂未替换成  @/api/_index，后续需修改
 import { router } from "../../router"
 import { pageVisit } from "../../api/menu"
 import { state } from "../../qiankun/state"
-import { getToken } from '@/utils/auth'
+import { getToken } from "@/utils/auth"
 
 export default {
   props: {
-    emits: ['triggerCloseAside'],
-    menuPages: Array,
+    emits: ["triggerCloseAside"],
+    menuPages: Array
   },
   setup(props, { emit, attrs, slots }) {
     let { menuPages } = toRefs(props)
@@ -95,7 +104,10 @@ export default {
     }
     const matchPath = (path, currentPath) => {
       // return path &&(new RegExp(path.replace(/([^?]*)\?(.*)/, '$1') )).test(currentPath)
-      return path === currentPath || path && (new RegExp(path.replace('&','\\&').replace('?', '\\?') )).test(currentPath)
+      return (
+        path === currentPath ||
+        (path && new RegExp(path.replace("&", "\\&").replace("?", "\\?")).test(currentPath))
+      )
     }
 
     let foreachMenus = (menu) => {
@@ -103,24 +115,24 @@ export default {
       let findMnus = menu.mainMenu.some((leve1, leve1Index) => {
         // console.log('leve1 --->', leve1Index)
         let mainMenu = `main-menu-${leve1Index}`
-        if( matchPath(leve1.path ,currentPath) ){
+        if (matchPath(leve1.path, currentPath)) {
           setMenusDefult(mainMenu, null, null, null, null)
           return true
         }
-        return leve1.children.some((leve2, leve2Index)=>{
+        return leve1.children.some((leve2, leve2Index) => {
           let level2Menu = `index-${leve2Index}`
-          if( matchPath(leve2.path, currentPath) ){
+          if (matchPath(leve2.path, currentPath)) {
             setMenusDefult(mainMenu, leve1, level2Menu, null, null)
             return true
           }
-          return leve2.children.some((level3, leve3Index)=>{
+          return leve2.children.some((level3, leve3Index) => {
             let level3Menu = `${level2Menu}-${leve3Index}`
-            if( matchPath(level3.path, currentPath) ){
+            if (matchPath(level3.path, currentPath)) {
               setMenusDefult(mainMenu, leve1, level3Menu, null, null)
               return true
             }
-            return level3.children.some((level4, leve4Index)=>{
-              if( matchPath(level4.path, currentPath) ){
+            return level3.children.some((level4, leve4Index) => {
+              if (matchPath(level4.path, currentPath)) {
                 let level4Menu = `tab-${level4.defId}`
                 setMenusDefult(mainMenu, leve1, level3Menu, level3.children, level4Menu)
                 return true
@@ -130,107 +142,118 @@ export default {
         })
       })
       // 如果匹配不到路由则选择到一级
-      !findMnus && setMenusDefult('main-menu-0', null, null, null, null)
+      !findMnus && setMenusDefult("main-menu-0", null, null, null, null)
     }
     const getMenusTree = (currentPath) => {
       // console.log('getMenusTree testing ...')
       const token = getToken()
       if (token) {
         // 获取栏目树
-        getmenus().then(res=>{
-          let info = {
-            user: {},
-            menus: {
-              tree: [],
-              hashIndexRole: true
+        getmenus()
+          .then((res) => {
+            let info = {
+              user: {},
+              menus: {
+                tree: [],
+                hashIndexRole: true
+              }
             }
-          }
 
-          console.log("res.result: --->", res, res.result)
+            console.log("res.result: --->", res, res.result)
 
-          let nav = res.result.find((nav) => {
-            return nav.name == '首页'
-          })
-
-          console.log('Aside.vue - nav: --->', nav)
-
-          if(!nav){
-            res.result.unshift({
-              actionList: null,
-              authority: null,
-              children: [],
-              code: "",
-              component: "",
-              defId: 124475,
-              defParentId: 124474,
-              hide: 0,
-              icon: "home-index",
-              id: 0,
-              label: "首页",
-              localPath: "",
-              method: "",
-              name: "首页",
-              parentId: 124474,
-              path: "/web-main/helios/portal/portalDoor?wellcome",
-              pluginName: "首页",
-              redirect: null,
-              sort: 0,
-              spread: false,
-              type: "0",
-              url: "",
-              webPath: "",
+            let nav = res.result.find((nav) => {
+              return nav.name == "首页"
             })
-            info.menus.hashIndexRole = false
-          }
-          info.menus.tree = res.result
-          state.setGlobalState(info)
 
-          nextTick(()=>{
-            foreachMenus({ mainMenu: res.result, currentPath })
-            menu.mainMenu = res.result
-            // console.log('info: --->', info)
+            console.log("Aside.vue - nav: --->", nav)
+
+            if (!nav) {
+              res.result.unshift({
+                actionList: null,
+                authority: null,
+                children: [],
+                code: "",
+                component: "",
+                defId: 124475,
+                defParentId: 124474,
+                hide: 0,
+                icon: "home-index",
+                id: 0,
+                label: "首页",
+                localPath: "",
+                method: "",
+                name: "首页",
+                parentId: 124474,
+                path: "/web-main/helios/portal/portalDoor?wellcome",
+                pluginName: "首页",
+                redirect: null,
+                sort: 0,
+                spread: false,
+                type: "0",
+                url: "",
+                webPath: ""
+              })
+              info.menus.hashIndexRole = false
+            }
+            info.menus.tree = res.result
+            state.setGlobalState(info)
+
+            nextTick(() => {
+              foreachMenus({ mainMenu: res.result, currentPath })
+              menu.mainMenu = res.result
+              // console.log('info: --->', info)
+            })
           })
-        }).catch(err=>{
-          console.log("err", err)
-        })
+          .catch((err) => {
+            console.log("err", err)
+          })
       }
     }
 
     getMenusTree()
 
     const fixedMenu = (children, level) => {
-      console.log('fixed menu: --->', children, level, router)
-      if(children.path && children.path != router.currentRoute.value.path){
-        router.push(children.path.replace(/^\/web-main/i, ''))
+      if (children.path && newWindow.includes(children.path)) {
+        window.open(window.location.href, "newWindow")
+        return
+      }
+      console.log("fixed menu: --->", children, level, router)
+      if (children.path && children.path != router.currentRoute.value.path) {
+        router.push(children.path.replace(/^\/web-main/i, ""))
         pageVisit({
           href: children.path,
           tabName: children.name,
-          name: children.name,
+          name: children.name
         })
       }
       // 重置所有按钮状态
-      menuPages.value.forEach(item=>{
-        if(item.type != 'primary'){
-          item.type = 'primary'
+      menuPages.value.forEach((item) => {
+        if (item.type != "primary") {
+          item.type = "primary"
         }
       })
-      if(level == 4){
-        emit('updateTabPanes', children.children , '', true)
+      if (level == 4) {
+        emit("updateTabPanes", children.children, "", true)
       }
 
       // 如果导航为新增加的则添加否则不处理
       updateMenuPages(children)
-
     }
     const updateMenuPages = (children) => {
-      if(children.children && !children.children.length && !menuPages.value.find(item => { return item.defId == children.defId })) {
+      if (
+        children.children &&
+        !children.children.length &&
+        !menuPages.value.find((item) => {
+          return item.defId == children.defId
+        })
+      ) {
         // 为当前按钮添加先跟
-        children.type = 'primary'
+        children.type = "primary"
         menuPages.value.unshift(children)
-        if(menuPages.value.length > 10) {
+        if (menuPages.value.length > 10) {
           menuPages.value.pop()
         }
-        localStorage.setItem("menuPages", JSON.stringify(menuPages.value));
+        localStorage.setItem("menuPages", JSON.stringify(menuPages.value))
       }
     }
     // 将子菜单更新到subMenus中
@@ -238,25 +261,25 @@ export default {
       // console.log('changeSubMenus testing ...', children, index)
       emit("mainMenusClick", index)
       fixedMenu(children)
-      activeMenu.value = "";
+      activeMenu.value = ""
       menu.subMenus = children
     }
 
     // 收起导航
-    const asideRef = ref(null);
+    const asideRef = ref(null)
     // onMounted(()=>{
     // })
 
     // 监听关闭按钮
-    let isCloseAside = ref(0);
-    watch(isCloseAside, (val, preVal)=>{
-      console.log('isCloseAside testing ....')
-      emit('triggerCloseAside', isCloseAside.value ? '0' : '152px')
+    let isCloseAside = ref(0)
+    watch(isCloseAside, (val, preVal) => {
+      console.log("isCloseAside testing ....")
+      emit("triggerCloseAside", isCloseAside.value ? "0" : "152px")
     })
     //  子菜单的状态
-    let activeMenu = ref('')
+    let activeMenu = ref("")
     // 主导航的选中状态
-    let mainMenuActive = ref('')
+    let mainMenuActive = ref("")
 
     return {
       getMenusTree,
@@ -274,37 +297,41 @@ export default {
       // 主菜单的选中状态
       mainMenuActive,
       updateMenuPages,
+      // 新窗口打开
+      newWindow: [
+        "/dds/new-dashboard" // NOTE: 门店项目的实时看板, 从新窗口打开应用页面
+      ]
     }
   }
 }
 </script>
 <style lang="less" scoped>
-.aside-container{
+.aside-container {
   border: none;
   flex: 1;
   left: 0;
   display: flex;
   height: 100%;
-  &>.el-menu{
+  & > .el-menu {
     height: 100%;
     // z-index: 903;
     width: 72px;
     flex: 1;
-    :deep(.el-menu-item){
+    :deep(.el-menu-item) {
       height: 40px;
       line-height: 40px;
-      &.is-active{
+      &.is-active {
         background-color: var(--el-menu-item-hover-fill);
       }
     }
-    .is-opened{
+    .is-opened {
       background-color: var(--el-menu-item-hover-fill);
     }
   }
-  &.aside-close{
+  &.aside-close {
     // width: 10px;
     left: -152px;
-    &>.el-menu{
+    & > .el-menu {
       // overflow: hidden;
     }
   }
@@ -322,46 +349,47 @@ export default {
     background: #fff;
     overflow-y: auto;
     overflow-x: hidden;
-    &>.el-menu{
+    & > .el-menu {
       border-right: none;
       width: 152px;
-      .menu-item-level1,:deep(.el-submenu__title, .el-menu-item){
+      .menu-item-level1,
+      :deep(.el-submenu__title, .el-menu-item) {
         height: 35px;
         line-height: 35px;
         font-weight: 800;
         font-size: 13px;
-        span{
+        span {
           padding-left: 9px;
         }
-        &.is-active{
-          background-color: #F3F6FA;
+        &.is-active {
+          background-color: #f3f6fa;
         }
       }
     }
-    .sub-title-block{
-      padding:0;
-      margin:0;
-      .sub-title{
+    .sub-title-block {
+      padding: 0;
+      margin: 0;
+      .sub-title {
         font-size: 14px;
         font-weight: bold;
-        color: #222C3D;
+        color: #222c3d;
         padding-top: 5px;
         margin: 7px 0px 12px 10px;
       }
     }
 
-    .svg-icon-q{
+    .svg-icon-q {
       display: inline-block;
       padding-right: 6px;
-      &:after{
+      &:after {
         content: "";
         display: block;
         width: 2px;
         height: 2px;
-        background-color: #4C5D7C;
+        background-color: #4c5d7c;
       }
     }
-    .menu-item-list{
+    .menu-item-list {
       padding: 0 0 0 10px !important;
       font-size: 13px;
       height: 34px;
@@ -369,42 +397,42 @@ export default {
       margin-left: 16px;
       width: 120px;
       min-width: 120px;
-      &:hover{
-         border-radius: 4px;
+      &:hover {
+        border-radius: 4px;
       }
-      &.is-active{
-        background: linear-gradient(315deg, #3130F4 0%, #1378FF 100%);
+      &.is-active {
+        background: linear-gradient(315deg, #3130f4 0%, #1378ff 100%);
         border-radius: 4px;
         color: #fff;
-        .svg-icon-q{
-          &:after{
+        .svg-icon-q {
+          &:after {
             background-color: #fff;
           }
         }
       }
-      &.menu-item-level1{
+      &.menu-item-level1 {
         margin-left: 16px;
         width: 123px;
         min-width: 123px;
-        span{
+        span {
           padding-left: 3px;
         }
       }
-      &.menu-item-level2{
-        color: #4C5D7C;
-        &.is-active{
+      &.menu-item-level2 {
+        color: #4c5d7c;
+        &.is-active {
           color: #fff;
         }
       }
     }
-    :deep(.el-submenu__icon-arrow){
+    :deep(.el-submenu__icon-arrow) {
       right: 132px;
     }
   }
 
   .show {
     width: 152px;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
   }
   .svg-icon {
     font-size: 15px;
@@ -418,39 +446,40 @@ export default {
     background-repeat: no-repeat;
     padding-right: 5px;
     box-sizing: content-box;
-    &:after, &:before {
+    &:after,
+    &:before {
       box-sizing: content-box;
     }
-    &.icon-home-index{
+    &.icon-home-index {
       background-image: url("@/assets/icons/index.svg");
     }
-    &.portal-manage{
+    &.portal-manage {
       background-image: url("@/assets/icons/114.svg");
-      vertical-align: -0.20em;
+      vertical-align: -0.2em;
     }
-    &.product-info{
+    &.product-info {
       background-image: url("@/assets/icons/117.svg");
     }
-    &.marketing-manage{
+    &.marketing-manage {
       vertical-align: -0.25em;
       background-image: url("@/assets/icons/112.svg");
     }
-    &.trade-manage{
+    &.trade-manage {
       vertical-align: -0.25em;
       background-image: url("@/assets/icons/118.svg");
     }
-    &.station-manage{
+    &.station-manage {
       vertical-align: -0.25em;
       background-image: url("@/assets/icons/115.svg");
     }
-    &.setup-station{
+    &.setup-station {
       background-image: url("@/assets/icons/113.svg");
       vertical-align: -0.2em;
     }
-    &.customer-service{
+    &.customer-service {
       background-image: url("@/assets/icons/116.svg");
     }
-    &.data-analysis{
+    &.data-analysis {
       background-image: url("@/assets/icons/data-analysis.svg");
       vertical-align: -0.25em;
     }
@@ -459,8 +488,10 @@ export default {
       vertical-align: -0.25em;
     }
   }
-  :deep(.el-icon-arrow-down:before){content:""}
-  :deep(.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow) {
+  :deep(.el-icon-arrow-down:before) {
+    content: "";
+  }
+  :deep(.el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow) {
     transform: rotateZ(90deg);
   }
   ::-webkit-scrollbar {
@@ -471,7 +502,7 @@ export default {
 
   /*定义滚动条轨道 内阴影+圆角*/
   ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.05);
     border-radius: 2px;
     background-color: #fff;
   }
@@ -479,19 +510,20 @@ export default {
   /*定义滑块 内阴影+圆角*/
   ::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #555;
   }
-  .main-menus{
+  .main-menus {
     :deep(.el-menu-item) {
-      color: #222C3D;
+      color: #222c3d;
       font-size: 14px;
       font-weight: 800;
-      &.is-active{
-        color: #1F5AFA;
+      &.is-active {
+        color: #1f5afa;
       }
     }
-    .el-menu-item:focus, .el-menu-item:hover {
+    .el-menu-item:focus,
+    .el-menu-item:hover {
       outline: none;
       background-color: #e9efff;
     }
