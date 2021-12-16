@@ -218,7 +218,7 @@ export default {
 
     const fixedMenu = (children, level) => {
       if (children.path && newWindow.includes(children.path)) {
-        window.open(window.location.href, "newWindow")
+        window.open(window.location.origin + children.path, "newWindow")
         return
       }
       console.log("fixed menu: --->", children, level, router)
