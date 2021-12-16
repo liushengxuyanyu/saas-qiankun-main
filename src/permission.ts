@@ -16,7 +16,7 @@ const WHITELIST_ROUTERS: string[] = [
 const SUB_SCRM_URL_LIST: string[] = [
   "/ms-admin/business/private/scrm", // NOTE: 营销项目的SCRM页面配置需要隐藏侧边栏和menuTabs
   "/ms-admin/business/private/app", // NOTE: 营销项目的SCRM,打开应用页面需要隐藏侧边栏和menuTabs
-  "/wuliu/dds-qiankun/dds/new-dashboard?newWindow=true&noBrainNav=true" // NOTE: 门店项目的实时看板,打开应用页面需要隐藏侧边栏和menuTabs
+  "/wuliu/dds-qiankun/dds/new-dashboard" // NOTE: 门店项目的实时看板,打开应用页面需要隐藏侧边栏和menuTabs
 ]
 
 router.beforeEach((to, from, next) => {
