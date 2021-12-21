@@ -73,7 +73,8 @@
       </el-menu>
     </div>
 
-    <div class="aside-btn"
+    <div v-show="menu.subMenus.children && menu.subMenus.children.length"
+         class="aside-btn"
          :class="[isCloseAside ? 'open' : 'close']"
          @click="isCloseAside = !isCloseAside"></div>
   </div>
