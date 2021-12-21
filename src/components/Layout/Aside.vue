@@ -1,7 +1,9 @@
 <template>
-  <div class="aside-container"
+  <!-- <div class="aside-container"
        ref="asideRef"
-       :class="{'aside-close': isCloseAside }">
+       :class="{'aside-close': isCloseAside }"> -->
+  <div class="aside-container"
+       ref="asideRef">
     <el-menu class="main-menus"
              :default-active="mainMenuActive"
              :collapse="isCollapse"
@@ -30,10 +32,9 @@
         </el-menu-item>
       </template>
     </el-menu>
-
     <div v-show="menu.subMenus.children && menu.subMenus.children.length"
          class="aside-sub-container"
-         :class="[menu.subMenus.children && menu.subMenus.children.length ? 'show' : '']">
+         :class="[(menu.subMenus.children && menu.subMenus.children.length && !isCloseAside) ? 'show' : '']">
       <div class="sub-title-block">
         <p class="sub-title">{{menu.subMenus.name}}</p>
       </div>
@@ -71,6 +72,10 @@
         </template>
       </el-menu>
     </div>
+
+    <div class="aside-btn"
+         :class="[isCloseAside ? 'open' : 'close']"
+         @click="isCloseAside = !isCloseAside"></div>
   </div>
 </template>
 <script>
@@ -277,8 +282,8 @@ export default {
     // 监听关闭按钮
     let isCloseAside = ref(0)
     watch(isCloseAside, (val, preVal) => {
-      console.log("isCloseAside testing ....")
-      emit("triggerCloseAside", isCloseAside.value ? "0" : "152px")
+      console.log("isCloseAside testing ....", isCloseAside)
+      // emit("triggerCloseAside", isCloseAside.value ? "0" : "152px")
     })
     //  子菜单的状态
     let activeMenu = ref("")
@@ -307,6 +312,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .aside-container {
+  position: relative;
   border: none;
   flex: 1;
   left: 0;
@@ -328,13 +334,13 @@ export default {
       background-color: var(--el-menu-item-hover-fill);
     }
   }
-  &.aside-close {
-    // width: 10px;
-    left: -152px;
-    & > .el-menu {
-      // overflow: hidden;
-    }
-  }
+  // &.aside-close {
+  //   // width: 10px;
+  //   left: -152px;
+  //   & > .el-menu {
+  //     // overflow: hidden;
+  //   }
+  // }
 
   :deep(.el-submenu .el-menu-item) {
     min-width: 152px;
@@ -527,6 +533,26 @@ export default {
       outline: none;
       background-color: #e9efff;
     }
+  }
+}
+
+.aside-btn {
+  width: 10px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  margin-top: -24px;
+  right: -10px;
+  cursor: pointer;
+  &.open {
+    background: url("../../assets/images/open.png");
+    background-size: cover;
+  }
+  &.close {
+    background: url("../../assets/images/close.png");
+    background-size: cover;
   }
 }
 </style>
