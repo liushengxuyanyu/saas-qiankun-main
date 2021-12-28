@@ -3,6 +3,7 @@ import store from "./store"
 import { getToken } from "@/utils/auth"
 import NProgress from "nprogress" // progress bar
 import "nprogress/nprogress.css" // progress bar style
+import { hokdoInit } from "./hokdo"
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -34,6 +35,8 @@ router.beforeEach((to, from, next) => {
     })
   } else {
     console.log("[token: ✅ ]", to.path)
+    // 登录成功后执行hokdoInit方法
+    hokdoInit()
     next()
   }
 
