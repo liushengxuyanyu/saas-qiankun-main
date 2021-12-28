@@ -32,7 +32,8 @@ yarn run dev:all
 ## 新增获客多SDK，具备远程支持能力
 
 获客多管理后台：https://app.hokdo.com/user
-对应的token可以从后台获取
+
+对应的token可以从后台获取, [施智峰](shizf01@missfresh.cn) 具备相关权限, 有需求或 token 问题，请联系
 
 新增hokdo对应的sdk依赖包：`npm i @hokdo/core`
 
