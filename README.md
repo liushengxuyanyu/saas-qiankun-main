@@ -38,3 +38,6 @@ yarn run dev:all
 
 在 `permission.ts` 文件中引入了 `hokdo.ts` 文件，文件执行初始化任务。
 
+租户相关信息按照租户表格配置：
+https://missfresh.feishu.cn/sheets/shtcnI4WyAazNpjkspKhYmAJB3c?sheet=6868e7
+
