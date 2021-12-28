@@ -1,10 +1,10 @@
 /**
  * 增加了获客多SDK后，对不同租户映射不同的userInfo
+ * 后续，增加租户后，需要在renant-mapping表里增加对应的映射关系
  */
 
 export const getUserInfoByMapping = () => {
   const host = window.location.host
-  console.log(host)
   let user = {
     uid: "",
     email: "",
@@ -17,7 +17,7 @@ export const getUserInfoByMapping = () => {
       user = RENANT_MAPPING[item]
     }
   }
-
+  console.log("user: ---====>", user)
   return user
 }
 

@@ -28,3 +28,13 @@ yarn run dev:all
 - 增加样式的全局修改（TOOD）
 
 ## 新增与SCRM交互功能
+
+## 新增获客多SDK，具备远程支持能力
+
+获客多管理后台：https://app.hokdo.com/user
+对应的token可以从后台获取
+
+新增hokdo对应的sdk依赖包：`npm i @hokdo/core`
+
+在 `permission.ts` 文件中引入了 `hokdo.ts` 文件，文件执行初始化任务。
+
