@@ -45,7 +45,6 @@ router.beforeEach((to, from, next) => {
 
 // 全局守卫
 router.beforeResolve(async (to) => {
-  console.log("permission:====>> ", to)
   // 获取当前token信息
   const token = getToken()
   // console.log("to: --->>>", to)
