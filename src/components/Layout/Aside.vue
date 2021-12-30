@@ -169,13 +169,13 @@ export default {
               }
             }
 
-            console.log("res.result: --->", res, res.result)
+            // console.log("res.result: --->", res, res.result)
 
             let nav = res.result.find((nav) => {
               return nav.name == "首页"
             })
 
-            console.log("Aside.vue - nav: --->", nav)
+            // console.log("Aside.vue - nav: --->", nav)
 
             if (!nav) {
               res.result.unshift({

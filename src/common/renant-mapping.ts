@@ -17,7 +17,6 @@ export const getUserInfoByMapping = () => {
       user = RENANT_MAPPING[item]
     }
   }
-  console.log("user: ---====>", user)
   return user
 }
 

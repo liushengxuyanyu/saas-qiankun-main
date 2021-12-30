@@ -173,14 +173,12 @@
             ){
               if(!/(inviteGiftV3\/export\/check)/.test(url)) {
                 this.responseType = 'blob'
-                // console.log("❌ blob: 到这里...")
               }  
             } 
           } else {
-            // console.log("❌ ccsToken index.html: 到这里...")
+            console.log("❌ ccsToken index.html: 到这里...")
             this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
           }
-
           // console.log("❌ headers: --->", headers)
         }
         XMLHttpRequest.intercept = true;

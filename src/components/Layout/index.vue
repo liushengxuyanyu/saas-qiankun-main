@@ -145,8 +145,6 @@ export default {
       settingInfo.showTagsView = store.state.settings.showTagsView,
       settingInfo.showDownloadIcon = store.state.settings.showDownload,
       settingInfo.showSubContainer = store.state.settings.showSubContainer
-
-      console.log("🍉 get settingInfo status: --->", settingInfo)
     })
 
     const mainMenusClick = (index) => {
