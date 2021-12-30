@@ -257,28 +257,6 @@ export default {
             router.push({
               path: '/store/create'
             })
-            // // 弹出相应警告
-            // ElMessage({
-            //   type: "warning",
-            //   message: res.message,
-            //   showClose: true,
-            //   duration: 5000
-            // })
-          }
-          if (storeInfo.result) {
-            const stores = storeInfo.result
-            if (stores.length > 0) {
-              router.push({
-                // path: '/home' // 主程序路由
-                path: '/helios/portal/portalDoor'
-              })
-            } else {
-              router.push({
-                path: '/store/create'
-              })
-            }
-          } else {
-
           }
         }
       } else {
