@@ -33,14 +33,14 @@ export const RENANT_MAPPING = [
     uid: "mryxb12.cloud.dev.missfresh.net",
     name: "零售云-开发环境",
     email: "dev_retail_cloud@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   // 测试环境
   {
     uid: "mryx.cloud.test.missfresh.net",
     name: "零售云-测试环境",
     email: "test_retail_cloud@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   // 零售-每日拼拼 ｜ 施智峰
   {
