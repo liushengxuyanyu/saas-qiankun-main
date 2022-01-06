@@ -25,8 +25,8 @@ export const RENANT_MAPPING = [
   {
     uid: "localhost:3001",
     name: "本地开发",
-    email: "",
-    phoneNumber: ""
+    email: "zhongming@missfresh.cn",
+    phoneNumber: "18515262579"
   },
   // b12 开发环境
   {
@@ -44,9 +44,15 @@ export const RENANT_MAPPING = [
   },
   // 零售-每日拼拼 ｜ 施智峰
   {
-    uid: "lingshou.cloud.missfresh.cn", // 暂时没有uid，用url替代
+    uid: "lingshou.cloud.missfresh.cn",
     name: "零售云-每日拼拼",
     email: "shizf01@missfresh.cn",
     phoneNumber: "18210855751"
+  },
+  {
+    uid: "gmyx.cloud.missfresh.cn",
+    name: "国贸优鲜",
+    email: "gmyx@missfresh.cn",
+    phoneNumber: ""
   }
 ]
