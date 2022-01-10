@@ -3,6 +3,7 @@ import store from "./store"
 import { getToken } from "@/utils/auth"
 import NProgress from "nprogress" // progress bar
 import "nprogress/nprogress.css" // progress bar style
+import { hokdoInit } from "./hokdo"
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -16,7 +17,8 @@ const WHITELIST_ROUTERS: string[] = [
 const SUB_SCRM_URL_LIST: string[] = [
   "/ms-admin/business/private/scrm", // NOTE: 营销项目的SCRM页面配置需要隐藏侧边栏和menuTabs
   "/ms-admin/business/private/app", // NOTE: 营销项目的SCRM,打开应用页面需要隐藏侧边栏和menuTabs
-  "/wuliu/dds-qiankun/dds/new-dashboard" // NOTE: 门店项目的实时看板,打开应用页面需要隐藏侧边栏和menuTabs
+  "/wuliu/dds-qiankun/dds/new-dashboard", // NOTE: 门店项目的实时看板,打开应用页面需要隐藏侧边栏和menuTabs
+  "/wuliu/tms2/tms/base-center/online-protocol/details" // NOTE: 配送项目的在线协议,打开应用页面需要隐藏侧边栏和menuTabs
 ]
 
 router.beforeEach((to, from, next) => {
@@ -33,6 +35,8 @@ router.beforeEach((to, from, next) => {
     })
   } else {
     console.log("[token: ✅ ]", to.path)
+    // 登录成功后执行hokdoInit方法
+    hokdoInit()
     next()
   }
 

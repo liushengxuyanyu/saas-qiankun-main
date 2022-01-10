@@ -272,7 +272,6 @@ export default {
       })
 
       const query = Object.assign({}, params, pagination)
-      console.log("async download query --->", query)
       getDownloadList(query)
     }
 

@@ -24,7 +24,7 @@ const mutations = {
   },
 
   SET_LOGIN_STATUS: (state: any, isLogin: boolean) => {
-    console.log("SET_LOGIN_STATUS: --->", isLogin)
+    // console.log("SET_LOGIN_STATUS: --->", isLogin)
     state.isLogin = isLogin
   }
 }
@@ -35,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then((res: any) => {
-          console.log("[vuex-login action]", res)
+          // console.log("[vuex-login action]", res)
           if (res.result) {
             const { token, username, userAccount } = res.result
 

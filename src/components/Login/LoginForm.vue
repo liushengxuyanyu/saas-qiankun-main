@@ -257,28 +257,6 @@ export default {
             router.push({
               path: '/store/create'
             })
-            // // 弹出相应警告
-            // ElMessage({
-            //   type: "warning",
-            //   message: res.message,
-            //   showClose: true,
-            //   duration: 5000
-            // })
-          }
-          if (storeInfo.result) {
-            const stores = storeInfo.result
-            if (stores.length > 0) {
-              router.push({
-                // path: '/home' // 主程序路由
-                path: '/helios/portal/portalDoor'
-              })
-            } else {
-              router.push({
-                path: '/store/create'
-              })
-            }
-          } else {
-
           }
         }
       } else {
@@ -302,9 +280,9 @@ export default {
     const getVerficationCode = async () => {
       timestamp = +new Date()
       const res = await getVerificationData(timestamp)
-      console.log("[getVerificationData function data:]--->>", res)
+      // console.log("[getVerificationData function data:]--->>", res)
       let code = Buffer.from(res, "binary").toString("base64")
-      console.log("[base64 code]: --->", "data:image/png;base64," + code)
+      // console.log("[base64 code]: --->", "data:image/png;base64," + code)
       accountLoginForm.base64Code = "data:image/png;base64," + code
     }
     

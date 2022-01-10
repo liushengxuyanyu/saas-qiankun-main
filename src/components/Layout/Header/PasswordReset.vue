@@ -183,7 +183,7 @@ export default {
           msgType: 40 // 修改密码时 msgType = 40 ｜ 系统约定
         }
         const res = await sendSMSVerificationCode(query)
-        console.log("res: --->", res)
+        // console.log("res: --->", res)
         if (res.success) {
           ElMessage({
             type: "success",
