@@ -56,42 +56,42 @@ export const RENANT_MAPPING = [
     uid: "gmyx.cloud.missfresh.cn",
     name: "国贸优鲜",
     email: "gmyx@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "quanfuyuan.cloud.missfresh.cn",
     name: "全福元优鲜",
     email: "quanfuyuan@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "xlyx.cloud.missfresh.cn",
     name: "小乐优选",
     email: "xlyx@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "jiafujin.cloud.missfresh.cn",
     name: "家福近优鲜",
     email: "jiafujin@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "jihuasheng.cloud.missfresh.cn",
     name: "吉华盛到家",
     email: "jihuasheng@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "jgcq.cloud.missfresh.cn",
     name: "金港传奇",
     email: "jgcq@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   },
   {
     uid: "jialejia.cloud.missfresh.cn",
     name: "英山家乐福",
     email: "jialejia@missfresh.cn",
-    phoneNumber: ""
+    phoneNumber: "18210855751"
   }
 ]
