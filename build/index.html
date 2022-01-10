@@ -109,8 +109,12 @@
                 url = '/mds-front/api' + url;
                 break;
             case /^\/mds-web\//.test(url) :
-                url = '/sms-basic/api/sms/basic' + url; // cratDB改造 url，mds-web 换成 sms-basic
+                url = '/mds-web/api' + url;
                 break;
+            // TODO: 暂时注释掉 by zhongming @2022-01-10
+            // case /^\/mds-web\//.test(url) :
+            //     url = '/sms-basic/api/sms/basic' + url; // cratDB改造 url，mds-web 换成 sms-basic
+            //     break;
             case /^\/mds\//.test(url) :
                 url = '/mid/api' + url;
                 break;
