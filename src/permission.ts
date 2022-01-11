@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
       path: "/login"
     })
   } else {
-    console.log("[token: ✅ ]", to.path, store.getters)
+    console.log("[token: ✅ ]", to.path)
     // 登录成功后执行hokdoInit方法
     hokdoInit()
     next()
