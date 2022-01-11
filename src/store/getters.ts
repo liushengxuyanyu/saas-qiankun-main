@@ -7,6 +7,7 @@ const getters = {
   setting: (state: any) => state.user.setting,
   appList: (state: any) => state.user.appList,
   userName: (state: any) => state.user.userName,
+  account: (state: any) => state.user.account
 }
 
 export default getters
