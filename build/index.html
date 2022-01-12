@@ -108,12 +108,14 @@
             case /^\/mds\/front/.test(url) :
                 url = '/mds-front/api' + url;
                 break;
-            // case /^\/mds-web\//.test(url) :
-            //     url = '/mds-web/api' + url;
-            //     break;
+            // TODO: 12环境部署的时候注释掉这个 打开下面的 by liushengxu @2022-01-12 
             case /^\/mds-web\//.test(url) :
-                url = '/sms-basic/api/sms/basic' + url; // cratDB改造 url，mds-web 换成 sms-basic
+                url = '/mds-web/api' + url;
                 break;
+            // TODO: b6环境部署的时候注释掉这个 打开上面的 by liushengxu @2022-01-12 
+            // case /^\/mds-web\//.test(url) :
+            //     url = '/sms-basic/api/sms/basic' + url; // cratDB改造 url，mds-web 换成 sms-basic
+            //     break;
             case /^\/mds\//.test(url) :
                 url = '/mid/api' + url;
                 break;
