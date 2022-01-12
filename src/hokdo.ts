@@ -5,19 +5,34 @@
  * https://app.hokdo.com/user
  */
 import Hokdo from "@hokdo/core"
-import { getUserInfoByMapping } from "./common/renant-mapping"
+import { getHokdoMapping } from "./common/renant-mapping"
+import { getLocalStorage } from "./utils/storage"
 
 const HOKDO_TOKEN = "c56263d13f8c51bb247bdcd79213b98e"
 
 export const hokdoInit = () => {
-  const user = getUserInfoByMapping()
+  const hokdo = getHokdoMapping()
+  const userAccount = getLocalStorage("userAccount")
+  const userName = getLocalStorage("username")
+  console.log("userAccount, userName: --->", userAccount, userName)
 
   Hokdo.init(HOKDO_TOKEN, {
-    userInfo: {
-      uid: user.uid,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      name: user.name
+    // userInfo: {
+    //   uid: user.uid,
+    //   email: user.email,
+    //   phoneNumber: user.phoneNumber,
+    //   name: user.name
+    // }
+    personInfo: {
+      id: userAccount,
+      fullName: userName
+    },
+    organizationInfo: {
+      id: hokdo.uid,
+      name: hokdo.name,
+      country: hokdo.country,
+      province: hokdo.province,
+      city: hokdo.city
     }
   })
 }

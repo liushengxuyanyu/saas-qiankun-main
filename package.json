@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
-    "@hokdo/core": "^1.0.1",
+    "@hokdo/core": "^1.0.3",
     "axios": "^0.21.1",
     "buffer": "^6.0.3",
     "element-plus": "^1.0.2-beta.55",
