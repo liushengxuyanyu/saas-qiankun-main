@@ -14,7 +14,7 @@ export const hokdoInit = () => {
   const hokdo = getHokdoMapping()
   const userAccount = getLocalStorage("userAccount")
   const userName = getLocalStorage("username")
-  console.log("userAccount, userName: --->", userAccount, userName)
+  // console.log("userAccount, userName: --->", userAccount, userName)
 
   Hokdo.init(HOKDO_TOKEN, {
     // userInfo: {
