@@ -35,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then((res: any) => {
-          // console.log("[vuex-login action]", res)
+          console.log("[vuex-login action]", res)
           if (res.result) {
             const { token, username, userAccount } = res.result
 

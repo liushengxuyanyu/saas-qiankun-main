@@ -111,7 +111,6 @@
             case /^\/mds-web\//.test(url) :
                 url = '/mds-web/api' + url;
                 break;
-            // TODO: 暂时注释掉 by zhongming @2022-01-10
             // case /^\/mds-web\//.test(url) :
             //     url = '/sms-basic/api/sms/basic' + url; // cratDB改造 url，mds-web 换成 sms-basic
             //     break;
@@ -167,7 +166,7 @@
             let webCtrlRegx = /(?=agora.io)/.test(url)
             let rtnRegx = /(?=ap.sd-rtn.com)/.test(url)
             let isHokdoUrl = hokdoRegx || webCtrlRegx || rtnRegx
-            console.log("✅ ccs token index.html: 到这里...", url, isHokdoUrl)
+            // console.log("✅ ccs token index.html: 到这里...", url, isHokdoUrl)
 
             if (!/(?=map.*.com)|(?=map*.*.cn)/.test(url) && !isHokdoUrl) {
               this.setRequestHeader('Authorization', token);
@@ -190,7 +189,7 @@
               }  
             } 
           } else {
-            console.log("❌ ccsToken index.html: 到这里...")
+            // console.log("❌ ccsToken index.html: 到这里...")
             this.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
           }
         }
