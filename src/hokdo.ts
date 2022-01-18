@@ -24,8 +24,8 @@ export const hokdoInit = () => {
     //   name: user.name
     // }
     personInfo: {
-      id: userAccount,
-      fullName: userName
+      id: userAccount ? userAccount.replace(/"/g, "") : "",
+      fullName: userName ? userName.replace(/"/g, "") : ""
     },
     organizationInfo: {
       id: hokdo.uid,
