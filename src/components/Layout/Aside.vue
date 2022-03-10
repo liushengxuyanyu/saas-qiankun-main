@@ -494,6 +494,10 @@ export default {
       background-image: url("@/assets/icons/business-manage.svg");
       vertical-align: -0.25em;
     }
+    &.shopping-guide-manage {
+      background-image: url("@/assets/icons/shopping-guide-manage.svg");
+      vertical-align: -0.25em;
+    }
   }
   :deep(.el-icon-arrow-down:before) {
     content: "";
