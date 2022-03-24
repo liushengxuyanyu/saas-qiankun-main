@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
   } else {
     console.log("[token: ✅ ]", to.path)
     // 登录成功后执行hokdoInit方法
-    hokdoInit()
+    // hokdoInit()
     next()
   }
 
