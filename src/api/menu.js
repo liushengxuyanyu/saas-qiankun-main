@@ -37,7 +37,7 @@ export const menus = () => {
       }
     })
     .then((res) => {
-      // console.log("res: --->", res)
+      console.log("menu.js: --->", res)
       localStorage.setItem("navMenus", JSON.stringify(res.data))
       return res.data
     })
