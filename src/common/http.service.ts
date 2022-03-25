@@ -36,6 +36,14 @@ service.interceptors.response.use(
       console.log("[✅ http.service response] -->", res, res.data)
       return res.data
     } else {
+      if (res.status == 401) {
+        console.log("[❌ 401:] --------------------->", res.status)
+        var protocol = window.location.protocol
+        var host = window.location.host
+        var targetUrl = protocol + "://" + host + "/web-main/login"
+        window.location.replace(targetUrl)
+      }
+
       return Promise.reject(new Error("请求失败!"))
     }
   },
