@@ -221,7 +221,7 @@ export default {
           if (userAccount) {
             // 点击重置密码
             const data = {
-              account: userAccount.slice(1, -1), // 去掉引号
+              account: userAccount.replace(/"/g, ""), // 去掉引号
               mobile: passwordResetForm.mobile,
               verifyCode: passwordResetForm.code,
               newPwd: jsEncrypt.encrypt(passwordResetForm.newPassowrd)
