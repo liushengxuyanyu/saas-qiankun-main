@@ -2,6 +2,8 @@ const webpackDevServer = require('webpack-dev-server')
 const webpack = require('webpack')
 const path = require('path')
 const config = require('./webpack.config')('development')
+const TARGET = 'https://mryxb12.cloud.dev.missfresh.net/' // 开发/b12
+// const TARGET = 'https://mryx.cloud.test.missfresh.net/' // 测试/b6
 
 const PORT = 3001
 
@@ -16,42 +18,42 @@ async function start() {
     },
     proxy: {
       '/download/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/tms/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/helios/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/ccs/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/heimdall/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/sobot': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/defender/api': {
-        target: 'https://mryx.cloud.test.missfresh.net/',
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/retail-portal/api': {
-        target: 'https://mryx.cloud.test.missfresh.net',  //预发
+        target: TARGET,
         changeOrigin: true,
         logLevel: 'debug'
       }
