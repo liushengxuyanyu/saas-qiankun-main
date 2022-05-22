@@ -4,9 +4,9 @@
       <img :src="userInfo.logo" />
     </router-link>
     <div class="main-header-container__userinfo">
-      <div v-if="userInfo.showDownloadIcon" class="main-header-container__userinfo__async-download" @click="handleAsyncDownload">
+      <!-- <div v-if="userInfo.showDownloadIcon" class="main-header-container__userinfo__async-download" @click="handleAsyncDownload">
         <img :src="userInfo.downloadIcon" />
-      </div>
+      </div> -->
       <div class="main-header-container__userinfo__name">
         {{ userInfo.userName }}
       </div>
